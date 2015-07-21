@@ -5,7 +5,17 @@
 */
 package tinyp2p;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.URL;
+import java.util.Enumeration;
 import java.util.UUID;
+import javax.swing.JOptionPane;
 import org.hive2hive.core.api.interfaces.IH2HNode;
 import org.hive2hive.core.api.configs.NetworkConfiguration;
 
@@ -40,14 +50,17 @@ public class ConnectMenu extends javax.swing.JFrame {
         joinNet = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Aharoni", 1, 20)); // NOI18N
         jLabel1.setText("Welcome to TinyP2P!");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 20, 222, 39));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 20, 222, 39));
 
+        createNet.setBackground(new java.awt.Color(204, 255, 204));
         createNet.setText("Create new network");
         createNet.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -56,6 +69,7 @@ public class ConnectMenu extends javax.swing.JFrame {
         });
         getContentPane().add(createNet, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 190, -1, -1));
 
+        joinNet.setBackground(new java.awt.Color(255, 224, 193));
         joinNet.setText("Join a network");
         joinNet.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -75,6 +89,10 @@ public class ConnectMenu extends javax.swing.JFrame {
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tiny4.png"))); // NOI18N
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 70, -1, -1));
 
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bg1.png"))); // NOI18N
+        jLabel2.setText("jLabel2");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 500, 300));
+
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
@@ -83,82 +101,129 @@ public class ConnectMenu extends javax.swing.JFrame {
         sc.buildNode();
         sc.connectNode(NetworkConfiguration.createInitial(createNodeID()));
         
-        String myIP = sc.node.getPeer().peerAddress().peerSocketAddress().toString().substring(2).split(",")[0];
+        String myExIP = getExternalIP();
+        String myInIp =  sc.node.getPeer().peerAddress().peerSocketAddress().toString().substring(2).split(",")[0];
+      
+        String[] ips = new String[2];
+   
+        ips[0] = myExIP;
+        ips[1] = myInIp;
         
-        ConnectInfo ci = new ConnectInfo(sc.node, myIP);
-        ci.setVisible(true);
+        //if (!validIP(myIP)){
+//            myIP = 
+//        }
+//         if (!validIP(myIP)){
+//            JOptionPane.showMessageDialog(null, "Network error", "Error", JOptionPane.ERROR_MESSAGE);
+//        }
+//        
+//         System.out.println(myIP);
+//        System.out.println(getExternalIP());
+//        
+        
+        
+        
+        
+      //  if(!myIP.equalsIgnoreCase("F")){
+            ConnectInfo ci = new ConnectInfo(sc.node, ips);
+            ci.setVisible(true);
+        //}
+      
         
         this.dispose();
     }//GEN-LAST:event_createNetActionPerformed
     
     
-//    public String getInternalIP(){
-//        String ip="";
-//        String myIP="";
-//        int f = 0;
-//        try {
-//            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
-//            while (interfaces.hasMoreElements()) {
-//                NetworkInterface iface = interfaces.nextElement();
-//                // filters out 127.0.0.1 and inactive interfaces
-//                if (iface.isLoopback() || !iface.isUp())
-//                    continue;
-//
-//                Enumeration<InetAddress> addresses = iface.getInetAddresses();
-//                while(addresses.hasMoreElements()) {
-//                    InetAddress addr = addresses.nextElement();
-//                    ip = addr.getHostAddress();
-//                    if (f<1){
-//                        myIP = ip;
-//                        f++;
-//                    }
-//                    System.out.println(iface.getDisplayName() + " " + ip);
-//                }
-//            }
-//        } catch (SocketException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//        return myIP;
-//    }
-//
-//
 //    //queries whatismyipaddress.com for external IP
-//    public static String getExternalIP(){
-//        String generate_URL = "http://bot.whatismyipaddress.com/";
-//        String ip ="";
-//        try {
-//            URL data = new URL(generate_URL);
-//            /**
-//             * Proxy code start
-//             * If you are working behind firewall uncomment below lines.
-//             * Set your proxy server
-//             */
-//
-//            /* Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("192.168.0.202", 8080)); */
-//            /* HttpURLConnection con = (HttpURLConnection) data.openConnection(proxy); */
-//
-//            /* Proxy code end */
-//
-//            /* Open connection */
-//            /* comment below line in case of Proxy */
-//
-//            HttpURLConnection con = (HttpURLConnection) data.openConnection();
-//
-//            if(con.getContentLength() == -1){
-//                return "F";
-//            }
-//
-//            try (BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
-//                ip= in.readLine();
-//            }
-//            con.disconnect();
-//        } catch (Exception e) {
-//        }
-//        return ip;
-//    }
+    public static String getExternalIP(){
+        String generate_URL = "http://bot.whatismyipaddress.com/";
+        String ip ="";
+        try {
+            URL data = new URL(generate_URL);
+            /**
+             * Proxy code start
+             * If you are working behind firewall uncomment below lines.
+             * Set your proxy server
+             */
+            
+            /* Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("192.168.0.202", 8080)); */
+            /* HttpURLConnection con = (HttpURLConnection) data.openConnection(proxy); */
+            
+            /* Proxy code end */
+            
+            /* Open connection */
+            /* comment below line in case of Proxy */
+            
+            HttpURLConnection con = (HttpURLConnection) data.openConnection();
+            
+            if(con.getContentLength() == -1){
+                return "F";
+            }
+            
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
+                ip= in.readLine();
+            }
+            con.disconnect();
+        } catch (Exception e) {
+        }
+        return ip;
+    }
     
+     public String getInternalIP(){
+        String ip="";
+        String myIP="";
+        int f = 0;
+        try {
+            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+            while (interfaces.hasMoreElements()) {
+                NetworkInterface iface = interfaces.nextElement();
+                // filters out 127.0.0.1 and inactive interfaces
+                if (iface.isLoopback() || !iface.isUp())
+                    continue;
+                
+                Enumeration<InetAddress> addresses = iface.getInetAddresses();
+                while(addresses.hasMoreElements()) {
+                    InetAddress addr = addresses.nextElement();
+                    ip = addr.getHostAddress();
+                    if (f<1){
+                        myIP = ip;
+                        f++;
+                    }
+                    System.out.println(iface.getDisplayName() + " " + ip);
+                }
+            }
+        } catch (SocketException e) {
+            throw new RuntimeException(e);
+        }
+        
+        return myIP;
+    }
     
+    public static boolean validIP (String ip) {
+        try {
+            if (ip == null || ip.isEmpty()) {
+                return false;
+            }
+            
+            String[] parts = ip.split( "\\." );
+            if ( parts.length != 4 ) {
+                return false;
+            }
+            
+            for ( String s : parts ) {
+                int i = Integer.parseInt( s );
+                if ( (i < 0) || (i > 255) ) {
+                    return false;
+                }
+            }
+            if(ip.endsWith(".")) {
+                return false;
+            }
+            
+            return true;
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+    }
     
     private void joinNetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinNetActionPerformed
         JoinNet jn = new JoinNet();
@@ -279,6 +344,7 @@ public class ConnectMenu extends javax.swing.JFrame {
     private javax.swing.JButton createNet;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JButton joinNet;
     // End of variables declaration//GEN-END:variables

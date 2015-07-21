@@ -73,7 +73,7 @@ public class setupConnection {
 //        this.node = n;
   //  }
     
-     public void connectNode(NetworkConfiguration networkConfig) {
+     public boolean connectNode(NetworkConfiguration networkConfig) {
         if (node.connect(networkConfig)) {
             node.getFileManager().subscribeFileEvents(new FileEventListener(node.getFileManager()));
             
@@ -89,8 +89,10 @@ public class setupConnection {
                 new PeerBuilderNAT(node.getPeer().peer()).addRelayServerConfiguration(RelayType.ANDROID, androidServer)
                         .addRelayServerConfiguration(RelayType.BUFFERED_OPENTCP, tcpServer).start();
             }
+            return true;
         } else {
-            JOptionPane.showMessageDialog(null, "Network connection could not be established.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Network connection could not be established. \n1. Ensure that IP address or mnemonic are correct\n2. Check your internet connection", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         
     }
