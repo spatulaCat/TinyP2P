@@ -48,7 +48,7 @@
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="76" y="87" width="127" height="17"/>
+          <AbsoluteConstraints x="80" y="120" width="127" height="17"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -58,7 +58,7 @@
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="76" y="123" width="143" height="-1"/>
+          <AbsoluteConstraints x="80" y="160" width="143" height="-1"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -71,7 +71,7 @@
       </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="217" y="227" width="-1" height="-1"/>
+          <AbsoluteConstraints x="220" y="260" width="-1" height="-1"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -84,7 +84,7 @@
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="237" y="82" width="135" height="29"/>
+          <AbsoluteConstraints x="240" y="110" width="135" height="29"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -101,7 +101,7 @@
       </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="237" y="117" width="135" height="28"/>
+          <AbsoluteConstraints x="240" y="150" width="135" height="28"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -110,11 +110,11 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="DejaVu Sans" size="9" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="A TinyP2P mnemonic is just an easy way to remember your IP"/>
+        <Property name="text" type="java.lang.String" value="A TinyP2P mnemonic is an easy way to remember your IP"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="76" y="163" width="296" height="-1"/>
+          <AbsoluteConstraints x="90" y="190" width="296" height="-1"/>
         </Constraint>
       </Constraints>
     </Component>

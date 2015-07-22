@@ -96,10 +96,10 @@ public class ConnectInfo extends javax.swing.JFrame {
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 19, -1, -1));
 
         jLabel3.setText("Your IP address is: ");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(76, 87, 127, 17));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 120, 127, 17));
 
         jLabel4.setText("Your TinyP2P Mnemonic is:");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(76, 123, 143, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 160, 143, -1));
 
         jButton1.setText("OK");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -107,11 +107,11 @@ public class ConnectInfo extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(217, 227, -1, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 260, -1, -1));
 
         jTextField1.setEditable(false);
         jTextField1.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(237, 82, 135, 29));
+        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 110, 135, 29));
 
         jTextField2.setEditable(false);
         jTextField2.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
@@ -121,11 +121,11 @@ public class ConnectInfo extends javax.swing.JFrame {
                 jTextField2ActionPerformed(evt);
             }
         });
-        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(237, 117, 135, 28));
+        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 150, 135, 28));
 
         jLabel8.setFont(new java.awt.Font("DejaVu Sans", 0, 9)); // NOI18N
-        jLabel8.setText("A TinyP2P mnemonic is just an easy way to remember your IP");
-        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(76, 163, 296, -1));
+        jLabel8.setText("A TinyP2P mnemonic is an easy way to remember your IP");
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 190, 296, -1));
 
         jButton2.setBackground(new java.awt.Color(204, 255, 204));
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tiny6.png"))); // NOI18N

@@ -48,7 +48,6 @@ public class ConnectMenu extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         createNet = new javax.swing.JButton();
         joinNet = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
@@ -60,7 +59,7 @@ public class ConnectMenu extends javax.swing.JFrame {
         jLabel1.setText("Welcome to TinyP2P!");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 20, 222, 39));
 
-        createNet.setBackground(new java.awt.Color(204, 255, 204));
+        createNet.setBackground(new java.awt.Color(255, 224, 193));
         createNet.setText("Create new network");
         createNet.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -77,14 +76,6 @@ public class ConnectMenu extends javax.swing.JFrame {
             }
         });
         getContentPane().add(joinNet, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 230, 131, -1));
-
-        jButton1.setText("Exit");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 270, -1, -1));
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tiny4.png"))); // NOI18N
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 70, -1, -1));
@@ -188,7 +179,7 @@ public class ConnectMenu extends javax.swing.JFrame {
                         myIP = ip;
                         f++;
                     }
-                    System.out.println(iface.getDisplayName() + " " + ip);
+                   // System.out.println(iface.getDisplayName() + " " + ip);
                 }
             }
         } catch (SocketException e) {
@@ -240,12 +231,7 @@ public class ConnectMenu extends javax.swing.JFrame {
 //            JOptionPane.showMessageDialog(null, e, "Error", JOptionPane.ERROR_MESSAGE);
 //        }
     }//GEN-LAST:event_joinNetActionPerformed
-    
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        shutdown();
-        System.exit(0);       
-    }//GEN-LAST:event_jButton1ActionPerformed
-    
+        
     
 //    private void connectNode(NetworkConfiguration networkConfig) {
 //        if (node.connect(networkConfig)) {
@@ -342,7 +328,6 @@ public class ConnectMenu extends javax.swing.JFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton createNet;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
