@@ -24,6 +24,7 @@
 package tinyp2p;
 
 import java.awt.Container;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -39,6 +40,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.SwingWorker;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -76,12 +78,13 @@ public class MainMenu extends javax.swing.JFrame {
         initComponents();
     }
     
-    public MainMenu(String User, String pw, IH2HNode node) {
+    public MainMenu(String User, String pw, IH2HNode node, Rectangle bounds) {
         this.username = User;
         this.password = pw;
         this.node = node;
         //online.setModel(lm);
         initComponents();
+        this.setBounds(bounds);
         
         
     }
@@ -288,6 +291,7 @@ public class MainMenu extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         online = new javax.swing.JList();
+        jButton3 = new javax.swing.JButton();
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
@@ -300,7 +304,7 @@ public class MainMenu extends javax.swing.JFrame {
             .addGap(0, 300, Short.MAX_VALUE)
         );
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(500, 300));
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -352,6 +356,16 @@ public class MainMenu extends javax.swing.JFrame {
         );
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 110, 200));
+
+        jButton3.setBackground(new java.awt.Color(204, 255, 204));
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tiny6.png"))); // NOI18N
+        jButton3.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(448, 11, 42, -1));
 
         pack();
         setLocationRelativeTo(null);
@@ -520,17 +534,17 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        try {
             shutdown();
-        } catch (NoPeerConnectionException | NoSessionException ex) {
-            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            System.exit(0);
     }//GEN-LAST:event_formWindowClosed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        JOptionPane.showMessageDialog(null,"Give either your IP or TinyP2P Mnemonic to a friend who wants to join your TinyNet.\nIf you wish to join a friend's TinyNet, ask them for their IP address or TinyP2P Mnemonic , and select \"Join a network\" from the main menu.");
+    }//GEN-LAST:event_jButton3ActionPerformed
     
-    public void shutdown() throws NoPeerConnectionException, NoSessionException {
+    public void shutdown()  {
         if (node != null && node.isConnected()) {
             node.disconnect();
-            node.getUserManager().createLogoutProcess();
         }
     }
     
@@ -571,6 +585,7 @@ public class MainMenu extends javax.swing.JFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

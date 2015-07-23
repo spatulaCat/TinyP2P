@@ -5,6 +5,7 @@
 */
 package tinyp2p;
 
+import java.awt.Rectangle;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -27,12 +28,14 @@ import org.hive2hive.core.api.configs.NetworkConfiguration;
 public class ConnectMenu extends javax.swing.JFrame {
     
     setupConnection sc = new setupConnection();
-    
+    //Rectangle bounds;
     /**
      * Creates new form ConnectMenu
      */
     public ConnectMenu() {
         initComponents();
+       
+       
         //this.config = ConfigFactory.load("client.conf");
     }
     
@@ -115,7 +118,7 @@ public class ConnectMenu extends javax.swing.JFrame {
         
         
       //  if(!myIP.equalsIgnoreCase("F")){
-            ConnectInfo ci = new ConnectInfo(sc.node, ips);
+            ConnectInfo ci = new ConnectInfo(sc.node, ips,this.getBounds());
             ci.setVisible(true);
         //}
       
@@ -206,18 +209,15 @@ public class ConnectMenu extends javax.swing.JFrame {
                     return false;
                 }
             }
-            if(ip.endsWith(".")) {
-                return false;
-            }
+            return !ip.endsWith(".");
             
-            return true;
         } catch (NumberFormatException nfe) {
             return false;
         }
     }
     
     private void joinNetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinNetActionPerformed
-        JoinNet jn = new JoinNet();
+        JoinNet jn = new JoinNet(this.getBounds());
         jn.setVisible(true);
         this.dispose();
 //        try {
@@ -303,15 +303,14 @@ public class ConnectMenu extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ConnectMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ConnectMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ConnectMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(ConnectMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>

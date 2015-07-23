@@ -23,6 +23,8 @@
 */
 package tinyp2p;
 
+import java.util.Arrays;
+
 
 /**
  *
@@ -311,7 +313,22 @@ public class Mnemonics {
         return convert(format(orig));   
     }
     
-    public static void main (String args[]){
-        System.out.println(getMnemonics("10.0.0.1"));
+    public static String getIP(String mne){
+        int[] ipparts = new int[4];
+        String[] m = mne.split(" ");       
+        for (int i = 0; i < 4; i++) {
+            ipparts[i] = Arrays.asList(words).indexOf(m[i]);
+        } 
+        String ip = "";
+        for (int elem: ipparts){
+            ip = ip + elem+".";       
+        }     
+ 
+        return ip.substring(0,ip.length()-1);
     }
+    
+//    public static void main (String args[]){
+//        System.out.println(getMnemonics("127.0.0.1"));
+//        
+//    }
 }

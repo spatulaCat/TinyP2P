@@ -46,7 +46,7 @@ public class ConnectInternal extends javax.swing.JFrame {
     }
       
           private void toLogin(){
-        LoginMenu lm = new LoginMenu(node);
+        LoginMenu lm = new LoginMenu(node,this.getBounds());
         lm.setVisible(true);
         this.dispose();
     }

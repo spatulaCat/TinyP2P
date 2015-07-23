@@ -23,6 +23,7 @@
 */
 package tinyp2p;
 
+import java.awt.Rectangle;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.UUID;
@@ -39,12 +40,17 @@ public class JoinNet extends javax.swing.JFrame {
     ConnectInfo ci;
     /**
      * Creates new form JoinNet
+     * @param bounds
      */
-    public JoinNet() {
-        
+    public JoinNet(Rectangle bounds) {      
         initComponents();
+        this.setBounds(bounds);
     }
     
+     public JoinNet() {      
+        initComponents();
+       
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -61,7 +67,7 @@ public class JoinNet extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -100,15 +106,17 @@ public class JoinNet extends javax.swing.JFrame {
 
         jLabel6.setFont(new java.awt.Font("Aharoni", 0, 12)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(153, 0, 0));
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 199, -1, -1));
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 190, 330, 20));
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tiny6.png"))); // NOI18N
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        jButton3.setBackground(new java.awt.Color(204, 255, 204));
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tiny6.png"))); // NOI18N
+        jButton3.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 255, 153), 1, true));
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                jButton3ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(446, 11, 44, -1));
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(448, 11, 42, -1));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bg1.png"))); // NOI18N
         jLabel2.setText("jLabel2");
@@ -130,24 +138,24 @@ public class JoinNet extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
             String nodeID = createNodeID();
-            String inet = jTextField1.getText();
+            String inet = jTextField1.getText();        
+            
+            if(validMne(inet)){
+                inet = Mnemonics.getIP(inet);
+             
+            }
             ip = inet;
-            if(ConnectMenu.validIP(ip)){
+            if(ConnectMenu.validIP(inet)){
                 InetAddress bootstrapAddress = InetAddress.getByName(inet);
                 sc.buildNode();
                 NetworkConfiguration config = NetworkConfiguration.create(nodeID, bootstrapAddress);
                 boolean success = sc.connectNode(config);
                if (success){
-                ci = new ConnectInfo(sc.node, ip);
+                ci = new ConnectInfo(sc.node, ip, this.getBounds());
                 ci.setVisible(true);
                 this.dispose();
                }
-               else{
-                   jTextField1.setText("");
-               }
-                   
-                
-               
+
             }
             else{
                 jLabel6.setText("Please enter a valid IP Address or TinyP2P Mnemonic");
@@ -156,14 +164,32 @@ public class JoinNet extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, e, "Error", JOptionPane.ERROR_MESSAGE);
 //            ConnectInternal cint = new ConnectInternal(sc.node, ip);
 //            cint.setVisible(true);
-            this.dispose();
+            //this.dispose();
         }
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    public boolean validMne(String ip){
+       if (ip == null || ip.isEmpty()) {
+                return false;
+            }
+       
+        String[] parts = ip.split( " " );
+            if ( parts.length != 4 ) {
+                return false;
+            }
+            
+        for ( String s : parts ) {
+                if ( (s.length() != 3) ) {
+                    return false;
+                }
+            }
+        return !ip.endsWith(".");
+    }
+    
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         JOptionPane.showMessageDialog(null,"Give either your IP or TinyP2P Mnemonic to a friend who wants to join your TinyNet.\nIf you wish to join a friend's TinyNet, ask them for their IP address or TinyP2P Mnemonic , and select \"Join a network\" from the main menu.");
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_jButton3ActionPerformed
     
     
 //    public static boolean validIP (String ip) {
@@ -231,7 +257,7 @@ public class JoinNet extends javax.swing.JFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

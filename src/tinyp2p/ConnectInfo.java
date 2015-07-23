@@ -23,6 +23,7 @@
 */
 package tinyp2p;
 
+import java.awt.Rectangle;
 import javax.swing.JOptionPane;
 import org.hive2hive.core.api.interfaces.IH2HNode;
 
@@ -38,6 +39,7 @@ public class ConnectInfo extends javax.swing.JFrame {
     private IH2HNode node;
     String xip;
     String iip;
+    
    
    // private boolean created; //flags whether the user has created or joined the network
     // private String myIP;
@@ -46,20 +48,21 @@ public class ConnectInfo extends javax.swing.JFrame {
         initComponents();
     }
     
-    public ConnectInfo(IH2HNode n, String[] i){
+    public ConnectInfo(IH2HNode n, String[] i, Rectangle lwl){
         this.node = n;
         this.xip = i[0];
         this.iip = i[1];
-        
         initComponents();
+        this.setBounds(lwl);
       //  this.created = cr;
     }
     
-     public ConnectInfo(IH2HNode n, String i){
+     public ConnectInfo(IH2HNode n, String i, Rectangle lwl){
         this.node = n;
         this.xip = i;
 
         initComponents();
+        this.setBounds(lwl);
       //  this.created = cr;
     }
     
@@ -82,9 +85,12 @@ public class ConnectInfo extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
             }
@@ -99,7 +105,7 @@ public class ConnectInfo extends javax.swing.JFrame {
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 120, 127, 17));
 
         jLabel4.setText("Your TinyP2P Mnemonic is:");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 160, 143, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 160, 170, -1));
 
         jButton1.setText("OK");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -129,7 +135,7 @@ public class ConnectInfo extends javax.swing.JFrame {
 
         jButton2.setBackground(new java.awt.Color(204, 255, 204));
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tiny6.png"))); // NOI18N
-        jButton2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 255, 153), 1, true));
+        jButton2.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -151,7 +157,7 @@ public class ConnectInfo extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
     
     private void toLogin(){
-        LoginMenu lm = new LoginMenu(node);
+        LoginMenu lm = new LoginMenu(node,this.getBounds());
         lm.setVisible(true);
         this.dispose();
     }
@@ -178,6 +184,10 @@ public class ConnectInfo extends javax.swing.JFrame {
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        toLogin();
+    }//GEN-LAST:event_formWindowClosed
     
     /**
      * @param args the command line arguments
