@@ -73,7 +73,9 @@ public class ConnectMenu extends javax.swing.JFrame {
 
         joinNet.setBackground(new java.awt.Color(255, 224, 193));
         joinNet.setText("Join a network");
+        joinNet.setMargin(new java.awt.Insets(2, 10, 2, 10));
         joinNet.setMaximumSize(new java.awt.Dimension(131, 23));
+        joinNet.setMinimumSize(new java.awt.Dimension(131, 23));
         joinNet.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 joinNetActionPerformed(evt);
