@@ -23,6 +23,8 @@
  */
 package tinyp2p;
 
+import java.awt.Rectangle;
+import javax.swing.JOptionPane;
 import org.hive2hive.core.api.interfaces.IH2HNode;
 
 /**
@@ -35,15 +37,34 @@ public class ConnectInternal extends javax.swing.JFrame {
     /**
      * Creates new form ConnectInternal
      */
-    public ConnectInternal() {
+    
+    public ConnectInternal( ) {
         initComponents();
     }
     
-      public ConnectInternal(IH2HNode n, String i) {
-          this.ip = i;
-          this.node = n;
+    public ConnectInternal(Rectangle bounds) {
         initComponents();
+        this.setBounds(bounds);
+        tinyButt.setOpaque(false);
+        tinyButt.setContentAreaFilled(false); //to make the content area transparent
+        tinyButt.setBorderPainted(false);
     }
+    
+    public ConnectInternal(IH2HNode n, String i) {
+        this.ip = i;
+        this.node = n;
+        initComponents();
+        tinyButt.setOpaque(false);
+        tinyButt.setContentAreaFilled(false); //to make the content area transparent
+        tinyButt.setBorderPainted(false);
+    }
+      
+//        public ConnectInternal(IH2HNode n, String i, Rectangle bounds) {
+//          this.ip = i;
+//          this.node = n;
+//        initComponents();
+//        this.setBounds(bounds);
+//    }
       
           private void toLogin(){
         LoginMenu lm = new LoginMenu(node,this.getBounds());
@@ -67,81 +88,84 @@ public class ConnectInternal extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        tinyButt = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        help = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(500, 300));
+        setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
             }
         });
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Aharoni", 1, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Aharoni", 1, 24)); // NOI18N
         jLabel1.setText("TinyP2P");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 20, 110, 40));
 
-        jLabel3.setText("You can still connect with friends on your local (LAN) network");
+        jLabel3.setText("With this address you can still connect with peers on your local (LAN) network, ");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 120, -1, -1));
 
-        jLabel4.setText("Provide them with this IP address: ");
+        jLabel4.setText("Your internal IP address:");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 180, -1, -1));
 
-        jLabel5.setText("Or this Mnemonic: ");
+        jLabel5.setText("  Mnemonic: ");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 220, 110, -1));
 
         jTextField1.setEditable(false);
         jTextField1.setFont(new java.awt.Font("Aharoni", 0, 11)); // NOI18N
+        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 170, 120, 30));
 
         jTextField2.setEditable(false);
         jTextField2.setFont(new java.awt.Font("Aharoni", 0, 11)); // NOI18N
+        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 210, 120, 30));
 
+        jButton1.setBackground(new java.awt.Color(255, 224, 193));
         jButton1.setText("OK");
+        jButton1.setMargin(new java.awt.Insets(2, 10, 2, 10));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 250, -1, -1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(151, 151, 151)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel5))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jLabel3)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(171, 171, 171)
-                        .addComponent(jButton1)))
-                .addContainerGap(166, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addGap(44, 44, 44)
-                .addComponent(jLabel3)
-                .addGap(58, 58, 58)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(22, 22, 22))
-        );
+        tinyButt.setBackground(new java.awt.Color(204, 255, 204));
+        tinyButt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tiny7.png"))); // NOI18N
+        tinyButt.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        tinyButt.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        tinyButt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tinyButtActionPerformed(evt);
+            }
+        });
+        getContentPane().add(tinyButt, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 0, 40, 40));
+
+        jLabel6.setText("internal IP address.");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, -1, -1));
+
+        help.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
+        help.setForeground(new java.awt.Color(0, 51, 204));
+        help.setText(" ? ");
+        help.setToolTipText("<html>Some routers do network address translation (NAT).  </br>Your external IP is what is seen by the outside world, your internal IP is used to identify you among others in your network.</html>");
+        help.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 102, 51)));
+        getContentPane().add(help, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 80, -1, -1));
+
+        jLabel8.setText("If you are behind the same NAT router, you need to provide your peer with your");
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 60, -1, -1));
+
+        jLabel2.setText("even if your internet connection is down. ");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, -1, -1));
+
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bg1.png"))); // NOI18N
+        jLabel9.setText("jLabel9");
+        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 500, 300));
 
         pack();
         setLocationRelativeTo(null);
@@ -155,6 +179,10 @@ public class ConnectInternal extends javax.swing.JFrame {
        jTextField1.setText(ip);
        jTextField2.setText(Mnemonics.getMnemonics(ip));
     }//GEN-LAST:event_formWindowOpened
+
+    private void tinyButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tinyButtActionPerformed
+        JOptionPane.showMessageDialog(null,"Give either your IP or TinyP2P Mnemonic to a friend who wants to join your TinyNet.\nIf you wish to join a friend's TinyNet, ask them for their IP address or TinyP2P Mnemonic , and select \"Join a network\" from the main menu.");
+    }//GEN-LAST:event_tinyButtActionPerformed
 
     /**
      * @param args the command line arguments
@@ -193,12 +221,18 @@ public class ConnectInternal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel help;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
+    private javax.swing.JButton tinyButt;
     // End of variables declaration//GEN-END:variables
 }

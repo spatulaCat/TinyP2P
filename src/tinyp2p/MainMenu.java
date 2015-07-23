@@ -85,7 +85,9 @@ public class MainMenu extends javax.swing.JFrame {
         //online.setModel(lm);
         initComponents();
         this.setBounds(bounds);
-        
+        tinyButt.setOpaque(false);
+        tinyButt.setContentAreaFilled(false); //to make the content area transparent
+        tinyButt.setBorderPainted(false);
         
     }
     
@@ -291,7 +293,8 @@ public class MainMenu extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         online = new javax.swing.JList();
-        jButton3 = new javax.swing.JButton();
+        tinyButt = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
@@ -324,7 +327,7 @@ public class MainMenu extends javax.swing.JFrame {
         jLabel2.setText("Online users");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, -1, -1));
 
-        jButton2.setBackground(new java.awt.Color(204, 255, 204));
+        jButton2.setBackground(new java.awt.Color(255, 224, 193));
         jButton2.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jButton2.setText("Refresh");
         jButton2.setBorder(null);
@@ -357,15 +360,20 @@ public class MainMenu extends javax.swing.JFrame {
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 110, 200));
 
-        jButton3.setBackground(new java.awt.Color(204, 255, 204));
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tiny6.png"))); // NOI18N
-        jButton3.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        tinyButt.setBackground(new java.awt.Color(204, 255, 204));
+        tinyButt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tiny7.png"))); // NOI18N
+        tinyButt.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        tinyButt.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        tinyButt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                tinyButtActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(448, 11, 42, -1));
+        getContentPane().add(tinyButt, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 0, 40, 40));
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bg1.png"))); // NOI18N
+        jLabel3.setText("jLabel3");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 500, 300));
 
         pack();
         setLocationRelativeTo(null);
@@ -538,9 +546,9 @@ public class MainMenu extends javax.swing.JFrame {
             System.exit(0);
     }//GEN-LAST:event_formWindowClosed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void tinyButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tinyButtActionPerformed
         JOptionPane.showMessageDialog(null,"Give either your IP or TinyP2P Mnemonic to a friend who wants to join your TinyNet.\nIf you wish to join a friend's TinyNet, ask them for their IP address or TinyP2P Mnemonic , and select \"Join a network\" from the main menu.");
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_tinyButtActionPerformed
     
     public void shutdown()  {
         if (node != null && node.isConnected()) {
@@ -585,13 +593,14 @@ public class MainMenu extends javax.swing.JFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList online;
+    private javax.swing.JButton tinyButt;
     // End of variables declaration//GEN-END:variables
     
     DefaultMutableTreeNode addNodes(DefaultMutableTreeNode curTop, File dir) {

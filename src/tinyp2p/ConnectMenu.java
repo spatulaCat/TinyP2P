@@ -34,7 +34,7 @@ public class ConnectMenu extends javax.swing.JFrame {
      */
     public ConnectMenu() {
         initComponents();
-       
+        
        
         //this.config = ConfigFactory.load("client.conf");
     }
@@ -58,30 +58,37 @@ public class ConnectMenu extends javax.swing.JFrame {
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Aharoni", 1, 20)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Aharoni", 1, 22)); // NOI18N
         jLabel1.setText("Welcome to TinyP2P!");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 20, 222, 39));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 20, 222, 39));
 
         createNet.setBackground(new java.awt.Color(255, 224, 193));
-        createNet.setText("Create new network");
+        createNet.setText("Create new TinyNet");
+        createNet.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        createNet.setMargin(new java.awt.Insets(4, 14, 4, 14));
+        createNet.setMaximumSize(new java.awt.Dimension(131, 23));
+        createNet.setMinimumSize(new java.awt.Dimension(131, 23));
+        createNet.setPreferredSize(new java.awt.Dimension(131, 25));
         createNet.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 createNetActionPerformed(evt);
             }
         });
-        getContentPane().add(createNet, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 190, -1, -1));
+        getContentPane().add(createNet, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 200, -1, -1));
 
         joinNet.setBackground(new java.awt.Color(255, 224, 193));
-        joinNet.setText("Join a network");
-        joinNet.setMargin(new java.awt.Insets(2, 10, 2, 10));
+        joinNet.setText("Join a TinyNet");
+        joinNet.setBorder(null);
+        joinNet.setMargin(new java.awt.Insets(4, 14, 4, 14));
         joinNet.setMaximumSize(new java.awt.Dimension(131, 23));
         joinNet.setMinimumSize(new java.awt.Dimension(131, 23));
+        joinNet.setPreferredSize(new java.awt.Dimension(131, 25));
         joinNet.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 joinNetActionPerformed(evt);
             }
         });
-        getContentPane().add(joinNet, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 230, 130, -1));
+        getContentPane().add(joinNet, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 230, -1, -1));
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tiny4.png"))); // NOI18N
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 70, -1, -1));
@@ -164,38 +171,39 @@ public class ConnectMenu extends javax.swing.JFrame {
         }
         return ip;
     }
-    
-     public String getInternalIP(){
-        String ip="";
-        String myIP="";
-        int f = 0;
-        try {
-            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
-            while (interfaces.hasMoreElements()) {
-                NetworkInterface iface = interfaces.nextElement();
-                // filters out 127.0.0.1 and inactive interfaces
-                if (iface.isLoopback() || !iface.isUp())
-                    continue;
-                
-                Enumeration<InetAddress> addresses = iface.getInetAddresses();
-                while(addresses.hasMoreElements()) {
-                    InetAddress addr = addresses.nextElement();
-                    ip = addr.getHostAddress();
-                    if (f<1){
-                        myIP = ip;
-                        f++;
-                    }
-                   // System.out.println(iface.getDisplayName() + " " + ip);
-                }
-            }
-        } catch (SocketException e) {
-            throw new RuntimeException(e);
-        }
-        
-        return myIP;
-    }
+//    
+//     public String getInternalIP(){
+//        String ip="";
+//        String myIP="";
+//        int f = 0;
+//        try {
+//            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+//            while (interfaces.hasMoreElements()) {
+//                NetworkInterface iface = interfaces.nextElement();
+//                // filters out 127.0.0.1 and inactive interfaces
+//                if (iface.isLoopback() || !iface.isUp())
+//                    continue;
+//                
+//                Enumeration<InetAddress> addresses = iface.getInetAddresses();
+//                while(addresses.hasMoreElements()) {
+//                    InetAddress addr = addresses.nextElement();
+//                    ip = addr.getHostAddress();
+//                    if (f<1){
+//                        myIP = ip;
+//                        f++;
+//                    }
+//                   // System.out.println(iface.getDisplayName() + " " + ip);
+//                }
+//            }
+//        } catch (SocketException e) {
+//            throw new RuntimeException(e);
+//        }
+//        
+//        return myIP;
+//    }
     
     public static boolean validIP (String ip) {
+
         try {
             if (ip == null || ip.isEmpty()) {
                 return false;
@@ -223,16 +231,16 @@ public class ConnectMenu extends javax.swing.JFrame {
         JoinNet jn = new JoinNet(this.getBounds());
         jn.setVisible(true);
         this.dispose();
-//        try {
-//            String nodeID = createNodeID();
-//            String inet = JOptionPane.showInputDialog("Enter the IP address of anyone currently connected:");
-//            InetAddress bootstrapAddress = InetAddress.getByName(inet);
-//            buildNode();
-//            NetworkConfiguration config = NetworkConfiguration.create(nodeID, bootstrapAddress);
-//            connectNode(config);
-//        } catch (UnknownHostException e) {
-//            JOptionPane.showMessageDialog(null, e, "Error", JOptionPane.ERROR_MESSAGE);
-//        }
+        //        try {
+            //            String nodeID = createNodeID();
+            //            String inet = JOptionPane.showInputDialog("Enter the IP address of anyone currently connected:");
+            //            InetAddress bootstrapAddress = InetAddress.getByName(inet);
+            //            buildNode();
+            //            NetworkConfiguration config = NetworkConfiguration.create(nodeID, bootstrapAddress);
+            //            connectNode(config);
+            //        } catch (UnknownHostException e) {
+            //            JOptionPane.showMessageDialog(null, e, "Error", JOptionPane.ERROR_MESSAGE);
+            //        }
     }//GEN-LAST:event_joinNetActionPerformed
         
     
