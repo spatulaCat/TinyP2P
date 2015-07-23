@@ -33,7 +33,7 @@ import java.util.Arrays;
 public class Mnemonics {
 
     
-     public static String[] words = {"zip", "ace",
+     private static String[] words = {"zip", "ace",
             "two",
             "add",
             "age",
@@ -292,7 +292,7 @@ public class Mnemonics {
     public Mnemonics(){    
     }
 
-    public static int[] format(String k){
+    private static int[] format(String k){
         int[] ip = new int[4];
         String[] parts = k.split("\\.");       
         for (int i = 0; i < 4; i++) {
@@ -301,7 +301,7 @@ public class Mnemonics {
         return ip;
     }
     
-    public static String convert(int[] j){
+    private static String convert(int[] j){
         String mne = "";
         for (int elem: j){
             mne = mne + words[elem] + " ";       
@@ -309,8 +309,8 @@ public class Mnemonics {
         return mne; 
     }
     
-    public static String getMnemonics(String orig){
-        return convert(format(orig));   
+    public static String getMnemonics(String ip){
+        return convert(format(ip));   
     }
     
     public static String getIP(String mne){

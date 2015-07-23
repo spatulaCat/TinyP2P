@@ -31,21 +31,21 @@ import org.hive2hive.core.api.interfaces.IH2HNode;
  *
  * @author Nicky
  */
-public class LoginMenu extends javax.swing.JFrame {
+public class ChooseUsername extends javax.swing.JFrame {
 
     private String username;
     private String password;
     private IH2HNode node;
-    private String[] ips;
+    String[] ips;
     
     /**
      * Creates new form LoginMenu
      */
-    public LoginMenu() {
+    public ChooseUsername() {
         initComponents();
     }
     
-    public LoginMenu(IH2HNode node, Rectangle bounds, String[] ips){
+    public ChooseUsername(IH2HNode node, Rectangle bounds, String[] ips){
         this.ips = ips;
         this.node = node;
         initComponents();
@@ -67,7 +67,6 @@ public class LoginMenu extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
-        jPasswordField1 = new javax.swing.JPasswordField();
         jButton1 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         tinyButt = new javax.swing.JButton();
@@ -77,12 +76,12 @@ public class LoginMenu extends javax.swing.JFrame {
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Aharoni", 1, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Aharoni", 1, 24)); // NOI18N
         jLabel1.setText("TinyP2P");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(218, 33, -1, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 30, -1, -1));
 
-        jLabel2.setText("Login");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 80, -1, -1));
+        jLabel2.setText("Choose a display name");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 120, -1, -1));
 
         jTextField1.setText("Username");
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
@@ -90,10 +89,7 @@ public class LoginMenu extends javax.swing.JFrame {
                 jTextField1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 108, 115, -1));
-
-        jPasswordField1.setText("jPasswordField1");
-        getContentPane().add(jPasswordField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 146, 115, -1));
+        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 140, 115, -1));
 
         jButton1.setBackground(new java.awt.Color(255, 224, 193));
         jButton1.setText("Login");
@@ -131,32 +127,33 @@ public class LoginMenu extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String user=jTextField1.getText();
-        String pwd= new String (jPasswordField1.getPassword()); 
+        String pwd = "123456"; 
+        
         new MainMenu(user,pwd,node,this.getBounds(),ips).setVisible(true);
         this.dispose();
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void tinyButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tinyButtActionPerformed
-         Help h = new Help(this.getBounds(),ips);
-         h.setVisible(true);
-        JOptionPane.showMessageDialog(null,"Give either your IP or TinyP2P Mnemonic to a friend who wants to join your TinyNet.\nIf you wish to join a friend's TinyNet, ask them for their IP address or TinyP2P Mnemonic , and select \"Join a network\" from the main menu.");
+        Help h = new Help(this.getBounds(),ips);
+        h.setVisible(true);
+
     }//GEN-LAST:event_tinyButtActionPerformed
 
-    public void shutdown() {
-        if (node != null && node.isConnected()) {
-            node.disconnect();
-        }
-    }
+//    public void shutdown() {
+//        if (node != null && node.isConnected()) {
+//            node.disconnect();
+//        }
+//    }
 
-    public String getUserName(){
-        return this.username;
-    }
+//    public String getUserName(){
+//        return this.username;
+//    }
     
-    public String getPassword(){
-        return this.password;
-    }
-    
+//    public String getPassword(){
+//        return this.password;
+//    }
+//    
     
     
     /**
@@ -176,21 +173,23 @@ public class LoginMenu extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LoginMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChooseUsername.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LoginMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChooseUsername.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LoginMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChooseUsername.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LoginMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChooseUsername.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new LoginMenu().setVisible(true);
+                new ChooseUsername().setVisible(true);
             }
         });
     }
@@ -201,7 +200,6 @@ public class LoginMenu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JButton tinyButt;
     // End of variables declaration//GEN-END:variables

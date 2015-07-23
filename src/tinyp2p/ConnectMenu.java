@@ -5,18 +5,18 @@
 */
 package tinyp2p;
 
-import java.awt.Rectangle;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
+import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Enumeration;
+import java.net.UnknownHostException;
+import java.util.Arrays;
 import java.util.UUID;
-import javax.swing.JOptionPane;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.hive2hive.core.api.interfaces.IH2HNode;
 import org.hive2hive.core.api.configs.NetworkConfiguration;
 
@@ -28,6 +28,7 @@ import org.hive2hive.core.api.configs.NetworkConfiguration;
 public class ConnectMenu extends javax.swing.JFrame {
     
     setupConnection sc = new setupConnection();
+    String[] ips = new String[2];
     //Rectangle bounds;
     /**
      * Creates new form ConnectMenu
@@ -35,7 +36,7 @@ public class ConnectMenu extends javax.swing.JFrame {
     public ConnectMenu() {
         initComponents();
         
-       
+        
         //this.config = ConfigFactory.load("client.conf");
     }
     
@@ -74,7 +75,7 @@ public class ConnectMenu extends javax.swing.JFrame {
                 createNetActionPerformed(evt);
             }
         });
-        getContentPane().add(createNet, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 200, -1, -1));
+        getContentPane().add(createNet, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 210, -1, -1));
 
         joinNet.setBackground(new java.awt.Color(255, 224, 193));
         joinNet.setText("Join a TinyNet");
@@ -88,7 +89,7 @@ public class ConnectMenu extends javax.swing.JFrame {
                 joinNetActionPerformed(evt);
             }
         });
-        getContentPane().add(joinNet, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 230, -1, -1));
+        getContentPane().add(joinNet, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 250, -1, -1));
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tiny4.png"))); // NOI18N
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 70, -1, -1));
@@ -105,73 +106,97 @@ public class ConnectMenu extends javax.swing.JFrame {
         sc.buildNode();
         sc.connectNode(NetworkConfiguration.createInitial(createNodeID()));
         
-        String myExIP = getExternalIP();
-        String myInIp =  sc.node.getPeer().peerAddress().peerSocketAddress().toString().substring(2).split(",")[0];
-      
-        String[] ips = new String[2];
-   
-        ips[0] = myExIP;
-        ips[1] = myInIp;
-        
-        //if (!validIP(myIP)){
-//            myIP = 
-//        }
-//         if (!validIP(myIP)){
-//            JOptionPane.showMessageDialog(null, "Network error", "Error", JOptionPane.ERROR_MESSAGE);
-//        }
-//        
-//         System.out.println(myIP);
-//        System.out.println(getExternalIP());
-//        
         
         
+        try {
+            String myExIP;
+            myExIP = getExternalIP();
+            
+            String myInIp = getInternalIP(sc.node);
+            
+            ips[0] = myExIP;
+            ips[1] = myInIp;
+            
+        } catch (IOException ex) {
+            Logger.getLogger(ConnectMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        ConnectInfo ci = new ConnectInfo(sc.node, ips, this.getBounds());
+       
+        ci.setVisible(true);
         
         
-      //  if(!myIP.equalsIgnoreCase("F")){
-            ConnectInfo ci = new ConnectInfo(sc.node, ips,this.getBounds());
-            ci.setVisible(true);
-        //}
-      
         
         this.dispose();
     }//GEN-LAST:event_createNetActionPerformed
     
     
-//    //queries whatismyipaddress.com for external IP
-    public static String getExternalIP(){
-        String generate_URL = "http://bot.whatismyipaddress.com/";
-        String ip ="";
-        try {
-            URL data = new URL(generate_URL);
-            /**
-             * Proxy code start
-             * If you are working behind firewall uncomment below lines.
-             * Set your proxy server
-             */
-            
-            /* Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("192.168.0.202", 8080)); */
-            /* HttpURLConnection con = (HttpURLConnection) data.openConnection(proxy); */
-            
-            /* Proxy code end */
-            
-            /* Open connection */
-            /* comment below line in case of Proxy */
-            
-            HttpURLConnection con = (HttpURLConnection) data.openConnection();
-            
-            if(con.getContentLength() == -1){
-                return "F";
-            }
-            
+    public static String QueryIPServer(String url) throws MalformedURLException, IOException{
+        URL data = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) data.openConnection();
+        if(con.getContentLength() == -1){
+            return "F";
+        }
+        else{
+            String ip;
             try (BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
                 ip= in.readLine();
             }
             con.disconnect();
-        } catch (Exception e) {
+            return ip;
         }
-        return ip;
     }
-//    
+    
+    public static String getInternalIP(org.hive2hive.core.api.interfaces.IH2HNode node) throws UnknownHostException{    
+        InetAddress i =InetAddress.getLocalHost();
+        String thisIp = ""+i;
+        return thisIp.substring(5, thisIp.length());
+
+//return node.getPeer().peerAddress().peerSocketAddress().toString().substring(2).split(",")[0];
+    }
+    
+//    //queries whatismyipaddress.com for external IP
+    public static String getExternalIP() throws IOException{
+        String generate_URL1 = "http://bot.whatismyipaddress.com/";
+        String generate_URL2 = "http://checkip.amazonaws.com/";
+        String generate_URL3 = "http://myexternalip.com/raw";
+        
+        if(!QueryIPServer(generate_URL1).equalsIgnoreCase("F")){
+            return QueryIPServer(generate_URL1);
+        }
+        else if (!QueryIPServer(generate_URL2).equalsIgnoreCase("F")){
+            return QueryIPServer(generate_URL2);
+        }
+        else if (!QueryIPServer(generate_URL3).equalsIgnoreCase("F")){
+            return QueryIPServer(generate_URL3);
+        }
+        
+        else{return "F";}
+//
+//
+//        String ip ="";
+//
+//        try {
+//
+//            URL data = new URL(generate_URL3);
+//
+//            HttpURLConnection con = (HttpURLConnection) data.openConnection();
+//
+//            if(con.getContentLength() == -1){
+//                return "F";
+//            }
+//
+//
+//
+//            try (BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
+//                ip= in.readLine();
+//            }
+//            con.disconnect();
+//        } catch (Exception e) {
+//        }
+//        return ip;
+    }
+//
 //     public String getInternalIP(){
 //        String ip="";
 //        String myIP="";
@@ -183,7 +208,7 @@ public class ConnectMenu extends javax.swing.JFrame {
 //                // filters out 127.0.0.1 and inactive interfaces
 //                if (iface.isLoopback() || !iface.isUp())
 //                    continue;
-//                
+//
 //                Enumeration<InetAddress> addresses = iface.getInetAddresses();
 //                while(addresses.hasMoreElements()) {
 //                    InetAddress addr = addresses.nextElement();
@@ -198,12 +223,12 @@ public class ConnectMenu extends javax.swing.JFrame {
 //        } catch (SocketException e) {
 //            throw new RuntimeException(e);
 //        }
-//        
+//
 //        return myIP;
 //    }
     
     public static boolean validIP (String ip) {
-
+        
         try {
             if (ip == null || ip.isEmpty()) {
                 return false;
@@ -228,21 +253,22 @@ public class ConnectMenu extends javax.swing.JFrame {
     }
     
     private void joinNetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinNetActionPerformed
-        JoinNet jn = new JoinNet(this.getBounds());
+       
+        JoinNet jn = new JoinNet(this.getBounds(),ips);
         jn.setVisible(true);
         this.dispose();
         //        try {
-            //            String nodeID = createNodeID();
-            //            String inet = JOptionPane.showInputDialog("Enter the IP address of anyone currently connected:");
-            //            InetAddress bootstrapAddress = InetAddress.getByName(inet);
-            //            buildNode();
-            //            NetworkConfiguration config = NetworkConfiguration.create(nodeID, bootstrapAddress);
-            //            connectNode(config);
-            //        } catch (UnknownHostException e) {
-            //            JOptionPane.showMessageDialog(null, e, "Error", JOptionPane.ERROR_MESSAGE);
-            //        }
+        //            String nodeID = createNodeID();
+        //            String inet = JOptionPane.showInputDialog("Enter the IP address of anyone currently connected:");
+        //            InetAddress bootstrapAddress = InetAddress.getByName(inet);
+        //            buildNode();
+        //            NetworkConfiguration config = NetworkConfiguration.create(nodeID, bootstrapAddress);
+        //            connectNode(config);
+        //        } catch (UnknownHostException e) {
+        //            JOptionPane.showMessageDialog(null, e, "Error", JOptionPane.ERROR_MESSAGE);
+        //        }
     }//GEN-LAST:event_joinNetActionPerformed
-        
+    
     
 //    private void connectNode(NetworkConfiguration networkConfig) {
 //        if (node.connect(networkConfig)) {

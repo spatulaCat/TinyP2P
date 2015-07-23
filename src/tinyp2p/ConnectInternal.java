@@ -24,6 +24,7 @@
 package tinyp2p;
 
 import java.awt.Rectangle;
+import java.util.Arrays;
 import javax.swing.JOptionPane;
 import org.hive2hive.core.api.interfaces.IH2HNode;
 
@@ -32,7 +33,7 @@ import org.hive2hive.core.api.interfaces.IH2HNode;
  * @author Nicky
  */
 public class ConnectInternal extends javax.swing.JFrame {
-    private String ip;
+    private String[] ips;
     private IH2HNode node;
     /**
      * Creates new form ConnectInternal
@@ -42,7 +43,8 @@ public class ConnectInternal extends javax.swing.JFrame {
         initComponents();
     }
     
-    public ConnectInternal(Rectangle bounds) {
+    public ConnectInternal(Rectangle bounds, String ips[]) {
+        this.ips = ips;
         initComponents();
         this.setBounds(bounds);
         tinyButt.setOpaque(false);
@@ -50,8 +52,8 @@ public class ConnectInternal extends javax.swing.JFrame {
         tinyButt.setBorderPainted(false);
     }
     
-    public ConnectInternal(IH2HNode n, String i) {
-        this.ip = i;
+    public ConnectInternal(IH2HNode n, String[] ips) {
+        this.ips = ips;
         this.node = n;
         initComponents();
         tinyButt.setOpaque(false);
@@ -67,7 +69,7 @@ public class ConnectInternal extends javax.swing.JFrame {
 //    }
       
           private void toLogin(){
-        LoginMenu lm = new LoginMenu(node,this.getBounds());
+        ChooseUsername lm = new ChooseUsername(node,this.getBounds(),ips);
         lm.setVisible(true);
         this.dispose();
     }
@@ -94,9 +96,9 @@ public class ConnectInternal extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(500, 300));
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
@@ -119,12 +121,12 @@ public class ConnectInternal extends javax.swing.JFrame {
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 220, 110, -1));
 
         jTextField1.setEditable(false);
-        jTextField1.setFont(new java.awt.Font("Aharoni", 0, 11)); // NOI18N
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 170, 120, 30));
+        jTextField1.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
+        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 170, 140, 30));
 
         jTextField2.setEditable(false);
-        jTextField2.setFont(new java.awt.Font("Aharoni", 0, 11)); // NOI18N
-        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 210, 120, 30));
+        jTextField2.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
+        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 210, 140, 30));
 
         jButton1.setBackground(new java.awt.Color(255, 224, 193));
         jButton1.setText("OK");
@@ -167,6 +169,10 @@ public class ConnectInternal extends javax.swing.JFrame {
         jLabel9.setText("jLabel9");
         getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 500, 300));
 
+        jLabel7.setFont(new java.awt.Font("Aharoni", 1, 24)); // NOI18N
+        jLabel7.setText("TinyP2P");
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 20, -1, 29));
+
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
@@ -176,12 +182,15 @@ public class ConnectInternal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-       jTextField1.setText(ip);
-       jTextField2.setText(Mnemonics.getMnemonics(ip));
+//       ips[1] = node.getPeer().peerAddress().peerSocketAddress().toString().substring(2).split(",")[0];
+//      System.out.println("S"+Arrays.toString(ips));
+       jTextField1.setText(ips[1]);
+       jTextField2.setText(Mnemonics.getMnemonics(ips[1]));
     }//GEN-LAST:event_formWindowOpened
 
     private void tinyButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tinyButtActionPerformed
-        JOptionPane.showMessageDialog(null,"Give either your IP or TinyP2P Mnemonic to a friend who wants to join your TinyNet.\nIf you wish to join a friend's TinyNet, ask them for their IP address or TinyP2P Mnemonic , and select \"Join a network\" from the main menu.");
+       Help h = new Help(this.getBounds(),ips);
+       h.setVisible(true);
     }//GEN-LAST:event_tinyButtActionPerformed
 
     /**
@@ -229,6 +238,7 @@ public class ConnectInternal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JTextField jTextField1;

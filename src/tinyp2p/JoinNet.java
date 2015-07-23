@@ -24,9 +24,13 @@
 package tinyp2p;
 
 import java.awt.Rectangle;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Arrays;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import org.hive2hive.core.api.configs.NetworkConfiguration;
 
@@ -38,13 +42,20 @@ public class JoinNet extends javax.swing.JFrame {
     public String ip;
     setupConnection sc = new setupConnection();
     ConnectInfo ci;
+    String[] ips;
     /**
      * Creates new form JoinNet
      * @param bounds
+     * @param ips
      */
-    public JoinNet(Rectangle bounds) {      
-        initComponents();
+    public JoinNet(Rectangle bounds, String[] ips) {      
+        this.ips = ips;
+        initComponents();  
         this.setBounds(bounds);
+        tinyButt.setOpaque(false);
+        tinyButt.setContentAreaFilled(false); //to make the content area transparent
+        tinyButt.setBorderPainted(false);
+      
     }
     
      public JoinNet() {      
@@ -86,10 +97,10 @@ public class JoinNet extends javax.swing.JFrame {
         getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 170, 159, 25));
 
         jLabel3.setText("Enter the IP address or TinyP2P mnemonic of anyone ");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 110, -1, -1));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 110, 300, -1));
 
         jLabel4.setText("currently connected to the TinyNet you wish to join");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 130, -1, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 130, 280, -1));
 
         jButton1.setBackground(new java.awt.Color(255, 224, 193));
         jButton1.setText("Join");
@@ -121,7 +132,7 @@ public class JoinNet extends javax.swing.JFrame {
         help.setText(" ? ");
         help.setToolTipText("A TinyP2P mnemonic is an easy way to remember your IP");
         help.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 102, 51)));
-        getContentPane().add(help, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 130, -1, -1));
+        getContentPane().add(help, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 130, -1, -1));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bg1.png"))); // NOI18N
         jLabel2.setText("jLabel2");
@@ -145,10 +156,11 @@ public class JoinNet extends javax.swing.JFrame {
             String nodeID = createNodeID();
             String inet = jTextField1.getText();        
             
-            if (inet.equalsIgnoreCase("localhost")){
+          
+            if (inet.equalsIgnoreCase("localhost") || inet.equalsIgnoreCase("")){
                 inet = "127.0.0.1";
             }
-            
+           
             if(validMne(inet)){
                 inet = Mnemonics.getIP(inet);
              
@@ -156,11 +168,15 @@ public class JoinNet extends javax.swing.JFrame {
             ip = inet;
             if(ConnectMenu.validIP(inet)){
                 InetAddress bootstrapAddress = InetAddress.getByName(inet);
-                sc.buildNode();
+                sc.buildNode();             
                 NetworkConfiguration config = NetworkConfiguration.create(nodeID, bootstrapAddress);
                 boolean success = sc.connectNode(config);
+                //ips[1] = sc.node.getPeer().peerAddress().peerSocketAddress().toString().substring(2).split(",")[0];
+                ips[1] = ConnectMenu.getInternalIP(sc.node);
+                ips[0] = ConnectMenu.getExternalIP();
                if (success){
-                ci = new ConnectInfo(sc.node, ip, this.getBounds());
+                  System.out.println(Arrays.toString(ips));
+                ci = new ConnectInfo(sc.node, ips, this.getBounds());
                 ci.setVisible(true);
                 this.dispose();
                }
@@ -174,12 +190,15 @@ public class JoinNet extends javax.swing.JFrame {
 //            ConnectInternal cint = new ConnectInternal(sc.node, ip);
 //            cint.setVisible(true);
             //this.dispose();
+        } catch (IOException ex) {
+            Logger.getLogger(JoinNet.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void tinyButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tinyButtActionPerformed
-        JOptionPane.showMessageDialog(null,"Give either your IP or TinyP2P Mnemonic to a friend who wants to join your TinyNet.\nIf you wish to join a friend's TinyNet, ask them for their IP address or TinyP2P Mnemonic , and select \"Join a network\" from the main menu.");
+        Help h = new Help(this.getBounds(),ips);
+        h.setVisible(true);
     }//GEN-LAST:event_tinyButtActionPerformed
 
     public boolean validMne(String ip){
