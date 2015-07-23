@@ -37,11 +37,12 @@ public class ConnectInfo extends javax.swing.JFrame {
      * Creates new form ConnectInfo
      */
     private IH2HNode node;
-    String xip;
-    String iip;
+    private String xip;
+    private String iip;
+    private boolean err = false;
     
-   
-   // private boolean created; //flags whether the user has created or joined the network
+    
+    // private boolean created; //flags whether the user has created or joined the network
     // private String myIP;
     
     public ConnectInfo() {
@@ -54,16 +55,16 @@ public class ConnectInfo extends javax.swing.JFrame {
         this.iip = i[1];
         initComponents();
         this.setBounds(lwl);
-      //  this.created = cr;
+        //  this.created = cr;
     }
     
-     public ConnectInfo(IH2HNode n, String i, Rectangle lwl){
+    public ConnectInfo(IH2HNode n, String i, Rectangle lwl){
         this.node = n;
         this.xip = i;
-
+        
         initComponents();
         this.setBounds(lwl);
-      //  this.created = cr;
+        //  this.created = cr;
     }
     
     /**
@@ -81,8 +82,10 @@ public class ConnectInfo extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
+        help = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -102,10 +105,10 @@ public class ConnectInfo extends javax.swing.JFrame {
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 19, -1, -1));
 
         jLabel3.setText("Your IP address is: ");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 120, 127, 17));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 80, 127, 17));
 
         jLabel4.setText("Your TinyP2P Mnemonic is:");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 160, 170, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 120, 170, -1));
 
         jButton1.setText("OK");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -113,11 +116,11 @@ public class ConnectInfo extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 260, -1, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 160, -1, -1));
 
         jTextField1.setEditable(false);
         jTextField1.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 110, 135, 29));
+        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 80, 135, 20));
 
         jTextField2.setEditable(false);
         jTextField2.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
@@ -127,11 +130,7 @@ public class ConnectInfo extends javax.swing.JFrame {
                 jTextField2ActionPerformed(evt);
             }
         });
-        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 150, 135, 28));
-
-        jLabel8.setFont(new java.awt.Font("DejaVu Sans", 0, 9)); // NOI18N
-        jLabel8.setText("A TinyP2P mnemonic is an easy way to remember your IP");
-        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 190, 296, -1));
+        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 120, 135, 20));
 
         jButton2.setBackground(new java.awt.Color(204, 255, 204));
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tiny6.png"))); // NOI18N
@@ -142,6 +141,29 @@ public class ConnectInfo extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(448, 11, 42, -1));
+
+        help.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
+        help.setForeground(new java.awt.Color(0, 51, 204));
+        help.setText("  ?");
+        help.setToolTipText("A TinyP2P mnemonic is an easy way to remember your IP");
+        help.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 102, 51)));
+        getContentPane().add(help, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 120, 20, 20));
+
+        jLabel5.setText("If you are trying to connect with friends behind the same NAT");
+        jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel5MouseClicked(evt);
+            }
+        });
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 230, 350, -1));
+
+        jLabel6.setText("router as you, or are having problems connecting, click here");
+        jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel6MouseClicked(evt);
+            }
+        });
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 250, 330, -1));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bg1.png"))); // NOI18N
         jLabel2.setText("jLabel2");
@@ -162,6 +184,14 @@ public class ConnectInfo extends javax.swing.JFrame {
         this.dispose();
     }
     
+    private void toConnectInternal(){
+        err = true;
+        ConnectInternal ci = new ConnectInternal();
+        ci.setVisible(true);
+        this.dispose();
+    }
+    
+    
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
 //        if (created){
 //            jLabel2.setText("You have successfully created a TinyP2P network");
@@ -171,23 +201,33 @@ public class ConnectInfo extends javax.swing.JFrame {
 //        }
         // myIP = ConnectMenu.getExternalIP();
         // System.out.println(myIP);
-
+        
         jTextField1.setText(xip);
         jTextField2.setText(Mnemonics.getMnemonics(xip));
         
     }//GEN-LAST:event_formWindowOpened
-
+    
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       JOptionPane.showMessageDialog(null,"Give either your IP or TinyP2P Mnemonic to a friend who wants to join your TinyNet.\nIf you wish to join a friend's TinyNet, ask them for their IP address or TinyP2P Mnemonic , and select \"Join a network\" from the main menu.");
+        JOptionPane.showMessageDialog(null,"Give either your IP or TinyP2P Mnemonic to a friend who wants to join your TinyNet.\nIf you wish to join a friend's TinyNet, ask them for their IP address or TinyP2P Mnemonic , and select \"Join a network\" from the main menu.");
     }//GEN-LAST:event_jButton2ActionPerformed
-
+    
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
-
+    
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        toLogin();
+        if(!err){
+            toLogin();
+        }
     }//GEN-LAST:event_formWindowClosed
+    
+    private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
+        toConnectInternal();
+    }//GEN-LAST:event_jLabel5MouseClicked
+    
+    private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
+        toConnectInternal();
+    }//GEN-LAST:event_jLabel6MouseClicked
     
     /**
      * @param args the command line arguments
@@ -226,13 +266,15 @@ public class ConnectInfo extends javax.swing.JFrame {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel help;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables

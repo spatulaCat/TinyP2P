@@ -73,12 +73,13 @@ public class ConnectMenu extends javax.swing.JFrame {
 
         joinNet.setBackground(new java.awt.Color(255, 224, 193));
         joinNet.setText("Join a network");
+        joinNet.setMaximumSize(new java.awt.Dimension(131, 23));
         joinNet.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 joinNetActionPerformed(evt);
             }
         });
-        getContentPane().add(joinNet, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 230, 131, -1));
+        getContentPane().add(joinNet, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 230, 130, -1));
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tiny4.png"))); // NOI18N
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 70, -1, -1));
