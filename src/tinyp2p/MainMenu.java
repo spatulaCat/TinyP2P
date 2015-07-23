@@ -133,34 +133,34 @@ public class MainMenu extends javax.swing.JFrame {
         return userManager.isRegistered(userCredentials.getUserId());
     }
 //    
-//    public  void getUsers() {
-//        DefaultListModel lm = new DefaultListModel();
-//        online.setModel(lm);
-//        List<Map<Number160, PeerStatistic>> peerMapVerified = node.getPeer().peerBean().peerMap().peerMapVerified();
-//        for (Map<Number160, PeerStatistic>  m: peerMapVerified){
-//            
-//            for (Map.Entry<Number160, PeerStatistic> entry : m.entrySet())
-//            {
-//                PeerStatistic ps = entry.getValue();
-//                
-//                FutureGet futureGet = node.getPeer().get(ps.peerAddress().peerId()).start();
-//                
-//                futureGet.awaitUninterruptibly();
-//                
-//                //timer.scheduleAtFixedRate(refreshUsers, 0, 1000);
-//                
-//                try {
-//                    lm.addElement(futureGet.data().object());
-//                    online.setModel(lm);
-////
-//                } catch (ClassNotFoundException | IOException ex) {
-//                    
-//                }
-//                
-//            }
-//        }
-//       // online.updateUI();
-//    }
+    public  void getUsers() {
+        DefaultListModel lm = new DefaultListModel();
+        online.setModel(lm);
+        List<Map<Number160, PeerStatistic>> peerMapVerified = node.getPeer().peerBean().peerMap().peerMapVerified();
+        for (Map<Number160, PeerStatistic>  m: peerMapVerified){
+            
+            for (Map.Entry<Number160, PeerStatistic> entry : m.entrySet())
+            {
+                PeerStatistic ps = entry.getValue();
+                
+                FutureGet futureGet = node.getPeer().get(ps.peerAddress().peerId()).start();
+                
+                futureGet.awaitUninterruptibly();
+                
+                //timer.scheduleAtFixedRate(refreshUsers, 0, 1000);
+                
+                try {
+                    lm.addElement(futureGet.data().object());
+                    online.setModel(lm);
+//
+                } catch (ClassNotFoundException | IOException ex) {
+                    
+                }
+                
+            }
+        }
+       // online.updateUI();
+    }
     
     int debug = 0;
     
@@ -537,7 +537,7 @@ public class MainMenu extends javax.swing.JFrame {
     
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         
-       // getUsers();
+        getUsers();
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -603,36 +603,36 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JButton tinyButt;
     // End of variables declaration//GEN-END:variables
     
-//    DefaultMutableTreeNode addNodes(DefaultMutableTreeNode curTop, File dir) {
-//        String curPath = dir.getPath();
-//        DefaultMutableTreeNode curDir = new DefaultMutableTreeNode(curPath);
-//        if (curTop != null) { // should only be null at root
-//            curTop.add(curDir);
-//        }
-//        Vector ol = new Vector();
-//        String[] tmp = dir.list();
-//        for (String tmp1 : tmp) {
-//            ol.addElement(tmp1);
-//        }
-//        Collections.sort(ol, String.CASE_INSENSITIVE_ORDER);
-//        File f;
-//        Vector files = new Vector();
-//        // Make two passes, one for Dirs and one for Files. This is #1.
-//        for (int i = 0; i < ol.size(); i++) {
-//            String thisObject = (String) ol.elementAt(i);
-//            String newPath;
-//            if (curPath.equals("."))
-//                newPath = thisObject;
-//            else
-//                newPath = curPath + File.separator + thisObject;
-//            if ((f = new File(newPath)).isDirectory())
-//                addNodes(curDir, f);
-//            else
-//                files.addElement(thisObject);
-//        }
-//        // Pass two: for files.
-//        for (int fnum = 0; fnum < files.size(); fnum++)
-//            curDir.add(new DefaultMutableTreeNode(files.elementAt(fnum)));
-//        return curDir;
-//    }
+    DefaultMutableTreeNode addNodes(DefaultMutableTreeNode curTop, File dir) {
+        String curPath = dir.getPath();
+        DefaultMutableTreeNode curDir = new DefaultMutableTreeNode(curPath);
+        if (curTop != null) { // should only be null at root
+            curTop.add(curDir);
+        }
+        Vector ol = new Vector();
+        String[] tmp = dir.list();
+        for (String tmp1 : tmp) {
+            ol.addElement(tmp1);
+        }
+        Collections.sort(ol, String.CASE_INSENSITIVE_ORDER);
+        File f;
+        Vector files = new Vector();
+        // Make two passes, one for Dirs and one for Files. This is #1.
+        for (int i = 0; i < ol.size(); i++) {
+            String thisObject = (String) ol.elementAt(i);
+            String newPath;
+            if (curPath.equals("."))
+                newPath = thisObject;
+            else
+                newPath = curPath + File.separator + thisObject;
+            if ((f = new File(newPath)).isDirectory())
+                addNodes(curDir, f);
+            else
+                files.addElement(thisObject);
+        }
+        // Pass two: for files.
+        for (int fnum = 0; fnum < files.size(); fnum++)
+            curDir.add(new DefaultMutableTreeNode(files.elementAt(fnum)));
+        return curDir;
+    }
 }
