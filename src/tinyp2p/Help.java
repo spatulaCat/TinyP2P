@@ -46,8 +46,7 @@ public class Help extends javax.swing.JFrame {
         jTextPane1.setBorder(null);
         jTextPane1.setBackground(new Color(0, 0, 0, 0));
         this.setBounds(bounds);
-        
-        System.out.println(Arrays.toString(ips));
+   
         eip.setText(ips[0]);      
         emne.setText(Mnemonics.getMnemonics(ips[0]));
         iip.setText(ips[1]);

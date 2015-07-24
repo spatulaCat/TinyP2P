@@ -24,6 +24,7 @@
 package tinyp2p;
 
 import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -89,9 +90,9 @@ public class JoinNet extends javax.swing.JFrame {
         jLabel1.setText("TinyP2P");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 20, -1, 29));
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField1KeyPressed(evt);
             }
         });
         getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 170, 159, 25));
@@ -141,11 +142,7 @@ public class JoinNet extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-    
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
-    
+        
     
     private String createNodeID() {
         return UUID.randomUUID().toString();
@@ -200,6 +197,12 @@ public class JoinNet extends javax.swing.JFrame {
         Help h = new Help(this.getBounds(),ips);
         h.setVisible(true);
     }//GEN-LAST:event_tinyButtActionPerformed
+
+    private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
+        if (evt.getKeyCode()==KeyEvent.VK_ENTER){
+            jButton1.doClick();
+        }       
+    }//GEN-LAST:event_jTextField1KeyPressed
 
     public boolean validMne(String ip){
        if (ip == null || ip.isEmpty()) {

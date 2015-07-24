@@ -28,8 +28,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 // java.util.Timer;
 import javax.swing.DefaultListModel;
 import javax.swing.Timer;
@@ -162,9 +169,10 @@ public class MainMenu extends javax.swing.JFrame {
             DefaultListModel lm = new DefaultListModel();
             online.setModel(lm);
      
+            try{
              List<PeerAddress> peerMap = node.getPeer().peerBean().peerMap().all();
             
-             if (!peerMap.isEmpty()){
+           //  if (!peerMap.isEmpty()){
                  
              for (PeerAddress pa : peerMap){
                    
@@ -183,12 +191,10 @@ public class MainMenu extends javax.swing.JFrame {
                      futureGet.cancel();
              }
             online.setModel(lm);
-             }
-            
-            
-            
-            
-          
+            // }
+            }catch(NullPointerException e){ 
+                System.out.println("no peers found");
+            }  
         }
     }
     
@@ -247,11 +253,16 @@ public class MainMenu extends javax.swing.JFrame {
         jFrame1 = new javax.swing.JFrame();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         online = new javax.swing.JList();
         tinyButt = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
@@ -285,18 +296,6 @@ public class MainMenu extends javax.swing.JFrame {
         jLabel2.setText("Online users");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, -1, -1));
 
-        jButton2.setBackground(new java.awt.Color(255, 224, 193));
-        jButton2.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        jButton2.setText("Refresh");
-        jButton2.setBorder(null);
-        jButton2.setMargin(new java.awt.Insets(2, 10, 2, 10));
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 270, 40, 20));
-
         online.setBackground(new java.awt.Color(222, 255, 204));
         online.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "" };
@@ -328,6 +327,34 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
         getContentPane().add(tinyButt, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 0, 40, 40));
+
+        jTextField1.setText("jTextField1");
+        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 80, 200, -1));
+
+        jTextField2.setText("jTextField2");
+        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 130, 200, -1));
+
+        jLabel4.setText("message to send");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 60, -1, -1));
+
+        jLabel5.setText("User");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 110, -1, -1));
+
+        jButton1.setText("send");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 160, -1, -1));
+
+        jButton2.setText("rec");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 200, 60, -1));
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bg1.png"))); // NOI18N
         jLabel3.setText("jLabel3");
@@ -370,7 +397,7 @@ public class MainMenu extends javax.swing.JFrame {
         
         @Override
         public void done() {
-             jLabel1.setText("Welcome, "+ username+"!");
+             
         }
     };
     
@@ -412,93 +439,52 @@ public class MainMenu extends javax.swing.JFrame {
     };
     
     
+    SwingWorker listener = new SwingWorker<String, Void>() {
+        @Override
+        public String doInBackground() throws IOException {
+            ServerSocket serverSocket = new ServerSocket(15123);
+            Socket socket = serverSocket.accept();
+            
+            
+            return null;
+        }
+        @Override
+         public void done() {
+            
+         }
+    };
+    
+    
+    
+    
     
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         
-        // login();
-        loginWorker.execute();
-       // usersWorker.execute();
-        Timer tmr;
-        displayUsers du = new displayUsers();                      //set up timer
-        tmr = new javax.swing.Timer(2500, new displayUsers());
-        tmr.addActionListener(du);
-        tmr.setInitialDelay(0);
-        tmr.setRepeats(true);
-        tmr.start();   
-     
-//        int timerDelay = 1000; // 1000 msecs or 1 second
-//        Timer timer = new Timer(timerDelay, new ActionListener() {
-//            
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//               DefaultListModel lm = new DefaultListModel();
-//            online.setModel(lm);
-//            List<Map<Number160, PeerStatistic>> peerMapVerified = node.getPeer().peerBean().peerMap().peerMapVerified();
-//            for (Map<Number160, PeerStatistic>  m: peerMapVerified){
-//                
-//                for (Map.Entry<Number160, PeerStatistic> entry : m.entrySet())
-//                {
-//                    PeerStatistic ps = entry.getValue();
-//                    
-//                    FutureGet futureGet = node.getPeer().get(ps.peerAddress().peerId()).start();
-//                    
-//                    futureGet.awaitUninterruptibly();
-//                    
-//                    //timer.scheduleAtFixedRate(refreshUsers, 0, 1000);
-//                    
-//                    try {
-//                        lm.addElement(futureGet.data().object());
-//                        online.setModel(lm);
-////
-//                    } catch (ClassNotFoundException | IOException ex) {
-//                        
-//                    }
-//                    
-//                }
-//            }
-//            }
-//            
-//        });
-//        timer.setInitialDelay(0);
-//        timer.start();
-//
-//        
+       
+            // login();
+            loginWorker.execute();
+            jLabel1.setText("Welcome, "+ username+"!");
+            // usersWorker.execute();
+            
+            displayUsers du = new displayUsers();                      //set up timer
+            Timer tmr = new javax.swing.Timer(7000, du);
+            
+            tmr.addActionListener(du);
+            tmr.setInitialDelay(0);
+            tmr.setRepeats(true);
+            tmr.start();
+            
+            
+        try {
+            ServerSocket serverSocket = new ServerSocket(15123);
+            Socket socket = serverSocket.accept();
         
-//        Timer timer = new Timer();
-//        timer.scheduleAtFixedRate(usersWorker.execute(),0,300);
-        //getUsers();
-        //timer.scheduleAtFixedRate(refreshUsers, 0, 1000);
-        
-        //getUsers();
-//        File dir = ;
-//         JTree tree = new JTree(addNodes(null, dir));
-//         jPanel1.add(tree);
-//         jPanel1.setVisible(true);
-        
-//        JFrame frame = new JFrame("FileTree");
-//        Container cp = frame.getContentPane();
-//        cp.add(new FileTree(new File(".")));
-//        frame.pack();
-//        frame.setVisible(true);
-        
-        
-//        tree.addTreeSelectionListener(new TreeSelectionListener() {
-//      @Override
-//      public void valueChanged(TreeSelectionEvent e) {
-//        DefaultMutableTreeNode node = (DefaultMutableTreeNode) e
-//            .getPath().getLastPathComponent();
-//        System.out.println("You selected " + node);
-//      }
-//    });
-        
+        } catch (IOException ex) {
+            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+ 
     }//GEN-LAST:event_formWindowOpened
     
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        
-        getUsers();
-        
-    }//GEN-LAST:event_jButton2ActionPerformed
-
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
             shutdown();
             System.exit(0);
@@ -509,6 +495,58 @@ public class MainMenu extends javax.swing.JFrame {
        h.setVisible(true);
        
     }//GEN-LAST:event_tinyButtActionPerformed
+
+    public void sendToPort(String ip, String msg) throws IOException {
+        Socket socket = null;
+        OutputStreamWriter osw;
+        //String str = "Hello World";
+        try {
+            socket = new Socket(ip, 4014);
+            osw =new OutputStreamWriter(socket.getOutputStream(), "UTF-8");
+            osw.write(msg, 0, msg.length());
+             osw.flush();
+        } catch (IOException e) {
+            System.err.print(e);
+        } finally {
+            socket.close();
+        }
+
+}
+    
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String f = jTextField1.getText();
+       String user = jTextField2.getText();
+       
+        try {
+            sendToPort(f,user);
+             
+        } catch (IOException ex) {
+            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+//
+//      Socket socket = new Socket("ip address", 4014);
+//       //OutputStream outstream = socket .getOutputStream();
+//      // PrintWriter out = new PrintWriter(outstream);
+//       
+//       String toSend = "String to send";
+//       
+//       out.print(toSend );
+//       
+//     
+       
+               
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {
+            int bytesRead;
+            Socket socket = new Socket("146.231.133.148",15123);
+            InputStream is = socket.getInputStream();
+            // bytesRead = is.read(bytearray,0,bytearray.length);
+        } catch (IOException ex) {
+            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
     
     public void shutdown()  {
         if (node != null && node.isConnected()) {
@@ -552,13 +590,18 @@ public class MainMenu extends javax.swing.JFrame {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
     private javax.swing.JList online;
     private javax.swing.JButton tinyButt;
     // End of variables declaration//GEN-END:variables

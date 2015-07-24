@@ -157,7 +157,7 @@ public class ConnectMenu extends javax.swing.JFrame {
 //        System.out.println(parts[1]);
 //        
         
-        return thisIp.split("/")[1];
+        return parts[parts.length-1];
 
 //return node.getPeer().peerAddress().peerSocketAddress().toString().substring(2).split(",")[0];
     }
