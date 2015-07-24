@@ -23,27 +23,17 @@
 */
 package tinyp2p;
 
-import java.awt.Container;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import static java.lang.String.valueOf;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 // java.util.Timer;
-import java.util.TimerTask;
-import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.SwingWorker;
-import javax.swing.tree.DefaultMutableTreeNode;
 import net.tomp2p.dht.FutureGet;
 import net.tomp2p.dht.FuturePut;
 import net.tomp2p.dht.PutBuilder;
@@ -55,7 +45,6 @@ import util.ConsoleFileAgent;
 import org.hive2hive.core.api.interfaces.IH2HNode;
 import org.hive2hive.core.api.interfaces.IUserManager;
 import org.hive2hive.core.exceptions.NoPeerConnectionException;
-import org.hive2hive.core.exceptions.NoSessionException;
 import org.hive2hive.core.security.UserCredentials;
 import org.hive2hive.processframework.exceptions.InvalidProcessStateException;
 import org.hive2hive.processframework.exceptions.ProcessExecutionException;
@@ -70,18 +59,20 @@ public class MainMenu extends javax.swing.JFrame {
     private String password;
     private IH2HNode node;
     private UserCredentials userCredentials;
+    private String[] ips;
    // private DefaultListModel lm = new DefaultListModel();
     
-    int c = 1;
+    
     
     public MainMenu() {
         initComponents();
     }
     
-    public MainMenu(String User, String pw, IH2HNode node, Rectangle bounds) {
+    public MainMenu(String User, String pw, IH2HNode node, Rectangle bounds, String[] ips) {
         this.username = User;
         this.password = pw;
         this.node = node;
+        this.ips = ips;
         //online.setModel(lm);
         initComponents();
         this.setBounds(bounds);
@@ -147,8 +138,7 @@ public class MainMenu extends javax.swing.JFrame {
                 
                 futureGet.awaitUninterruptibly();
                 
-                //timer.scheduleAtFixedRate(refreshUsers, 0, 1000);
-                
+              
                 try {
                     lm.addElement(futureGet.data().object());
                     online.setModel(lm);
@@ -174,6 +164,8 @@ public class MainMenu extends javax.swing.JFrame {
      
              List<PeerAddress> peerMap = node.getPeer().peerBean().peerMap().all();
             
+             if (!peerMap.isEmpty()){
+                 
              for (PeerAddress pa : peerMap){
                    
                     FutureGet futureGet = node.getPeer().get(pa.peerId()).start();
@@ -191,46 +183,12 @@ public class MainMenu extends javax.swing.JFrame {
                      futureGet.cancel();
              }
             online.setModel(lm);
+             }
             
             
             
             
-           //  System.out.println("START" + debug);
-//            System.out.println(peerMapVerified.toString());
-//            System.out.println("END" + debug);
-//            System.out.println();
-            
-            
-            
-            //List<Map<Number160, PeerStatistic>> peerMapVerified = node.getPeer().peerBean().peerMap().peerMapVerified();
-           
-//           
-            
-//            for (Map<Number160, PeerStatistic>  m: peerMapVerified){
-//                
-//                for (Map.Entry<Number160, PeerStatistic> entry : m.entrySet())
-//                {
-//                    PeerStatistic ps = entry.getValue();
-//                    
-//                    FutureGet futureGet = node.getPeer().get(ps.peerAddress().peerId()).start();
-//                    
-//                    futureGet.awaitUninterruptibly();
-//                    
-//                    if (!futureGet.isEmpty()){
-//                        try {                           
-//                            lm.addElement(futureGet.data().object());
-//                            online.setModel(lm);
-//                        } catch (ClassNotFoundException | IOException ex) {
-//                        }
-//                    }
-//                     
-//                     futureGet.cancel();
-//                }
-//                online.setModel(lm);
-//            }
-            
-            // online.updateUI();
-            
+          
         }
     }
     
@@ -307,7 +265,7 @@ public class MainMenu extends javax.swing.JFrame {
             .addGap(0, 300, Short.MAX_VALUE)
         );
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(500, 300));
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -325,7 +283,7 @@ public class MainMenu extends javax.swing.JFrame {
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 10, 295, -1));
 
         jLabel2.setText("Online users");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, -1, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, -1, -1));
 
         jButton2.setBackground(new java.awt.Color(255, 224, 193));
         jButton2.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
@@ -337,7 +295,7 @@ public class MainMenu extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 270, 40, 20));
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 270, 40, 20));
 
         online.setBackground(new java.awt.Color(222, 255, 204));
         online.setModel(new javax.swing.AbstractListModel() {
@@ -547,7 +505,9 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosed
 
     private void tinyButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tinyButtActionPerformed
-        JOptionPane.showMessageDialog(null,"Give either your IP or TinyP2P Mnemonic to a friend who wants to join your TinyNet.\nIf you wish to join a friend's TinyNet, ask them for their IP address or TinyP2P Mnemonic , and select \"Join a network\" from the main menu.");
+        Help h = new Help(this.getBounds(),ips);
+       h.setVisible(true);
+       
     }//GEN-LAST:event_tinyButtActionPerformed
     
     public void shutdown()  {
@@ -603,36 +563,36 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JButton tinyButt;
     // End of variables declaration//GEN-END:variables
     
-    DefaultMutableTreeNode addNodes(DefaultMutableTreeNode curTop, File dir) {
-        String curPath = dir.getPath();
-        DefaultMutableTreeNode curDir = new DefaultMutableTreeNode(curPath);
-        if (curTop != null) { // should only be null at root
-            curTop.add(curDir);
-        }
-        Vector ol = new Vector();
-        String[] tmp = dir.list();
-        for (String tmp1 : tmp) {
-            ol.addElement(tmp1);
-        }
-        Collections.sort(ol, String.CASE_INSENSITIVE_ORDER);
-        File f;
-        Vector files = new Vector();
-        // Make two passes, one for Dirs and one for Files. This is #1.
-        for (int i = 0; i < ol.size(); i++) {
-            String thisObject = (String) ol.elementAt(i);
-            String newPath;
-            if (curPath.equals("."))
-                newPath = thisObject;
-            else
-                newPath = curPath + File.separator + thisObject;
-            if ((f = new File(newPath)).isDirectory())
-                addNodes(curDir, f);
-            else
-                files.addElement(thisObject);
-        }
-        // Pass two: for files.
-        for (int fnum = 0; fnum < files.size(); fnum++)
-            curDir.add(new DefaultMutableTreeNode(files.elementAt(fnum)));
-        return curDir;
-    }
+//    DefaultMutableTreeNode addNodes(DefaultMutableTreeNode curTop, File dir) {
+//        String curPath = dir.getPath();
+//        DefaultMutableTreeNode curDir = new DefaultMutableTreeNode(curPath);
+//        if (curTop != null) { // should only be null at root
+//            curTop.add(curDir);
+//        }
+//        Vector ol = new Vector();
+//        String[] tmp = dir.list();
+//        for (String tmp1 : tmp) {
+//            ol.addElement(tmp1);
+//        }
+//        Collections.sort(ol, String.CASE_INSENSITIVE_ORDER);
+//        File f;
+//        Vector files = new Vector();
+//        // Make two passes, one for Dirs and one for Files. This is #1.
+//        for (int i = 0; i < ol.size(); i++) {
+//            String thisObject = (String) ol.elementAt(i);
+//            String newPath;
+//            if (curPath.equals("."))
+//                newPath = thisObject;
+//            else
+//                newPath = curPath + File.separator + thisObject;
+//            if ((f = new File(newPath)).isDirectory())
+//                addNodes(curDir, f);
+//            else
+//                files.addElement(thisObject);
+//        }
+//        // Pass two: for files.
+//        for (int fnum = 0; fnum < files.size(); fnum++)
+//            curDir.add(new DefaultMutableTreeNode(files.elementAt(fnum)));
+//        return curDir;
+//    }
 }

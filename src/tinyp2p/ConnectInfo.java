@@ -37,8 +37,9 @@ public class ConnectInfo extends javax.swing.JFrame {
      * Creates new form ConnectInfo
      */
     private IH2HNode node;
-    private String xip;
-    private String iip;
+    String[] ips;
+//    private String xip;
+//    private String iip;
     private boolean err = false;
     
     
@@ -51,8 +52,9 @@ public class ConnectInfo extends javax.swing.JFrame {
     
     public ConnectInfo(IH2HNode n, String[] i, Rectangle lwl){
         this.node = n;
-        this.xip = i[0];
-        this.iip = i[1];
+        this.ips = i;
+//        this.xip = i[0];
+//        this.iip = i[1];
         initComponents();
         this.setBounds(lwl);
         tinyButt.setOpaque(false);
@@ -61,17 +63,17 @@ public class ConnectInfo extends javax.swing.JFrame {
         //  this.created = cr;
     }
     
-    public ConnectInfo(IH2HNode n, String i, Rectangle lwl){
-        this.node = n;
-        this.xip = i;
-        
-        initComponents();
-        this.setBounds(lwl);
-        tinyButt.setOpaque(false);
-        tinyButt.setContentAreaFilled(false); //to make the content area transparent
-        tinyButt.setBorderPainted(false);
-        //  this.created = cr;
-    }
+//    public ConnectInfo(IH2HNode n, String i, Rectangle lwl){
+//        this.node = n;
+//        this.xip = i;
+//        
+//        initComponents();
+//        this.setBounds(lwl);
+//        tinyButt.setOpaque(false);
+//        tinyButt.setContentAreaFilled(false); //to make the content area transparent
+//        tinyButt.setBorderPainted(false);
+//        //  this.created = cr;
+//    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -96,12 +98,9 @@ public class ConnectInfo extends javax.swing.JFrame {
         jLabel15 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosed(java.awt.event.WindowEvent evt) {
-                formWindowClosed(evt);
-            }
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
             }
@@ -210,14 +209,14 @@ public class ConnectInfo extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
     
     private void toLogin(){
-        LoginMenu lm = new LoginMenu(node,this.getBounds());
+        ChooseUsername lm = new ChooseUsername(node,this.getBounds(),ips);
         lm.setVisible(true);
         this.dispose();
     }
     
     private void toConnectInternal(){
         err = true;
-        ConnectInternal ci = new ConnectInternal(this.getBounds());
+        ConnectInternal ci = new ConnectInternal(this.getBounds(),ips);
         ci.setVisible(true);
         this.dispose();
     }
@@ -232,26 +231,25 @@ public class ConnectInfo extends javax.swing.JFrame {
 //        }
         // myIP = ConnectMenu.getExternalIP();
         // System.out.println(myIP);
-        
-        jTextField1.setText(iip);
-        jTextField2.setText(Mnemonics.getMnemonics(iip));
+        //
+//        if(ips[1] !=null){
+//            ips[1]   = node.getPeer().peerAddress().peerSocketAddress().toString().substring(2).split(",")[0];
+//        }
+       jTextField1.setText(ips[0]);
+        jTextField2.setText(Mnemonics.getMnemonics(ips[0]));
         
     }//GEN-LAST:event_formWindowOpened
     
     private void tinyButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tinyButtActionPerformed
-        JOptionPane.showMessageDialog(null,"Give either your IP or TinyP2P Mnemonic to a friend who wants to join your TinyNet.\nIf you wish to join a friend's TinyNet, ask them for their IP address or TinyP2P Mnemonic , and select \"Join a network\" from the main menu.");
+        Help h = new Help(this.getBounds(),ips);
+        h.setVisible(true);
+   
     }//GEN-LAST:event_tinyButtActionPerformed
     
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
     
-    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        if(!err){
-            toLogin();
-        }
-    }//GEN-LAST:event_formWindowClosed
-
     private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
         toConnectInternal();
     }//GEN-LAST:event_jLabel12MouseClicked
