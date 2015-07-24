@@ -150,7 +150,14 @@ public class ConnectMenu extends javax.swing.JFrame {
     public static String getInternalIP(org.hive2hive.core.api.interfaces.IH2HNode node) throws UnknownHostException{    
         InetAddress i =InetAddress.getLocalHost();
         String thisIp = ""+i;
-        return thisIp.substring(5, thisIp.length());
+        
+        String parts[] = thisIp.split("/");
+        
+//        System.out.println(thisIp);
+//        System.out.println(parts[1]);
+//        
+        
+        return thisIp.split("/")[1];
 
 //return node.getPeer().peerAddress().peerSocketAddress().toString().substring(2).split(",")[0];
     }
