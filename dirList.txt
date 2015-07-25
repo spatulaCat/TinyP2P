@@ -1,0 +1,2 @@
+C:\Users\(._.)\.ssh\github_rsa  1675 bytes
+C:\Users\(._.)\.ssh\github_rsa.pub  392 bytes

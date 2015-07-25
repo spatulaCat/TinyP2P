@@ -48,6 +48,7 @@ public class ChooseUsername extends javax.swing.JFrame {
         this.node = node;
         initComponents();
         this.setBounds(bounds);
+        this.setSize(500, 300);
         tinyButt.setOpaque(false);
         tinyButt.setContentAreaFilled(false); //to make the content area transparent
         tinyButt.setBorderPainted(false);

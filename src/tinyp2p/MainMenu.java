@@ -23,19 +23,32 @@
 */
 package tinyp2p;
 
+import java.awt.BorderLayout;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.JFileChooser;
+import javax.swing.JTree;
 import javax.swing.Timer;
 import javax.swing.SwingWorker;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
 import net.tomp2p.dht.FutureGet;
 import net.tomp2p.dht.FuturePut;
 import net.tomp2p.dht.PutBuilder;
@@ -43,6 +56,7 @@ import net.tomp2p.peers.Number160;
 import net.tomp2p.peers.PeerAddress;
 import net.tomp2p.peers.PeerStatistic;
 import net.tomp2p.storage.Data;
+import org.apache.commons.io.FileUtils;
 import util.ConsoleFileAgent;
 import org.hive2hive.core.api.interfaces.IH2HNode;
 import org.hive2hive.core.api.interfaces.IUserManager;
@@ -63,6 +77,8 @@ public class MainMenu extends javax.swing.JFrame {
     private UserCredentials userCredentials;
     private String[] ips;
     private DefaultListModel lm;
+    private BufferedWriter bw ;
+    private FileWriter fw ;
     
     public MainMenu() {
         initComponents();
@@ -122,7 +138,9 @@ public class MainMenu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jFrame1 = new javax.swing.JFrame();
+        jFileChooser = new javax.swing.JFrame();
+        fileChooser = new javax.swing.JFileChooser();
+        jScrollPane2 = new javax.swing.JScrollPane();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
@@ -135,21 +153,37 @@ public class MainMenu extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
+        jTextField3 = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
 
-        javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
-        jFrame1.getContentPane().setLayout(jFrame1Layout);
-        jFrame1Layout.setHorizontalGroup(
-            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+        jFileChooser.setPreferredSize(new java.awt.Dimension(500, 300));
+
+        fileChooser.setCurrentDirectory(new java.io.File("C:\\Users\\(._.)\\.ssh"));
+
+        javax.swing.GroupLayout jFileChooserLayout = new javax.swing.GroupLayout(jFileChooser.getContentPane());
+        jFileChooser.getContentPane().setLayout(jFileChooserLayout);
+        jFileChooserLayout.setHorizontalGroup(
+            jFileChooserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(fileChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
-        jFrame1Layout.setVerticalGroup(
-            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+        jFileChooserLayout.setVerticalGroup(
+            jFileChooserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jFileChooserLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(fileChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(500, 300));
+        setMaximumSize(new java.awt.Dimension(600, 383));
+        setMinimumSize(new java.awt.Dimension(600, 383));
+        setPreferredSize(new java.awt.Dimension(600, 383));
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
@@ -160,6 +194,9 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jScrollPane2.setOpaque(true);
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 60, 230, 240));
 
         jLabel1.setFont(new java.awt.Font("Aharoni", 1, 18)); // NOI18N
         jLabel1.setText("Welcome");
@@ -184,33 +221,32 @@ public class MainMenu extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 110, 200));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 110, 180));
 
         tinyButt.setBackground(new java.awt.Color(204, 255, 204));
         tinyButt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tiny7.png"))); // NOI18N
         tinyButt.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        tinyButt.setMargin(new java.awt.Insets(0, 0, 0, 0));
         tinyButt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tinyButtActionPerformed(evt);
             }
         });
-        getContentPane().add(tinyButt, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 0, 40, 40));
+        getContentPane().add(tinyButt, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 0, 40, 40));
 
         jTextField1.setText("jTextField1");
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 80, 200, -1));
+        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 240, 200, -1));
 
         jTextField2.setText("jTextField2");
-        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 130, 200, -1));
+        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 270, 200, -1));
 
-        jLabel4.setText("message to send");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 60, -1, -1));
+        jLabel4.setText("message ");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 250, -1, -1));
 
         jLabel5.setText("User");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 110, -1, -1));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 270, -1, -1));
 
         jButton1.setText("send");
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -223,7 +259,7 @@ public class MainMenu extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 160, -1, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 300, -1, -1));
 
         jButton2.setText("rec");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -231,11 +267,50 @@ public class MainMenu extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 200, 60, -1));
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 300, 60, -1));
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bg1.png"))); // NOI18N
-        jLabel3.setText("jLabel3");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 500, 300));
+        jTextField3.setText("jTextField3");
+        jTextField3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField3ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 210, 200, -1));
+
+        jLabel6.setText("dir");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 190, -1, -1));
+
+        jButton3.setText("choose");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 300, 70, -1));
+
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bg3.png"))); // NOI18N
+        jLabel7.setText("jLabel7");
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 0, 600, 360));
+
+        jMenuBar1.setBorder(null);
+        jMenuBar1.setOpaque(true);
+
+        jMenu1.setText("File");
+
+        jMenuItem1.setText("Change shared directory");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Edit");
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
 
         pack();
         setLocationRelativeTo(null);
@@ -383,10 +458,8 @@ public class MainMenu extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String f = jTextField1.getText();
         String user = jTextField2.getText();
-    
-         
-         
-         jTextField2.setText(lm.elementAt(online.getSelectedIndex()).toString());
+ 
+        jTextField2.setText(lm.elementAt(online.getSelectedIndex()).toString());
          
          
 //        try {
@@ -423,6 +496,91 @@ public class MainMenu extends javax.swing.JFrame {
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
      
     }//GEN-LAST:event_jButton1MouseClicked
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        try {
+            String dir = getDir();
+            jTextField3.setText(dir);
+            File f = new File(dir);
+     
+            JTree tree = new JTree(addNodes(null,  f));
+            
+            tree.addTreeSelectionListener((TreeSelectionEvent e) -> {
+                DefaultMutableTreeNode node1 = (DefaultMutableTreeNode) e
+                        .getPath().getLastPathComponent();
+                System.out.println("You selected " + node1);
+            });
+            
+            jScrollPane2.getViewport().add(tree);
+           // add(BorderLayout.CENTER, jScrollPane2);
+            
+        } catch (IOException | NullPointerException ex) {
+            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField3ActionPerformed
+   
+ 
+     
+    public void makeFile(String dir) throws IOException{
+        File dirList = new File("dirList.txt");
+        fw = new FileWriter(dirList.getAbsoluteFile());
+        bw = new BufferedWriter(fw);
+        if (!dirList.exists()) {
+            dirList.createNewFile();
+        } 
+        printStuff(dir);
+        bw.close();
+    }
+    
+    public String getFileName(String path){
+        String[] parts = path.split("\\\\");
+        return parts[parts.length - 1];
+    }
+
+    public void printStuff(String dir) throws IOException{
+        File folder = new File(dir);
+            File[] listOfFiles = folder.listFiles();
+           
+            for (File f : listOfFiles){
+//                if(f.getName().substring(0, 1).equalsIgnoreCase(".")){
+//                    continue;
+//                }
+                if(f.isFile()){
+                   // String name = getFileName(f.toString());
+                    bw.write(f.toString() +"  "+ f.length() + " bytes");
+                    bw.newLine();
+                }
+                else {
+                    bw.write(f.toString());
+                    bw.newLine();
+                    printStuff(f.toString());
+                }
+            }       
+        bw.flush();        
+    }
+    
+    
+    public String getDir() throws IOException{
+        String dir="";
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int returnVal = fileChooser.showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            dir =  fileChooser.getSelectedFile().getAbsolutePath();     
+        }
+        makeFile(dir);
+        return dir;
+    }
+    
     
     public void shutdown()  {
         if (node != null && node.isConnected()) {
@@ -452,8 +610,6 @@ public class MainMenu extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
         
-        //</editor-fold>
-        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
@@ -466,52 +622,61 @@ public class MainMenu extends javax.swing.JFrame {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JFileChooser fileChooser;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JFrame jFrame1;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JFrame jFileChooser;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
     private javax.swing.JList online;
     private javax.swing.JButton tinyButt;
     // End of variables declaration//GEN-END:variables
     
-//    DefaultMutableTreeNode addNodes(DefaultMutableTreeNode curTop, File dir) {
-//        String curPath = dir.getPath();
-//        DefaultMutableTreeNode curDir = new DefaultMutableTreeNode(curPath);
-//        if (curTop != null) { // should only be null at root
-//            curTop.add(curDir);
-//        }
-//        Vector ol = new Vector();
-//        String[] tmp = dir.list();
-//        for (String tmp1 : tmp) {
-//            ol.addElement(tmp1);
-//        }
-//        Collections.sort(ol, String.CASE_INSENSITIVE_ORDER);
-//        File f;
-//        Vector files = new Vector();
-//        // Make two passes, one for Dirs and one for Files. This is #1.
-//        for (int i = 0; i < ol.size(); i++) {
-//            String thisObject = (String) ol.elementAt(i);
-//            String newPath;
-//            if (curPath.equals("."))
-//                newPath = thisObject;
-//            else
-//                newPath = curPath + File.separator + thisObject;
-//            if ((f = new File(newPath)).isDirectory())
-//                addNodes(curDir, f);
-//            else
-//                files.addElement(thisObject);
-//        }
-//        // Pass two: for files.
-//        for (int fnum = 0; fnum < files.size(); fnum++)
-//            curDir.add(new DefaultMutableTreeNode(files.elementAt(fnum)));
-//        return curDir;
-//    }
+    private DefaultMutableTreeNode addNodes(DefaultMutableTreeNode curTop, File dir) {
+        String curPath = dir.getPath();
+        DefaultMutableTreeNode curDir = new DefaultMutableTreeNode(curPath);
+        if (curTop != null) { // should only be null at root
+            curTop.add(curDir);
+        }
+        Vector ol = new Vector();
+        String[] tmp = dir.list();
+        for (String tmp1 : tmp) {
+            ol.addElement(tmp1);
+        }
+        Collections.sort(ol, String.CASE_INSENSITIVE_ORDER);
+        File f;
+        Vector files = new Vector();
+        // Make two passes, one for Dirs and one for Files. This is #1.
+        for (int i = 0; i < ol.size(); i++) {
+            String thisObject = (String) ol.elementAt(i);
+            String newPath;
+            if (curPath.equals("."))
+                newPath = thisObject;
+            else
+                newPath = curPath + File.separator + thisObject;
+            if ((f = new File(newPath)).isDirectory())
+                addNodes(curDir, f);
+            else
+                files.addElement(thisObject);
+        }
+        // Pass two: for files.
+        for (int fnum = 0; fnum < files.size(); fnum++)
+            curDir.add(new DefaultMutableTreeNode(files.elementAt(fnum)));
+        return curDir;
+    }
 }

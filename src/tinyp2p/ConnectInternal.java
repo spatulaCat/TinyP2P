@@ -46,6 +46,7 @@ public class ConnectInternal extends javax.swing.JFrame {
         this.ips = ips;
         initComponents();
         this.setBounds(bounds);
+        this.setSize(504, 321);
         tinyButt.setOpaque(false);
         tinyButt.setContentAreaFilled(false); //to make the content area transparent
         tinyButt.setBorderPainted(false);
