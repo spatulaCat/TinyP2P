@@ -132,7 +132,6 @@ public class ChooseUsername extends javax.swing.JFrame {
     private void tinyButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tinyButtActionPerformed
         Help h = new Help(this.getBounds(),ips);
         h.setVisible(true);
-
     }//GEN-LAST:event_tinyButtActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened

@@ -85,7 +85,7 @@ public class JoinNet extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Aharoni", 1, 24)); // NOI18N
         jLabel1.setText("TinyP2P");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 20, -1, 29));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 30, -1, 29));
 
         jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -94,11 +94,11 @@ public class JoinNet extends javax.swing.JFrame {
         });
         getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 170, 159, 25));
 
-        jLabel3.setText("Enter the IP address or TinyP2P mnemonic of anyone ");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 110, 300, -1));
+        jLabel3.setText("Enter the TinyP2P mnemonic of anyone currently");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 110, 300, -1));
 
-        jLabel4.setText("currently connected to the TinyNet you wish to join");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 130, 280, -1));
+        jLabel4.setText(" connected to the TinyNet you wish to join");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 130, 260, -1));
 
         jButton1.setBackground(new java.awt.Color(255, 224, 193));
         jButton1.setText("Join");
@@ -108,7 +108,7 @@ public class JoinNet extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 230, -1, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 230, -1, -1));
 
         jLabel6.setFont(new java.awt.Font("Aharoni", 0, 12)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(153, 0, 0));
@@ -119,7 +119,7 @@ public class JoinNet extends javax.swing.JFrame {
         help.setText(" ? ");
         help.setToolTipText("A TinyP2P mnemonic is an easy way to remember your IP");
         help.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 102, 51)));
-        getContentPane().add(help, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 130, -1, -1));
+        getContentPane().add(help, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 130, -1, -1));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bg1.png"))); // NOI18N
         jLabel2.setText("jLabel2");
@@ -154,9 +154,8 @@ public class JoinNet extends javax.swing.JFrame {
                 boolean success = sc.connectNode(config);            
                 ips[1] = ConnectMenu.getInternalIP(sc.node);
                 ips[0] = ConnectMenu.getExternalIP();
-               if (success){
-                  System.out.println(Arrays.toString(ips));
-                ci = new ConnectInfo(sc.node, ips, this.getBounds());
+               if (success){      
+                ci = new ConnectInfo(sc.node, ips, this.getBounds(),false);
                 ci.setVisible(true);
                 this.dispose();
                }

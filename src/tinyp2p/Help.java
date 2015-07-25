@@ -143,7 +143,7 @@ public class Help extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 560, -1, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 520, -1, -1));
 
         emne.setEditable(false);
         emne.setFont(new java.awt.Font("Courier New", 0, 10)); // NOI18N

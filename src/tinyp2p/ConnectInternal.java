@@ -78,6 +78,7 @@ public class ConnectInternal extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -123,7 +124,7 @@ public class ConnectInternal extends javax.swing.JFrame {
         });
         getContentPane().add(tinyButt, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 0, 40, 40));
 
-        jLabel6.setText("internal IP address.");
+        jLabel6.setText("them with your internal Mnemonic.");
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, -1, -1));
 
         help.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
@@ -131,9 +132,9 @@ public class ConnectInternal extends javax.swing.JFrame {
         help.setText(" ? ");
         help.setToolTipText("<html>Some routers do network address translation (NAT).  </br>Your external IP is what is seen by the outside world, your internal IP is used to identify you among others in your network.</html>");
         help.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 102, 51)));
-        getContentPane().add(help, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 80, -1, -1));
+        getContentPane().add(help, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 80, -1, -1));
 
-        jLabel8.setText("If you are behind the same NAT router, you need to provide your peer with your");
+        jLabel8.setText("If you are behind the same NAT router as your peer, you need to provide");
         getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 60, -1, -1));
 
         jLabel2.setText("even if your internet connection is down. ");
@@ -146,6 +147,9 @@ public class ConnectInternal extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Aharoni", 1, 24)); // NOI18N
         jLabel7.setText("TinyP2P");
         getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 20, -1, 29));
+
+        jLabel1.setText("Click on the cat for help.");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 80, 180, -1));
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bg1.png"))); // NOI18N
         jLabel9.setText("jLabel9");
@@ -160,8 +164,8 @@ public class ConnectInternal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-       jTextField1.setText(ips[1]);
-       jLabel10.setText(Mnemonics.getMnemonics(ips[1]));
+       jTextField1.setText(Mnemonics.getMnemonics(ips[1]));
+       jLabel10.setText(ips[1]);
     }//GEN-LAST:event_formWindowOpened
 
     private void tinyButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tinyButtActionPerformed
@@ -209,6 +213,7 @@ public class ConnectInternal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel help;
     private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;

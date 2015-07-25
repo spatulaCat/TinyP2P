@@ -26,14 +26,16 @@ import org.hive2hive.core.api.configs.NetworkConfiguration;
 
 public class ConnectMenu extends javax.swing.JFrame {
     
-    private setupConnection sc = new setupConnection();
-    private String[] ips = new String[2];
+    private final setupConnection sc;
+    private final String[] ips;
     
     /**
      * Creates new form ConnectMenu
      */
     
     public ConnectMenu() {
+        this.ips = new String[2];
+        this.sc = new setupConnection();
         initComponents();   
     }
     
@@ -77,7 +79,7 @@ public class ConnectMenu extends javax.swing.JFrame {
         joinNet.setBackground(new java.awt.Color(255, 224, 193));
         joinNet.setText("Join a TinyNet");
         joinNet.setBorder(null);
-        joinNet.setMargin(new java.awt.Insets(4, 14, 4, 14));
+        joinNet.setMargin(new java.awt.Insets(4, 12, 4, 12));
         joinNet.setMaximumSize(new java.awt.Dimension(131, 23));
         joinNet.setMinimumSize(new java.awt.Dimension(131, 23));
         joinNet.setPreferredSize(new java.awt.Dimension(131, 25));
@@ -116,12 +118,8 @@ public class ConnectMenu extends javax.swing.JFrame {
             Logger.getLogger(ConnectMenu.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        ConnectInfo ci = new ConnectInfo(sc.node, ips, this.getBounds());
-       
-        ci.setVisible(true);
-        
-        
-        
+        ConnectInfo ci = new ConnectInfo(sc.node, ips, this.getBounds(),true);     
+        ci.setVisible(true); 
         this.dispose();
     }//GEN-LAST:event_createNetActionPerformed
     
@@ -144,20 +142,11 @@ public class ConnectMenu extends javax.swing.JFrame {
     
     public static String getInternalIP(org.hive2hive.core.api.interfaces.IH2HNode node) throws UnknownHostException{    
         InetAddress i =InetAddress.getLocalHost();
-        String thisIp = ""+i;
-        
+        String thisIp = ""+i;       
         String parts[] = thisIp.split("/");
-        
-//        System.out.println(thisIp);
-//        System.out.println(parts[1]);
-//        
-        
         return parts[parts.length-1];
-
-//return node.getPeer().peerAddress().peerSocketAddress().toString().substring(2).split(",")[0];
     }
     
-//    //queries whatismyipaddress.com for external IP
     public static String getExternalIP() throws IOException{
         String generate_URL1 = "http://bot.whatismyipaddress.com/";
         String generate_URL2 = "http://checkip.amazonaws.com/";
@@ -172,31 +161,7 @@ public class ConnectMenu extends javax.swing.JFrame {
         else if (!QueryIPServer(generate_URL3).equalsIgnoreCase("F")){
             return QueryIPServer(generate_URL3);
         }
-        
         else{return "F";}
-//
-//
-//        String ip ="";
-//
-//        try {
-//
-//            URL data = new URL(generate_URL3);
-//
-//            HttpURLConnection con = (HttpURLConnection) data.openConnection();
-//
-//            if(con.getContentLength() == -1){
-//                return "F";
-//            }
-//
-//
-//
-//            try (BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
-//                ip= in.readLine();
-//            }
-//            con.disconnect();
-//        } catch (Exception e) {
-//        }
-//        return ip;
     }
 //
 //     public String getInternalIP(){
@@ -255,79 +220,16 @@ public class ConnectMenu extends javax.swing.JFrame {
     }
     
     private void joinNetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinNetActionPerformed
-       
         JoinNet jn = new JoinNet(this.getBounds(),ips);
         jn.setVisible(true);
         this.dispose();
-        //        try {
-        //            String nodeID = createNodeID();
-        //            String inet = JOptionPane.showInputDialog("Enter the IP address of anyone currently connected:");
-        //            InetAddress bootstrapAddress = InetAddress.getByName(inet);
-        //            buildNode();
-        //            NetworkConfiguration config = NetworkConfiguration.create(nodeID, bootstrapAddress);
-        //            connectNode(config);
-        //        } catch (UnknownHostException e) {
-        //            JOptionPane.showMessageDialog(null, e, "Error", JOptionPane.ERROR_MESSAGE);
-        //        }
     }//GEN-LAST:event_joinNetActionPerformed
-    
-    
-//    private void connectNode(NetworkConfiguration networkConfig) {
-//        if (node.connect(networkConfig)) {
-//            node.getFileManager().subscribeFileEvents(new FileEventListener(node.getFileManager()));
-//
-//            if ( config.getBoolean("Relay.enabled")) {
-//                String authenticationKey = config.getString("Relay.GCM.api-key");
-//                long bufferAge = config.getDuration("Relay.GCM.buffer-age-limit", TimeUnit.MILLISECONDS);
-//
-//                MessageBufferConfiguration bufferConfiguration = new MessageBufferConfiguration().bufferAgeLimit(bufferAge);
-//                AndroidRelayServerConfig androidServer = new AndroidRelayServerConfig(authenticationKey, 5,
-//                        bufferConfiguration);
-//                BufferedTCPRelayServerConfig tcpServer = new BufferedTCPRelayServerConfig(bufferConfiguration);
-//
-//                new PeerBuilderNAT(node.getPeer().peer()).addRelayServerConfiguration(RelayType.ANDROID, androidServer)
-//                        .addRelayServerConfiguration(RelayType.BUFFERED_OPENTCP, tcpServer).start();
-//            }
-//            //toLogin();
-//        } else {
-//            JOptionPane.showMessageDialog(null, "Network connection could not be established.", "Error", JOptionPane.ERROR_MESSAGE);
-//        }
-//
-//    }
-//
-//
-//
-//
-//    private void buildNode() {
-//        IFileConfiguration fileConfig = FileConfiguration.createCustom(maxFileSize, maxNumOfVersions, maxSizeAllVersions,
-//                chunkSize);
-//        IH2HSerialize serializer;
-//        if ("java".equalsIgnoreCase(config.getString("Serializer.mode"))) {
-//            serializer = new JavaSerializer();
-//        } else {
-//            serializer = new FSTSerializer(config.getBoolean("Serializer.FST.unsafe"), new BCSecurityClassProvider());
-//        }
-//        fileConfiguration = fileConfig;
-//        node = H2HNode.createNode(fileConfig, new H2HDefaultEncryption(serializer), serializer);
-//
-//    }
-//
     
     //creates a random node ID
     private String createNodeID() {
         return UUID.randomUUID().toString();
     }
-    
-    public void shutdown() {
-         if (sc.node != null && sc.node.isConnected()) {
-            sc.node.disconnect();
-        }
-    }
-    
-    public IH2HNode getNode(){
-        return sc.node;
-    }
-    
+
     /**
      * @param args the command line arguments
      */

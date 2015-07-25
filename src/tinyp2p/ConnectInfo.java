@@ -42,13 +42,13 @@ public class ConnectInfo extends javax.swing.JFrame {
    // private boolean err = false;
     private boolean NATDetected;
     
-    // private boolean created; //flags whether the user has created or joined the network
+    //private boolean created; //flags whether the user has created or joined the network
 
     public ConnectInfo() {
         initComponents();
     }
     
-    public ConnectInfo(IH2HNode n, String[] i, Rectangle lwl){
+    public ConnectInfo(IH2HNode n, String[] i, Rectangle lwl, boolean cr){
         this.node = n;
         this.ips = i;
         initComponents();
@@ -62,8 +62,15 @@ public class ConnectInfo extends javax.swing.JFrame {
         
         jLabel9.setVisible(NATDetected);
         jLabel6.setVisible(NATDetected);
-
-        //  this.created = cr;
+        jLabel10.setVisible(false);
+     
+        jLabel7.setVisible(!cr);
+        jLabel11.setVisible(cr);
+//        if(!cr){
+//          jLabel7.setVisible(true);
+//          jLabel11.setVisible(false);
+//        }
+//       
     }
     
     /**
@@ -87,6 +94,8 @@ public class ConnectInfo extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -148,28 +157,30 @@ public class ConnectInfo extends javax.swing.JFrame {
         getContentPane().add(tinyButt, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 0, 40, 40));
 
         jLabel5.setText("Give this to a peer who wants to join your TinyNet to begin sharing");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 180, 360, -1));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 170, 360, -1));
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel7.setText("You have created a new TinyNet!");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 60, -1, -1));
+        jLabel7.setText("You have joined aTinyNet!");
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 60, -1, -1));
 
         jLabel8.setFont(new java.awt.Font("Courier New", 0, 9)); // NOI18N
         jLabel8.setText("jLabel8");
-        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 140, 100, 10));
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 140, 170, 10));
 
         jLabel9.setBackground(new java.awt.Color(255, 102, 0));
-        jLabel9.setForeground(new java.awt.Color(209, 89, 89));
+        jLabel9.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(204, 0, 0));
         jLabel9.setText("You may be behind a NAT router. Click here to connect with peers who are on ");
         jLabel9.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel9MouseClicked(evt);
             }
         });
-        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 220, 430, -1));
+        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, 440, -1));
 
         jLabel6.setBackground(new java.awt.Color(255, 102, 0));
-        jLabel6.setForeground(new java.awt.Color(209, 89, 89));
+        jLabel6.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(204, 0, 0));
         jLabel6.setText("the same local (LAN) network");
         jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -177,6 +188,20 @@ public class ConnectInfo extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 240, 220, -1));
+
+        jLabel10.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 0, 51));
+        jLabel10.setText("No internet connection. Please click here to connect with peers on your LAN");
+        jLabel10.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel10MouseClicked(evt);
+            }
+        });
+        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 170, 430, -1));
+
+        jLabel11.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel11.setText("You have created a new TinyNet!");
+        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 60, -1, -1));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bg1.png"))); // NOI18N
         jLabel2.setText("jLabel2");
@@ -212,9 +237,25 @@ public class ConnectInfo extends javax.swing.JFrame {
 //        else{
 //            jLabel2.setText("You have successfully joined a TinyP2P network");
 //        }
-
-        jLabel8.setText(ips[0]);
-        jTextField2.setText(Mnemonics.getMnemonics(ips[0]));
+        
+       
+        if(!ips[0].equalsIgnoreCase("F")){
+            jTextField2.setText(Mnemonics.getMnemonics(ips[0]));       
+        }else{ 
+            ips[0] = "No Internet Connection";
+            jLabel10.setVisible(true);
+            //jTextField2.setText("No Internet Connection");
+            
+            jLabel3.setVisible(false);
+            jLabel5.setVisible(false);
+            jLabel9.setVisible(false);
+            jLabel6.setVisible(false);
+            
+        }
+         jLabel8.setText(ips[0]);
+        
+        
+       
         
     }//GEN-LAST:event_formWindowOpened
     
@@ -231,6 +272,10 @@ public class ConnectInfo extends javax.swing.JFrame {
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         toConnectInternal();
     }//GEN-LAST:event_jLabel6MouseClicked
+
+    private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
+       toConnectInternal();
+    }//GEN-LAST:event_jLabel10MouseClicked
                 
     /**
      * @param args the command line arguments
@@ -273,6 +318,8 @@ public class ConnectInfo extends javax.swing.JFrame {
     private javax.swing.JLabel help;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
