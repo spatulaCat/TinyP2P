@@ -25,15 +25,13 @@ package tinyp2p;
 
 import java.util.Arrays;
 
-
 /**
  *
  * @author Nicky
  */
 public class Mnemonics {
-
     
-     private static String[] words = {"zip", "ace",
+     public static String[] words = {"zip", "ace",
             "two",
             "add",
             "age",
@@ -224,7 +222,7 @@ public class Mnemonics {
             "put",
             "rag",
             "ran",
-            "rat",
+            "lol",
             "raw",
             "red",
             "rid",
@@ -323,7 +321,6 @@ public class Mnemonics {
         for (int elem: ipparts){
             ip = ip + elem+".";       
         }     
- 
         return ip.substring(0,ip.length()-1);
     }
     
@@ -331,4 +328,5 @@ public class Mnemonics {
 //        System.out.println(getMnemonics("127.0.0.1"));
 //        
 //    }
+    
 }

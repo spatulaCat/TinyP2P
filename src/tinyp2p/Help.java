@@ -7,7 +7,6 @@ package tinyp2p;
 
 import java.awt.Color;
 import java.awt.Rectangle;
-import java.util.Arrays;
 
 /**
  *
@@ -17,25 +16,13 @@ public class Help extends javax.swing.JFrame {
 
     /**
      * Creates new form Help
-     * @param bounds
      */
-    
-   private String[] ips;
 
     public Help() {
          initComponents();
-       
-//        jScrollPane2.setOpaque(false);
-//        jScrollPane2.getViewport().setOpaque(false);
-//        jScrollPane2.setBorder(null);
-//        jScrollPane2.setViewportBorder(null);
-//        
-//        jTextPane1.setBorder(null);
-//        jTextPane1.setBackground(new Color(0, 0, 0, 0));
     }
     
     public Help(Rectangle bounds, String[] ips) {
-        this.ips = ips;
         initComponents();
 
         jScrollPane2.setOpaque(false);
@@ -43,16 +30,31 @@ public class Help extends javax.swing.JFrame {
         jScrollPane2.setBorder(null);
         jScrollPane2.setViewportBorder(null);
         
+        jScrollPane3.setOpaque(false);
+        jScrollPane3.getViewport().setOpaque(false);
+        jScrollPane3.setBorder(null);
+        jScrollPane3.setViewportBorder(null);
+        
+        jScrollPane4.setOpaque(false);
+        jScrollPane4.getViewport().setOpaque(false);
+        jScrollPane4.setBorder(null);
+        jScrollPane4.setViewportBorder(null);
+        
         jTextPane1.setBorder(null);
         jTextPane1.setBackground(new Color(0, 0, 0, 0));
+      
+        jTextPane2.setBorder(null);
+        jTextPane2.setBackground(new Color(0, 0, 0, 0));
+        
+        jTextPane3.setBorder(null);
+        jTextPane3.setBackground(new Color(0, 0, 0, 0));
+       
         this.setBounds(bounds);
-   
+        
         eip.setText(ips[0]);      
         emne.setText(Mnemonics.getMnemonics(ips[0]));
         iip.setText(ips[1]);
         imne.setText(Mnemonics.getMnemonics(ips[1]));
-        
-        
     }
     
     
@@ -65,62 +67,73 @@ public class Help extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel11 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTextPane2 = new javax.swing.JTextPane();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextPane1 = new javax.swing.JTextPane();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTextPane3 = new javax.swing.JTextPane();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        eip = new javax.swing.JLabel();
-        emne = new javax.swing.JLabel();
-        iip = new javax.swing.JLabel();
-        imne = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        emne = new javax.swing.JTextField();
+        imne = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        iip = new javax.swing.JLabel();
+        eip = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(250, 250));
-        setMinimumSize(new java.awt.Dimension(250, 250));
-        setPreferredSize(new java.awt.Dimension(250, 250));
+        setMaximumSize(new java.awt.Dimension(500, 600));
+        setMinimumSize(new java.awt.Dimension(500, 600));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jLabel11.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel11.setText("LAN");
+        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 320, 50, -1));
+
+        jLabel13.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel13.setText("NAT");
+        getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 210, 50, -1));
+
+        jTextPane2.setEditable(false);
+        jTextPane2.setBorder(null);
+        jTextPane2.setText("You can still connect with peers on your local (LAN) network, even  if your internet connection is down. Just provide them with your internal mnemonic.");
+        jTextPane2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jScrollPane3.setViewportView(jTextPane2);
+
+        getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 340, 400, 60));
+
         jTextPane1.setEditable(false);
         jTextPane1.setBorder(null);
-        jTextPane1.setText("Give either your IP or TinyP2P Mnemonic to a friend who wants to join your TinyNet. If you wish to join a friend's TinyNet, ask them for their IP address or TinyP2P Mnemonic , and select \"Join a network\" from the main menu.");
+        jTextPane1.setText("Your TinyP2P Mnemonic is a 4-word key that make it easier to communicate your IP address to peers who want to join your TinyNet.\nIf you want to join a peer's TinyNet, you need their Mnemonic. However, real IP addresses work the same way in TinyP2P as a Mnemonic so feel free to use them if you wish. ");
         jTextPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jScrollPane2.setViewportView(jTextPane1);
 
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, 440, 50));
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 110, 400, 110));
 
-        jLabel3.setText("Mnemonic:");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 130, -1, -1));
+        jTextPane3.setEditable(false);
+        jTextPane3.setBorder(null);
+        jTextPane3.setText("Some routers do network address translation (NAT).  This means that your internal IP address may be different from the IP address that is seen by the world beyond your local network. If you are behind the same NAT router as your peer, you need to provide them with your internal IP address or TinyP2P mnemonic.\n");
+        jTextPane3.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jScrollPane4.setViewportView(jTextPane3);
 
-        jLabel4.setText("Internal IP address:");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 110, -1, -1));
+        getContentPane().add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 230, 400, 110));
 
-        jLabel2.setText("External IP addresss:");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, 130, -1));
+        jLabel3.setText("Internal Mnemonic:");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 460, 140, -1));
 
-        jLabel5.setText("Mnemonic:");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 80, -1, -1));
+        jLabel5.setText("External Mnemonic:");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 420, 130, -1));
 
         jLabel7.setFont(new java.awt.Font("Aharoni", 1, 24)); // NOI18N
-        jLabel7.setText("TinyP2P halp!");
+        jLabel7.setText("TinyP2P Help");
         getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 20, -1, 29));
-
-        eip.setText("extip");
-        getContentPane().add(eip, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 60, 140, -1));
-
-        emne.setText("jLabel8");
-        getContentPane().add(emne, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 80, 140, -1));
-
-        iip.setText("jLabel9");
-        getContentPane().add(iip, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 110, 140, -1));
-
-        imne.setText("jLabel10");
-        getContentPane().add(imne, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 130, 140, -1));
 
         jButton1.setBackground(new java.awt.Color(255, 224, 193));
         jButton1.setText("OK");
@@ -130,11 +143,38 @@ public class Help extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 250, -1, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 560, -1, -1));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bg1.png"))); // NOI18N
+        emne.setEditable(false);
+        emne.setFont(new java.awt.Font("Courier New", 0, 10)); // NOI18N
+        emne.setText("jTextField2");
+        emne.setPreferredSize(new java.awt.Dimension(59, 23));
+        getContentPane().add(emne, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 420, 130, -1));
+
+        imne.setEditable(false);
+        imne.setFont(new java.awt.Font("Courier New", 0, 10)); // NOI18N
+        imne.setText("jTextField4");
+        imne.setPreferredSize(new java.awt.Dimension(59, 23));
+        getContentPane().add(imne, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 460, 130, -1));
+
+        jLabel12.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel12.setText("Mnemonics");
+        getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 90, 120, -1));
+
+        iip.setFont(new java.awt.Font("Courier New", 0, 10)); // NOI18N
+        iip.setText("jLabel6");
+        getContentPane().add(iip, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 480, 100, -1));
+
+        eip.setFont(new java.awt.Font("Courier New", 0, 10)); // NOI18N
+        eip.setText("jLabel8");
+        getContentPane().add(eip, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 440, 110, -1));
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tiny5.png"))); // NOI18N
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 50, -1, -1));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bg2.png"))); // NOI18N
         jLabel1.setText("jLabel1");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 500, 300));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 500, 600));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -174,26 +214,30 @@ public class Help extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
             
-                new Help().setVisible(true);
-                
-                
+                new Help().setVisible(true); 
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel eip;
-    private javax.swing.JLabel emne;
+    private javax.swing.JTextField emne;
     private javax.swing.JLabel iip;
-    private javax.swing.JLabel imne;
+    private javax.swing.JTextField imne;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTextPane jTextPane1;
+    private javax.swing.JTextPane jTextPane2;
+    private javax.swing.JTextPane jTextPane3;
     // End of variables declaration//GEN-END:variables
 }

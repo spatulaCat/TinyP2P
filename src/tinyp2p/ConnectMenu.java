@@ -13,31 +13,28 @@ import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
-import java.util.Arrays;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.hive2hive.core.api.interfaces.IH2HNode;
 import org.hive2hive.core.api.configs.NetworkConfiguration;
 
-
 /**
  *
  * @author Nicky
  */
+
 public class ConnectMenu extends javax.swing.JFrame {
     
-    setupConnection sc = new setupConnection();
-    String[] ips = new String[2];
-    //Rectangle bounds;
+    private setupConnection sc = new setupConnection();
+    private String[] ips = new String[2];
+    
     /**
      * Creates new form ConnectMenu
      */
+    
     public ConnectMenu() {
-        initComponents();
-        
-        
-        //this.config = ConfigFactory.load("client.conf");
+        initComponents();   
     }
     
     /**
@@ -105,9 +102,7 @@ public class ConnectMenu extends javax.swing.JFrame {
     private void createNetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createNetActionPerformed
         sc.buildNode();
         sc.connectNode(NetworkConfiguration.createInitial(createNodeID()));
-        
-        
-        
+          
         try {
             String myExIP;
             myExIP = getExternalIP();
@@ -324,7 +319,9 @@ public class ConnectMenu extends javax.swing.JFrame {
     }
     
     public void shutdown() {
-        sc.shutdown();
+         if (sc.node != null && sc.node.isConnected()) {
+            sc.node.disconnect();
+        }
     }
     
     public IH2HNode getNode(){

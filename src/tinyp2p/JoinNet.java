@@ -39,29 +39,27 @@ import org.hive2hive.core.api.configs.NetworkConfiguration;
  *
  * @author Nicky
  */
+
 public class JoinNet extends javax.swing.JFrame {
-    public String ip;
-    setupConnection sc = new setupConnection();
-    ConnectInfo ci;
-    String[] ips;
+    private setupConnection sc;
+    private ConnectInfo ci;
+    private String[] ips;
+    
     /**
      * Creates new form JoinNet
      * @param bounds
      * @param ips
      */
     public JoinNet(Rectangle bounds, String[] ips) {      
+        this.sc = new setupConnection();
         this.ips = ips;
         initComponents();  
         this.setBounds(bounds);
-        tinyButt.setOpaque(false);
-        tinyButt.setContentAreaFilled(false); //to make the content area transparent
-        tinyButt.setBorderPainted(false);
-      
     }
     
      public JoinNet() {      
-        initComponents();
-       
+        this.sc = new setupConnection();
+        initComponents();    
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -78,7 +76,6 @@ public class JoinNet extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
-        tinyButt = new javax.swing.JButton();
         help = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
@@ -117,17 +114,6 @@ public class JoinNet extends javax.swing.JFrame {
         jLabel6.setForeground(new java.awt.Color(153, 0, 0));
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 190, 330, 20));
 
-        tinyButt.setBackground(new java.awt.Color(204, 255, 204));
-        tinyButt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tiny7.png"))); // NOI18N
-        tinyButt.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        tinyButt.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        tinyButt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tinyButtActionPerformed(evt);
-            }
-        });
-        getContentPane().add(tinyButt, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 0, 40, 40));
-
         help.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
         help.setForeground(new java.awt.Color(0, 51, 204));
         help.setText(" ? ");
@@ -152,23 +138,20 @@ public class JoinNet extends javax.swing.JFrame {
         try {
             String nodeID = createNodeID();
             String inet = jTextField1.getText();        
-            
-          
+                    
             if (inet.equalsIgnoreCase("localhost") || inet.equalsIgnoreCase("")){
                 inet = "127.0.0.1";
             }
            
             if(validMne(inet)){
-                inet = Mnemonics.getIP(inet);
-             
+                inet = Mnemonics.getIP(inet);             
             }
-            ip = inet;
+           
             if(ConnectMenu.validIP(inet)){
                 InetAddress bootstrapAddress = InetAddress.getByName(inet);
                 sc.buildNode();             
                 NetworkConfiguration config = NetworkConfiguration.create(nodeID, bootstrapAddress);
-                boolean success = sc.connectNode(config);
-                //ips[1] = sc.node.getPeer().peerAddress().peerSocketAddress().toString().substring(2).split(",")[0];
+                boolean success = sc.connectNode(config);            
                 ips[1] = ConnectMenu.getInternalIP(sc.node);
                 ips[0] = ConnectMenu.getExternalIP();
                if (success){
@@ -177,26 +160,16 @@ public class JoinNet extends javax.swing.JFrame {
                 ci.setVisible(true);
                 this.dispose();
                }
-
             }
             else{
                 jLabel6.setText("Please enter a valid IP Address or TinyP2P Mnemonic");
             }
         } catch (UnknownHostException e) {
             JOptionPane.showMessageDialog(null, e, "Error", JOptionPane.ERROR_MESSAGE);
-//            ConnectInternal cint = new ConnectInternal(sc.node, ip);
-//            cint.setVisible(true);
-            //this.dispose();
         } catch (IOException ex) {
             Logger.getLogger(JoinNet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void tinyButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tinyButtActionPerformed
-        Help h = new Help(this.getBounds(),ips);
-        h.setVisible(true);
-    }//GEN-LAST:event_tinyButtActionPerformed
 
     private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
         if (evt.getKeyCode()==KeyEvent.VK_ENTER){
@@ -221,34 +194,6 @@ public class JoinNet extends javax.swing.JFrame {
             }
         return !ip.endsWith(".");
     }
-        
-    
-//    public static boolean validIP (String ip) {
-//    try {
-//        if (ip == null || ip.isEmpty()) {
-//            return false;
-//        }
-//
-//        String[] parts = ip.split( "\\." );
-//        if ( parts.length != 4 ) {
-//            return false;
-//        }
-//
-//        for ( String s : parts ) {
-//            int i = Integer.parseInt( s );
-//            if ( (i < 0) || (i > 255) ) {
-//                return false;
-//            }
-//        }
-//        if(ip.endsWith(".")) {
-//                return false;
-//        }
-//
-//        return true;
-//    } catch (NumberFormatException nfe) {
-//        return false;
-//    }
-//    }
     
     /**
      * @param args the command line arguments
@@ -295,6 +240,5 @@ public class JoinNet extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JButton tinyButt;
     // End of variables declaration//GEN-END:variables
 }

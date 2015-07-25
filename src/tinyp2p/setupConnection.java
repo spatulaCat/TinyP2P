@@ -46,8 +46,6 @@ import org.hive2hive.core.serializer.FSTSerializer;
 import org.hive2hive.core.serializer.IH2HSerialize;
 import org.hive2hive.core.serializer.JavaSerializer;
 
-
-
 /**
  *
  * @author Nicky
@@ -59,25 +57,19 @@ public class setupConnection {
     private final int maxNumOfVersions = H2HConstants.DEFAULT_MAX_NUM_OF_VERSIONS;
     private final BigInteger maxSizeAllVersions = H2HConstants.DEFAULT_MAX_SIZE_OF_ALL_VERSIONS;
     private final int chunkSize = H2HConstants.DEFAULT_CHUNK_SIZE;
-    private  IFileConfiguration fileConfiguration;
+    private  IFileConfiguration fileConfig;
     
     protected final Config config;
     
     public setupConnection(){
         this.config = ConfigFactory.load("client.conf");
-  
     }
-       
-//    public setupConnection(IH2HNode n){
-//        this.config = ConfigFactory.load("client.conf");
-//        this.node = n;
-  //  }
     
      public boolean connectNode(NetworkConfiguration networkConfig) {
         if (node.connect(networkConfig)) {
             node.getFileManager().subscribeFileEvents(new FileEventListener(node.getFileManager()));
             
-            if ( config.getBoolean("Relay.enabled")) {
+            if (config.getBoolean("Relay.enabled")) {
                 String authenticationKey = config.getString("Relay.GCM.api-key");
                 long bufferAge = config.getDuration("Relay.GCM.buffer-age-limit", TimeUnit.MILLISECONDS);
                 
@@ -91,21 +83,14 @@ public class setupConnection {
             }
             return true;
         } else {
-            JOptionPane.showMessageDialog(null, "Network connection could not be established. \n1. Ensure that IP address or mnemonic are correct\n2. Check your internet connection", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Network connection could not be established. \n1. Ensure that Mnemonic or IP address is correct\n2. Check your connection", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         
     }
-     
-   public void shutdown() {
-        if (node != null && node.isConnected()) {
-            node.disconnect();
-        }
-    }
     
-     
       public void buildNode() {
-        IFileConfiguration fileConfig = FileConfiguration.createCustom(maxFileSize, maxNumOfVersions, maxSizeAllVersions,
+        fileConfig = FileConfiguration.createCustom(maxFileSize, maxNumOfVersions, maxSizeAllVersions,
                 chunkSize);
         IH2HSerialize serializer;  
         if ("java".equalsIgnoreCase(config.getString("Serializer.mode"))) {
@@ -113,10 +98,6 @@ public class setupConnection {
         } else {
             serializer = new FSTSerializer(config.getBoolean("Serializer.FST.unsafe"), new BCSecurityClassProvider());
         }
-        fileConfiguration = fileConfig;
         node = H2HNode.createNode(fileConfig, new H2HDefaultEncryption(serializer), serializer);
-        
     }
-    
-    
 }

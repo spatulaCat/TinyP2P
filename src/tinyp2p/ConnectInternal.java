@@ -24,8 +24,6 @@
 package tinyp2p;
 
 import java.awt.Rectangle;
-import java.util.Arrays;
-import javax.swing.JOptionPane;
 import org.hive2hive.core.api.interfaces.IH2HNode;
 
 /**
@@ -35,6 +33,7 @@ import org.hive2hive.core.api.interfaces.IH2HNode;
 public class ConnectInternal extends javax.swing.JFrame {
     private String[] ips;
     private IH2HNode node;
+    
     /**
      * Creates new form ConnectInternal
      */
@@ -52,23 +51,7 @@ public class ConnectInternal extends javax.swing.JFrame {
         tinyButt.setBorderPainted(false);
     }
     
-    public ConnectInternal(IH2HNode n, String[] ips) {
-        this.ips = ips;
-        this.node = n;
-        initComponents();
-        tinyButt.setOpaque(false);
-        tinyButt.setContentAreaFilled(false); //to make the content area transparent
-        tinyButt.setBorderPainted(false);
-    }
-      
-//        public ConnectInternal(IH2HNode n, String i, Rectangle bounds) {
-//          this.ip = i;
-//          this.node = n;
-//        initComponents();
-//        this.setBounds(bounds);
-//    }
-      
-          private void toLogin(){
+     private void toLogin(){
         ChooseUsername lm = new ChooseUsername(node,this.getBounds(),ips);
         lm.setVisible(true);
         this.dispose();
@@ -83,20 +66,19 @@ public class ConnectInternal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         tinyButt = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         help = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -107,26 +89,19 @@ public class ConnectInternal extends javax.swing.JFrame {
         });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Aharoni", 1, 24)); // NOI18N
-        jLabel1.setText("TinyP2P");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 20, 110, 40));
+        jLabel15.setFont(new java.awt.Font("Tahoma", 0, 8)); // NOI18N
+        jLabel15.setText("IP:");
+        getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 220, 20, 10));
 
         jLabel3.setText("With this address you can still connect with peers on your local (LAN) network, ");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 120, -1, -1));
 
-        jLabel4.setText("Your internal IP address:");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 180, -1, -1));
-
-        jLabel5.setText("  Mnemonic: ");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 220, 110, -1));
+        jLabel5.setText("Internal Mnemonic: ");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 200, 150, -1));
 
         jTextField1.setEditable(false);
         jTextField1.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 170, 140, 30));
-
-        jTextField2.setEditable(false);
-        jTextField2.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
-        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 210, 140, 30));
+        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 190, 140, 30));
 
         jButton1.setBackground(new java.awt.Color(255, 224, 193));
         jButton1.setText("OK");
@@ -136,12 +111,11 @@ public class ConnectInternal extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 250, -1, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 250, 70, 30));
 
         tinyButt.setBackground(new java.awt.Color(204, 255, 204));
         tinyButt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tiny7.png"))); // NOI18N
         tinyButt.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        tinyButt.setMargin(new java.awt.Insets(0, 0, 0, 0));
         tinyButt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tinyButtActionPerformed(evt);
@@ -165,13 +139,17 @@ public class ConnectInternal extends javax.swing.JFrame {
         jLabel2.setText("even if your internet connection is down. ");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, -1, -1));
 
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bg1.png"))); // NOI18N
-        jLabel9.setText("jLabel9");
-        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 500, 300));
+        jLabel10.setFont(new java.awt.Font("Courier New", 0, 9)); // NOI18N
+        jLabel10.setText("jLabel8");
+        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 220, 100, 10));
 
         jLabel7.setFont(new java.awt.Font("Aharoni", 1, 24)); // NOI18N
         jLabel7.setText("TinyP2P");
         getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 20, -1, 29));
+
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bg1.png"))); // NOI18N
+        jLabel9.setText("jLabel9");
+        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 500, 300));
 
         pack();
         setLocationRelativeTo(null);
@@ -182,10 +160,8 @@ public class ConnectInternal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-//       ips[1] = node.getPeer().peerAddress().peerSocketAddress().toString().substring(2).split(",")[0];
-//      System.out.println("S"+Arrays.toString(ips));
        jTextField1.setText(ips[1]);
-       jTextField2.setText(Mnemonics.getMnemonics(ips[1]));
+       jLabel10.setText(Mnemonics.getMnemonics(ips[1]));
     }//GEN-LAST:event_formWindowOpened
 
     private void tinyButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tinyButtActionPerformed
@@ -196,6 +172,7 @@ public class ConnectInternal extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -232,17 +209,16 @@ public class ConnectInternal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel help;
     private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JButton tinyButt;
     // End of variables declaration//GEN-END:variables
 }
