@@ -127,7 +127,6 @@ public class ConnectInfo extends javax.swing.JFrame {
         jButton1.setMargin(new java.awt.Insets(4, 14, 4, 14));
         jButton1.setMaximumSize(new java.awt.Dimension(65, 32));
         jButton1.setMinimumSize(new java.awt.Dimension(65, 32));
-        jButton1.setOpaque(false);
         jButton1.setPreferredSize(new java.awt.Dimension(65, 32));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

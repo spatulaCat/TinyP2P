@@ -27,13 +27,20 @@ import java.awt.BorderLayout;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -49,6 +56,7 @@ import javax.swing.SwingWorker;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeModel;
 import net.tomp2p.dht.FutureGet;
 import net.tomp2p.dht.FuturePut;
 import net.tomp2p.dht.PutBuilder;
@@ -56,7 +64,7 @@ import net.tomp2p.peers.Number160;
 import net.tomp2p.peers.PeerAddress;
 import net.tomp2p.peers.PeerStatistic;
 import net.tomp2p.storage.Data;
-import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import util.ConsoleFileAgent;
 import org.hive2hive.core.api.interfaces.IH2HNode;
 import org.hive2hive.core.api.interfaces.IUserManager;
@@ -81,10 +89,12 @@ public class MainMenu extends javax.swing.JFrame {
     private FileWriter fw ;
     
     public MainMenu() {
+     //   this.br = new BufferedReader(new FileReader("dirList.txt"));
         initComponents();
     }
     
     public MainMenu(String User, String pw, IH2HNode node, Rectangle bounds, String[] ips) {
+      
         this.username = User;
         this.password = pw;
         this.node = node;
@@ -128,6 +138,7 @@ public class MainMenu extends javax.swing.JFrame {
                     }                    
                      futureGet.cancel();
              }
+             
             online.setModel(lm);
             }catch(NullPointerException e){            
             }  
@@ -161,8 +172,6 @@ public class MainMenu extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
-
-        jFileChooser.setPreferredSize(new java.awt.Dimension(500, 300));
 
         fileChooser.setCurrentDirectory(new java.io.File("C:\\Users\\(._.)\\.ssh"));
 
@@ -496,22 +505,79 @@ public class MainMenu extends javax.swing.JFrame {
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
      
     }//GEN-LAST:event_jButton1MouseClicked
-
+     String chosenDir;
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         try {
-            String dir = getDir();
-            jTextField3.setText(dir);
-            File f = new File(dir);
-     
-            JTree tree = new JTree(addNodes(null,  f));
+            // chosenDir = getDir();
+             chosenDir = "C:\\Users\\(._.)\\Documents\\TinyP2P";
+             makeFile(chosenDir);  
+            jTextField3.setText(chosenDir);
             
-            tree.addTreeSelectionListener((TreeSelectionEvent e) -> {
-                DefaultMutableTreeNode node1 = (DefaultMutableTreeNode) e
-                        .getPath().getLastPathComponent();
-                System.out.println("You selected " + node1);
-            });
+            File dirList = new File("dirList.txt");
+            List<String> lines =IOUtils.readLines(new FileInputStream(dirList));
             
-            jScrollPane2.getViewport().add(tree);
+          // Tree2 t = new Tree2();
+            
+             JTree k = new JTree(lines.toArray(new String[lines.size()]));
+            JTree j = new JTree(lines.toArray(new String[lines.size()]));
+            k.add(j);
+            jScrollPane2.getViewport().add(k);
+            
+//             MyTree<String> forest = new MyTree<String>("forest");
+//            
+//             MyTree<String> current = forest;
+//             
+//             for (String tree : lines) {
+//                 MyTree<String> root = current;
+//                 
+//                 for (String data : tree.split("\\\\")) {
+//                     current = current.child(data);
+//                 }
+//                 
+//                 current = root;
+//             }
+//             System.out.println(current.toString());
+            
+             
+             
+             
+           //  JTree j = new JTree(forest);
+             
+             
+//            MXMTree tree = new MXMTree(new MXMNode("root", "root"));
+//            for (String data : lines) {
+//                tree.addElement(data);
+//            }
+//            
+//            tree.printTree();
+//            JTree j = new JTree(tree);
+//            
+//            jScrollPane2.getViewport().add(tree);
+//           // populateArrayFromFile();
+//            
+//            
+//          
+            
+           // File f = new File(dir);
+            
+           
+//            DefaultMutableTreeNode parent = new DefaultMutableTreeNode("This is parent node.");
+//            DefaultMutableTreeNode child = new DefaultMutableTreeNode("This is child node.");
+//            DefaultMutableTreeNode child1 = new DefaultMutableTreeNode("This is child node.");
+//            parent.add(child);
+//            child.add(child1);
+            
+            
+           // JTree tree = new JTree(null, addNodes);
+           // jScrollPane2.getViewport().add(tree);
+//            
+//            tree.addTreeSelectionListener((TreeSelectionEvent e) -> {
+//                DefaultMutableTreeNode node1 = (DefaultMutableTreeNode) e
+//                        .getPath().getLastPathComponent();
+//                System.out.println("You selected " + node1);
+//            });
+//            
+//            jScrollPane2.getViewport().add(tree);
            // add(BorderLayout.CENTER, jScrollPane2);
             
         } catch (IOException | NullPointerException ex) {
@@ -540,27 +606,192 @@ public class MainMenu extends javax.swing.JFrame {
         } 
         printStuff(dir);
         bw.close();
+        fw.close();
     }
     
-    public String getFileName(String path){
+    public String getFileNameOnly(String path){
         String[] parts = path.split("\\\\");
         return parts[parts.length - 1];
     }
+    List<String> lines ;
+    BufferedReader br;
+    
+    public void populateArrayFromFile() throws FileNotFoundException, IOException{
+        lines = IOUtils.readLines(new FileInputStream("dirList.txt"));
+        File dirList = new File("dirList.txt");
+       // br = new BufferedReader(new FileReader(dirList.getAbsoluteFile()));
+       
+        List<String> lines =IOUtils.readLines(new FileInputStream(dirList));
+
+      //  String[] myDirs;
+        ArrayList<ArrayList> myDirs = new ArrayList<> ();
+        
+        for (String line : lines){
+            ArrayList<String> thisDir = new ArrayList<> (Arrays.asList(line.split("\\\\")));
+            myDirs.add(thisDir);
+        }
+        
+        for(ArrayList d : myDirs){
+            
+        }
+        
+        System.out.println(myDirs.toString());
+        
+        
+//        DefaultMutableTreeNode parent = new DefaultMutableTreeNode("This is parent node.");
+//        parent.
+        
+//       JTree tree = new JTree(); 
+//       
+//        for(ArrayList d : myDirs){
+//                tree.add(d);
+//        }
+////       JTree  tree1  new JTree(tree);
+////       
+////       JTree tree = new JTree(myDirs.toArray()); 
+//       jScrollPane2.getViewport().add(tree);
+    }
+   
+//     private DefaultMutableTreeNode addNodes2(DefaultMutableTreeNode curTop, String dir) throws IOException {
+//        String curPath = dir;
+//        
+//        DefaultMutableTreeNode curDir = new DefaultMutableTreeNode(curPath);
+//        
+//        if (curTop != null) { // should only be null at root
+//            curTop.add(curDir);
+//        }
+//        Vector ol = new Vector();
+//       // List<String> lines = IOUtils.readLines(new FileInputStream("dirList.txt"));
+//        //String[] tmp = dir.list();
+//        
+////        for (String tmp1 : lines) {
+////            ol.addElement(tmp1);
+////        }
+////        Collections.sort(ol, String.CASE_INSENSITIVE_ORDER);
+//        File f;
+//        Vector files = new Vector();
+//        // Make two passes, one for Dirs and one for Files. This is #1.
+//       // for (int i = 0; i < ol.size(); i++) {
+////            String thisObject = (String) ol.elementAt(i);
+////            String newPath;
+//           //if (curPath.equals("."))
+//              //  newPath = thisObject;
+//            
+//            if (curPath.substring(0,3).equals("[D]"))
+//                addNodes2(curDir, br.readLine());
+//            else
+//                files.addElement(curPath);
+//    //   }
+//        // Pass two: for files.
+////        for (int fnum = 0; fnum < files.size(); fnum++)
+////            curDir.add(new DefaultMutableTreeNode(files.elementAt(fnum)));
+//        return curDir;
+//    }
+         
+         
+         
+         
+//        DefaultMutableTreeNode parent = new DefaultMutableTreeNode("This is parent node.");
+//            DefaultMutableTreeNode child = new DefaultMutableTreeNode("This is child node.");
+//            
+//////            DefaultMutableTreeNode child1 = new DefaultMutableTreeNode("This is child node.");
+//            parent.add(child);
+////            child.add(child1);
+//         
+//        
+//          for (String line : lines){
+//               if(line.substring(0,3).equals("[F]")){  
+//                   DefaultMutableTreeNode child = new DefaultMutableTreeNode(line);
+//               }
+//               else{
+//                   
+//               }
+//         }
+      
+        //addToTree(parent);
+         
+  //  }
+    
+//    public DefaultMutableTreeNode recursionSucks(DefaultMutableTreeNode d){
+//      
+//        for (String line : lines){
+//               if(line.substring(0,3).equals("[F]")){  
+//                   DefaultMutableTreeNode child = new DefaultMutableTreeNode(line);
+//               }
+//               else{
+//                   
+//               }
+//         }
+//        
+//    }
+    
+    
+    
+  //  JTree tree = new JTree();
+//    BufferedReader br;
+//     DefaultMutableTreeNode dmt ;
+//      List<String> lines ;
+//    DefaultListModel newlm ;
+//     public void printFile(String dir) throws FileNotFoundException, IOException {
+//          File dirList = new File("dirList.txt");
+//          br = new BufferedReader(new FileReader(dirList.getAbsoluteFile()));
+//          File folder = new File(dir);
+//          
+//          
+//          
+//           
+//
+//         
+//          newlm =  new DefaultListModel();
+//         dmt = new DefaultMutableTreeNode(chosenDir);
+//          
+//         lines = IOUtils.readLines(new FileInputStream(dir));
+//         JTree tree1 = new JTree(addToTree(dmt));
+//          br.close();
+//           jScrollPane2.getViewport().add(tree1);
+//            
+//     }
+//    
+//   
+//    
+//        public DefaultMutableTreeNode addToTree(DefaultMutableTreeNode d) throws IOException{
+//             DefaultMutableTreeNode sdfs =null;
+//            for (String line : lines){
+//                
+//                System.out.println(line.substring(0,3));
+//                
+//                if(line.substring(0,3).equals("[F]")){        
+//                   newlm.addElement(line.substring(0,3));
+//                   
+//                    //dmt.add(pt.substring(0,3));
+//                   // dmt.add(dmt);
+//                   
+//                }
+//                else{
+//                    sdfs = new DefaultMutableTreeNode(line.substring(0,3));
+//                    newlm.addElement(addToTree(sdfs));
+//                    
+//               
+//                  //  DefaultListModel dd = new DefaultListModel();
+//                   // dd.
+//                    //dd.addElement(pt.substring(0,3));
+//                }
+//            } 
+//       return sdfs;     
+//    }
 
     public void printStuff(String dir) throws IOException{
         File folder = new File(dir);
             File[] listOfFiles = folder.listFiles();
            
             for (File f : listOfFiles){
-//                if(f.getName().substring(0, 1).equalsIgnoreCase(".")){
-//                    continue;
-//                }
                 if(f.isFile()){
-                   // String name = getFileName(f.toString());
-                    bw.write(f.toString() +"  "+ f.length() + " bytes");
+                  //  bw.write("[F]" + f.toString() +" |"+ f.length());
+                    bw.write(f.toString());
                     bw.newLine();
                 }
                 else {
+                 //  bw.write("[D]" + f.toString() );
                     bw.write(f.toString());
                     bw.newLine();
                     printStuff(f.toString());
@@ -577,8 +808,8 @@ public class MainMenu extends javax.swing.JFrame {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             dir =  fileChooser.getSelectedFile().getAbsolutePath();     
         }
-        makeFile(dir);
         return dir;
+        
     }
     
     
@@ -679,4 +910,6 @@ public class MainMenu extends javax.swing.JFrame {
             curDir.add(new DefaultMutableTreeNode(files.elementAt(fnum)));
         return curDir;
     }
+    
+    
 }
