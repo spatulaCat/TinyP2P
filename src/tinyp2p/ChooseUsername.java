@@ -48,7 +48,7 @@ public class ChooseUsername extends javax.swing.JFrame {
         this.node = node;
         initComponents();
         this.setBounds(bounds);
-        this.setSize(500, 300);
+        this.setSize(340, 245);
         tinyButt.setOpaque(false);
         tinyButt.setContentAreaFilled(false); //to make the content area transparent
         tinyButt.setBorderPainted(false);
@@ -73,6 +73,9 @@ public class ChooseUsername extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(340, 245));
+        setMinimumSize(new java.awt.Dimension(340, 245));
+        setPreferredSize(new java.awt.Dimension(344, 256));
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
@@ -83,24 +86,24 @@ public class ChooseUsername extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Aharoni", 1, 24)); // NOI18N
         jLabel1.setText("TinyP2P");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 30, -1, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 20, -1, -1));
 
         jLabel2.setText("Choose a display name");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 120, -1, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 90, -1, -1));
 
         jTextField1.setText("Username");
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 140, 115, -1));
+        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 110, 115, -1));
 
         jButton1.setBackground(new java.awt.Color(255, 224, 193));
         jButton1.setText("Login");
         jButton1.setBorder(null);
-        jButton1.setMargin(new java.awt.Insets(1, 10, 1, 10));
+        jButton1.setMargin(new java.awt.Insets(1, 1, 1, 1));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 210, 50, 30));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 180, 70, 30));
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 225, -1, -1));
 
         tinyButt.setBackground(new java.awt.Color(204, 255, 204));
@@ -111,11 +114,11 @@ public class ChooseUsername extends javax.swing.JFrame {
                 tinyButtActionPerformed(evt);
             }
         });
-        getContentPane().add(tinyButt, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 0, 40, 40));
+        getContentPane().add(tinyButt, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 0, 40, 40));
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bg1.png"))); // NOI18N
         jLabel4.setText("jLabel4");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 500, 300));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 340, 250));
 
         pack();
         setLocationRelativeTo(null);

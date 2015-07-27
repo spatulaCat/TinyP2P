@@ -46,7 +46,7 @@ public class ConnectInternal extends javax.swing.JFrame {
         this.ips = ips;
         initComponents();
         this.setBounds(bounds);
-        this.setSize(504, 321);
+        //this.setSize(504, 321);
         tinyButt.setOpaque(false);
         tinyButt.setContentAreaFilled(false); //to make the content area transparent
         tinyButt.setBorderPainted(false);
@@ -93,17 +93,17 @@ public class ConnectInternal extends javax.swing.JFrame {
 
         jLabel15.setFont(new java.awt.Font("Tahoma", 0, 8)); // NOI18N
         jLabel15.setText("IP:");
-        getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 220, 20, 10));
+        getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 270, 20, 10));
 
         jLabel3.setText("With this address you can still connect with peers on your local (LAN) network, ");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 120, -1, -1));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 180, -1, -1));
 
         jLabel5.setText("Internal Mnemonic: ");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 200, 150, -1));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 250, 150, -1));
 
         jTextField1.setEditable(false);
         jTextField1.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 190, 140, 30));
+        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 240, 140, 30));
 
         jButton1.setBackground(new java.awt.Color(255, 224, 193));
         jButton1.setText("OK");
@@ -113,7 +113,7 @@ public class ConnectInternal extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 250, 70, 30));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 310, 70, 30));
 
         tinyButt.setBackground(new java.awt.Color(204, 255, 204));
         tinyButt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tiny7.png"))); // NOI18N
@@ -123,38 +123,38 @@ public class ConnectInternal extends javax.swing.JFrame {
                 tinyButtActionPerformed(evt);
             }
         });
-        getContentPane().add(tinyButt, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 0, 40, 40));
+        getContentPane().add(tinyButt, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 10, 40, 40));
 
         jLabel6.setText("them with your internal Mnemonic.");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, -1, -1));
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 130, -1, -1));
 
         help.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
         help.setForeground(new java.awt.Color(0, 51, 204));
         help.setText(" ? ");
         help.setToolTipText("<html>Some routers do network address translation (NAT).  </br>Your external IP is what is seen by the outside world, your internal IP is used to identify you among others in your network.</html>");
         help.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 102, 51)));
-        getContentPane().add(help, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 80, -1, -1));
+        getContentPane().add(help, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 130, -1, -1));
 
         jLabel8.setText("If you are behind the same NAT router as your peer, you need to provide");
-        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 60, -1, -1));
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 110, -1, -1));
 
         jLabel2.setText("even if your internet connection is down. ");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, -1, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 200, -1, -1));
 
         jLabel10.setFont(new java.awt.Font("Courier New", 0, 9)); // NOI18N
         jLabel10.setText("jLabel8");
-        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 220, 100, 10));
+        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 270, 100, 10));
 
-        jLabel7.setFont(new java.awt.Font("Aharoni", 1, 24)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Aharoni", 1, 36)); // NOI18N
         jLabel7.setText("TinyP2P");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 20, -1, 29));
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 20, 150, 60));
 
         jLabel1.setText("Click on the cat for help.");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 80, 180, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 130, 180, -1));
 
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bg1.png"))); // NOI18N
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bg3.png"))); // NOI18N
         jLabel9.setText("jLabel9");
-        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 500, 300));
+        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 600, 360));
 
         pack();
         setLocationRelativeTo(null);

@@ -66,11 +66,7 @@ public class ConnectInfo extends javax.swing.JFrame {
      
         jLabel7.setVisible(!cr);
         jLabel11.setVisible(cr);
-//        if(!cr){
-//          jLabel7.setVisible(true);
-//          jLabel11.setVisible(false);
-//        }
-//       
+        
     }
     
     /**
@@ -82,7 +78,6 @@ public class ConnectInfo extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
@@ -96,6 +91,7 @@ public class ConnectInfo extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -109,10 +105,6 @@ public class ConnectInfo extends javax.swing.JFrame {
             }
         });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel1.setFont(new java.awt.Font("Aharoni", 1, 24)); // NOI18N
-        jLabel1.setText("TinyP2P");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 20, 100, 40));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 8)); // NOI18N
         jLabel3.setText("IP:");
@@ -148,6 +140,7 @@ public class ConnectInfo extends javax.swing.JFrame {
         jTextField2.setText("one one one one");
         jTextField2.setToolTipText("");
         jTextField2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jTextField2.setMargin(new java.awt.Insets(3, 0, 0, 0));
         jTextField2.setOpaque(true);
         jTextField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -169,7 +162,7 @@ public class ConnectInfo extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(0, 153, 0));
         jLabel5.setText("Give this to a peer who wants to join your TinyNet to begin sharing");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 200, 480, -1));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 220, 480, -1));
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel7.setText("You have joined aTinyNet!");
@@ -215,6 +208,10 @@ public class ConnectInfo extends javax.swing.JFrame {
         jLabel11.setText("You have created a new TinyNet!");
         getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 60, -1, -1));
 
+        jLabel12.setFont(new java.awt.Font("Aharoni", 1, 36)); // NOI18N
+        jLabel12.setText("TinyP2P");
+        getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 10, 150, 60));
+
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bg3.png"))); // NOI18N
         jLabel2.setText("jLabel2");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 600, 360));
@@ -252,7 +249,7 @@ public class ConnectInfo extends javax.swing.JFrame {
         
        
         if(!ips[0].equalsIgnoreCase("F")){
-            jTextField2.setText(Mnemonics.getMnemonics(ips[0]));       
+            jTextField2.setText("  "+Mnemonics.getMnemonics(ips[0]));       
         }else{ 
             ips[0] = "No Internet Connection";
             jLabel10.setVisible(true);
@@ -333,9 +330,9 @@ public class ConnectInfo extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel help;
     private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

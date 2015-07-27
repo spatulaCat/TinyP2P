@@ -27,19 +27,14 @@ import java.awt.BorderLayout;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -83,7 +78,7 @@ import org.hive2hive.processframework.exceptions.ProcessExecutionException;
  * @author Nicky
  */
 
-public class MainMenu extends javax.swing.JFrame {
+public class MainMenuDemo extends javax.swing.JFrame {
     private String username;
     private String password;
     private IH2HNode node;
@@ -93,12 +88,12 @@ public class MainMenu extends javax.swing.JFrame {
     private BufferedWriter bw ;
     private FileWriter fw ;
     
-    public MainMenu() {
+    public MainMenuDemo() {
      //   this.br = new BufferedReader(new FileReader("dirList.txt"));
         initComponents();
     }
     
-    public MainMenu(String User, String pw, IH2HNode node, Rectangle bounds, String[] ips) {
+    public MainMenuDemo(String User, String pw, IH2HNode node, Rectangle bounds, String[] ips) {
       
         this.username = User;
         this.password = pw;
@@ -163,20 +158,8 @@ public class MainMenu extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         online = new javax.swing.JList();
         tinyButt = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jTextField3 = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
 
         fileChooser.setCurrentDirectory(new java.io.File("C:\\Users\\(._.)\\.ssh"));
 
@@ -195,9 +178,7 @@ public class MainMenu extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(600, 383));
         setMinimumSize(new java.awt.Dimension(600, 383));
-        setPreferredSize(new java.awt.Dimension(600, 383));
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
@@ -210,14 +191,14 @@ public class MainMenu extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jScrollPane2.setOpaque(true);
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 60, 230, 240));
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 60, 280, 270));
 
         jLabel1.setFont(new java.awt.Font("Aharoni", 1, 18)); // NOI18N
         jLabel1.setText("Welcome");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 10, 295, -1));
 
         jLabel2.setText("Online users");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, -1, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, -1, -1));
 
         online.setBackground(new java.awt.Color(222, 255, 204));
         online.setModel(new javax.swing.AbstractListModel() {
@@ -231,14 +212,14 @@ public class MainMenu extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 110, 180));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 140, 270));
 
         tinyButt.setBackground(new java.awt.Color(204, 255, 204));
         tinyButt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tiny7.png"))); // NOI18N
@@ -250,81 +231,12 @@ public class MainMenu extends javax.swing.JFrame {
         });
         getContentPane().add(tinyButt, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 0, 40, 40));
 
-        jTextField1.setText("jTextField1");
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 240, 200, -1));
-
-        jTextField2.setText("jTextField2");
-        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 270, 200, -1));
-
-        jLabel4.setText("message ");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 250, -1, -1));
-
-        jLabel5.setText("User");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 270, -1, -1));
-
-        jButton1.setText("send");
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
-            }
-        });
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 300, -1, -1));
-
-        jButton2.setText("rec");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 300, 60, -1));
-
-        jTextField3.setText("jTextField3");
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 210, 200, -1));
-
-        jLabel6.setText("dir");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 190, -1, -1));
-
-        jButton3.setText("choose");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 300, 70, -1));
+        jLabel3.setText("Files");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 40, -1, -1));
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bg3.png"))); // NOI18N
         jLabel7.setText("jLabel7");
         getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 0, 600, 360));
-
-        jMenuBar1.setBorder(null);
-        jMenuBar1.setOpaque(true);
-
-        jMenu1.setText("File");
-
-        jMenuItem1.setText("Change shared directory");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuItem1);
-
-        jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
-
-        setJMenuBar(jMenuBar1);
 
         pack();
         setLocationRelativeTo(null);
@@ -409,17 +321,7 @@ public class MainMenu extends javax.swing.JFrame {
         public String doInBackground() throws IOException {
             ServerSocket serverSocket = new ServerSocket(15123);
             Socket socket = serverSocket.accept();
-            File transferFile = new File ("tiny6.png");
-            byte [] bytearray = new byte [(int)transferFile.length()];
-            FileInputStream fin = new FileInputStream(transferFile);
-            BufferedInputStream bin = new BufferedInputStream(fin);
-            bin.read(bytearray,0,bytearray.length);
-            OutputStream os = socket.getOutputStream();
-            System.out.println("Sending Files...");
-            os.write(bytearray,0,bytearray.length);
-            os.flush();
-            //socket.close();
-            System.out.println("File transfer complete");
+    
             return null;
         }
         @Override
@@ -440,6 +342,28 @@ public class MainMenu extends javax.swing.JFrame {
             tmr.setRepeats(true);
             tmr.start();
             
+            try {
+            chosenDir = getDir();
+            // chosenDir = "C:\\Users\\(._.)\\Documents\\TinyP2P";
+            // makeFile(chosenDir);
+            
+            File f = new File(chosenDir);
+            JTree tree = new JTree(addNodes(null,f));
+            jScrollPane2.getViewport().add(tree);
+
+            tree.addTreeSelectionListener((TreeSelectionEvent e) -> {
+                DefaultMutableTreeNode node1 = (DefaultMutableTreeNode) e
+                .getPath().getLastPathComponent();
+                System.out.println("You selected " + node1);
+            });
+
+            jScrollPane2.getViewport().add(tree);
+
+        } catch ( NullPointerException ex) {
+           // Logger.getLogger(MainMenuDemo.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+           // Logger.getLogger(MainMenuDemo.class.getName()).log(Level.SEVERE, null, ex);
+        }
             
 //        try {
 //            ServerSocket serverSocket = new ServerSocket(15123);
@@ -478,199 +402,7 @@ public class MainMenu extends javax.swing.JFrame {
         }
 
 }
-    
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String f = jTextField1.getText();
-        
- 
-      //  jTextField2.setText(lm.elementAt(online.getSelectedIndex()).toString());
-      //  String user = jTextField2.getText();
-          System.out.println("Requesting file");
-        
-        int filesize=1022386;
-        int bytesRead;
-        int currentTot = 0;
-        Socket socket;
-        try {
-            socket = new Socket("127.0.0.1",15123);
-       
-        byte [] bytearray = new byte [filesize];  
-        InputStream is = socket.getInputStream();
-        FileOutputStream fos = new FileOutputStream("bg1copy.png");
-        BufferedOutputStream bos = new BufferedOutputStream(fos);
-        bytesRead = is.read(bytearray,0,bytearray.length);
-        currentTot = bytesRead;
-        System.out.println("Listening for the file");
-        do { bytesRead = is.read(bytearray, currentTot, (bytearray.length-currentTot));
-        if(bytesRead >= 0) currentTot += bytesRead;
-        }
-        while(bytesRead > -1);
-        bos.write(bytearray, 0 , currentTot);
-        bos.flush();
-        bos.close();
-        socket.close();
-         System.out.println("file successfully transferred");
-          } catch (IOException ex) {
-            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
-        }
-//        try {
-//            sendToPort(f,user);
-//
-//        } catch (IOException ex) {
-//            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//
-//      Socket socket = new Socket("ip address", 4014);
-//       //OutputStream outstream = socket .getOutputStream();
-//      // PrintWriter out = new PrintWriter(outstream);
-//       
-//       String toSend = "String to send";
-//       
-//       out.print(toSend );
-//       
-//     
-       
-               
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-           // listener.execute();
-       try {
-       ServerSocket serverSocket = new ServerSocket(15123);
-        Socket socket = serverSocket.accept();
-        File transferFile = new File ("tiny6.png");
-        byte [] bytearray = new byte [(int)transferFile.length()];
-        FileInputStream fin = new FileInputStream(transferFile);
-        BufferedInputStream bin = new BufferedInputStream(fin);
-        bin.read(bytearray,0,bytearray.length);
-        OutputStream os = socket.getOutputStream();
-        System.out.println("Sending Files...");
-        os.write(bytearray,0,bytearray.length);
-        os.flush();
-        socket.close();
-        System.out.println("File transfer complete");
-        } catch (IOException ex) {
-            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
-        }
-//        try {
-//            int bytesRead;
-//            Socket socket = new Socket("146.231.133.148",15123);
-//            InputStream is = socket.getInputStream();
-//            // bytesRead = is.read(bytearray,0,bytearray.length);
-//        } catch (IOException ex) {
-//            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-     
-    }//GEN-LAST:event_jButton1MouseClicked
-     String chosenDir;
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        try {
-             chosenDir = getDir();
-            // chosenDir = "C:\\Users\\(._.)\\Documents\\TinyP2P";
-            // makeFile(chosenDir);  
-            jTextField3.setText(chosenDir);
-            File f = new File(chosenDir);
-            JTree tree = new JTree(addNodes(null,f));
-            jScrollPane2.getViewport().add(tree);
-            
-            tree.addTreeSelectionListener((TreeSelectionEvent e) -> {
-                DefaultMutableTreeNode node1 = (DefaultMutableTreeNode) e
-                        .getPath().getLastPathComponent();
-                System.out.println("You selected " + node1);
-            });
-            
-            jScrollPane2.getViewport().add(tree);
-            
-            
-            
-            
-//            File dirList = new File("dirList.txt");
-//            List<String> lines =IOUtils.readLines(new FileInputStream(dirList));
-//            
-//          // Tree2 t = new Tree2();
-//            
-//             JTree k = new JTree(lines.toArray(new String[lines.size()]));
-//            JTree j = new JTree(lines.toArray(new String[lines.size()]));
-//            k.add(j);
-//            jScrollPane2.getViewport().add(k);
-            
-//             MyTree<String> forest = new MyTree<String>("forest");
-//            
-//             MyTree<String> current = forest;
-//             
-//             for (String tree : lines) {
-//                 MyTree<String> root = current;
-//                 
-//                 for (String data : tree.split("\\\\")) {
-//                     current = current.child(data);
-//                 }
-//                 
-//                 current = root;
-//             }
-//             System.out.println(current.toString());
-            
-             
-             
-             
-           //  JTree j = new JTree(forest);
-             
-             
-//            MXMTree tree = new MXMTree(new MXMNode("root", "root"));
-//            for (String data : lines) {
-//                tree.addElement(data);
-//            }
-//            
-//            tree.printTree();
-//            JTree j = new JTree(tree);
-//            
-//            jScrollPane2.getViewport().add(tree);
-//           // populateArrayFromFile();
-//            
-//            
-//          
-            
-           // File f = new File(dir);
-            
-           
-//            DefaultMutableTreeNode parent = new DefaultMutableTreeNode("This is parent node.");
-//            DefaultMutableTreeNode child = new DefaultMutableTreeNode("This is child node.");
-//            DefaultMutableTreeNode child1 = new DefaultMutableTreeNode("This is child node.");
-//            parent.add(child);
-//            child.add(child1);
-            
-            
-           // JTree tree = new JTree(null, addNodes);
-           // jScrollPane2.getViewport().add(tree);
-//            
-//            tree.addTreeSelectionListener((TreeSelectionEvent e) -> {
-//                DefaultMutableTreeNode node1 = (DefaultMutableTreeNode) e
-//                        .getPath().getLastPathComponent();
-//                System.out.println("You selected " + node1);
-//            });
-//            
-//            jScrollPane2.getViewport().add(tree);
-           // add(BorderLayout.CENTER, jScrollPane2);
-            
-        } catch ( NullPointerException ex) {
-            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
-
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
-   
+         String chosenDir;   
  
      
     public void makeFile(String dir) throws IOException{
@@ -912,8 +644,14 @@ public class MainMenu extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainMenuDemo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         
@@ -921,7 +659,7 @@ public class MainMenu extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new MainMenu().setVisible(true);
+                new MainMenuDemo().setVisible(true);
                 
             }
         });
@@ -930,26 +668,14 @@ public class MainMenu extends javax.swing.JFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFileChooser fileChooser;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JFrame jFileChooser;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
     private javax.swing.JList online;
     private javax.swing.JButton tinyButt;
     // End of variables declaration//GEN-END:variables

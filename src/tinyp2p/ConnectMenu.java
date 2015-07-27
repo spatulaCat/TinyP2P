@@ -55,12 +55,14 @@ public class ConnectMenu extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(600, 360));
+        setMinimumSize(new java.awt.Dimension(600, 360));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Aharoni", 1, 22)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Aharoni", 1, 24)); // NOI18N
         jLabel1.setText("Welcome to TinyP2P!");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 20, 222, 39));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 20, 280, 39));
 
         createNet.setBackground(new java.awt.Color(255, 224, 193));
         createNet.setText("Create new TinyNet");
@@ -74,7 +76,7 @@ public class ConnectMenu extends javax.swing.JFrame {
                 createNetActionPerformed(evt);
             }
         });
-        getContentPane().add(createNet, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 210, -1, -1));
+        getContentPane().add(createNet, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 250, -1, -1));
 
         joinNet.setBackground(new java.awt.Color(255, 224, 193));
         joinNet.setText("Join a TinyNet");
@@ -88,14 +90,14 @@ public class ConnectMenu extends javax.swing.JFrame {
                 joinNetActionPerformed(evt);
             }
         });
-        getContentPane().add(joinNet, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 250, -1, -1));
+        getContentPane().add(joinNet, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 300, -1, -1));
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tiny4.png"))); // NOI18N
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 70, -1, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 90, -1, -1));
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bg1.png"))); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bg3.png"))); // NOI18N
         jLabel2.setText("jLabel2");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 500, 300));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 600, 360));
 
         pack();
         setLocationRelativeTo(null);
@@ -112,7 +114,9 @@ public class ConnectMenu extends javax.swing.JFrame {
             String myInIp = getInternalIP(sc.node);
             
             ips[0] = myExIP;
-            ips[1] = myInIp;
+            ips[1] = myInIp; 
+            //for demo purposes:
+           // ips[1] = "10.0.0.1";
             
         } catch (IOException ex) {
             Logger.getLogger(ConnectMenu.class.getName()).log(Level.SEVERE, null, ex);

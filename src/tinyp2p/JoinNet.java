@@ -70,35 +70,34 @@ public class JoinNet extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         help = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(600, 360));
+        setMinimumSize(new java.awt.Dimension(600, 360));
+        setPreferredSize(new java.awt.Dimension(600, 360));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel1.setFont(new java.awt.Font("Aharoni", 1, 24)); // NOI18N
-        jLabel1.setText("TinyP2P");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 30, -1, 29));
 
         jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jTextField1KeyPressed(evt);
             }
         });
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 170, 159, 25));
+        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 200, 159, 25));
 
         jLabel3.setText("Enter the TinyP2P mnemonic of anyone currently");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 110, 300, -1));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 140, 300, -1));
 
         jLabel4.setText(" connected to the TinyNet you wish to join");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 130, 260, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 160, 240, -1));
 
         jButton1.setBackground(new java.awt.Color(255, 224, 193));
         jButton1.setText("Join");
@@ -108,7 +107,7 @@ public class JoinNet extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 230, -1, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 290, -1, -1));
 
         jLabel6.setFont(new java.awt.Font("Aharoni", 0, 12)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(153, 0, 0));
@@ -119,11 +118,15 @@ public class JoinNet extends javax.swing.JFrame {
         help.setText(" ? ");
         help.setToolTipText("A TinyP2P mnemonic is an easy way to remember your IP");
         help.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 102, 51)));
-        getContentPane().add(help, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 130, -1, -1));
+        getContentPane().add(help, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 160, -1, -1));
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bg1.png"))); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Aharoni", 1, 36)); // NOI18N
+        jLabel7.setText("TinyP2P");
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 20, 150, 60));
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bg3.png"))); // NOI18N
         jLabel2.setText("jLabel2");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -2, 500, 300));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -10, 600, 380));
 
         pack();
         setLocationRelativeTo(null);
@@ -233,11 +236,11 @@ public class JoinNet extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel help;
     private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }
