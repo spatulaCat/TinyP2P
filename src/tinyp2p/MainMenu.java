@@ -262,7 +262,7 @@ public class MainMenu extends javax.swing.JFrame {
         jLabel5.setText("User");
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 270, -1, -1));
 
-        jButton1.setText("send");
+        jButton1.setText("rec");
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jButton1MouseClicked(evt);
@@ -275,7 +275,7 @@ public class MainMenu extends javax.swing.JFrame {
         });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 300, -1, -1));
 
-        jButton2.setText("rec");
+        jButton2.setText("send");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -492,7 +492,7 @@ public class MainMenu extends javax.swing.JFrame {
         int currentTot = 0;
         Socket socket;
         try {
-            socket = new Socket("127.0.0.1",15123);
+            socket = new Socket("146.231.133.148",15123);
        
         byte [] bytearray = new byte [filesize];  
         InputStream is = socket.getInputStream();

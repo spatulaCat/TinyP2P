@@ -249,7 +249,7 @@ public class ConnectInfo extends javax.swing.JFrame {
         
        
         if(!ips[0].equalsIgnoreCase("F")){
-            jTextField2.setText("  "+Mnemonics.getMnemonics(ips[0]));       
+            jTextField2.setText(Mnemonics.getMnemonics(ips[0]));       
         }else{ 
             ips[0] = "No Internet Connection";
             jLabel10.setVisible(true);

@@ -111,7 +111,7 @@ public class JoinNet extends javax.swing.JFrame {
 
         jLabel6.setFont(new java.awt.Font("Aharoni", 0, 12)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(153, 0, 0));
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 190, 330, 20));
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 240, 330, 20));
 
         help.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
         help.setForeground(new java.awt.Color(0, 51, 204));
