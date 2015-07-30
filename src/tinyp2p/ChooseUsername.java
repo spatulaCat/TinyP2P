@@ -24,7 +24,10 @@
 package tinyp2p;
 
 import java.awt.Rectangle;
+import java.io.IOException;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.hive2hive.core.api.interfaces.IH2HNode;
 
 /**
@@ -128,7 +131,11 @@ public class ChooseUsername extends javax.swing.JFrame {
         String user=jTextField1.getText();
         String pwd = "123456"; 
         
-        new MainMenu(user,pwd,node,this.getBounds(),ips).setVisible(true);
+        try {
+            new MainMenu(user,pwd,node,this.getBounds(),ips).setVisible(true);
+        } catch (IOException ex) {
+            Logger.getLogger(ChooseUsername.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.dispose();
 
     }//GEN-LAST:event_jButton1ActionPerformed

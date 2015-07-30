@@ -24,6 +24,9 @@
 package tinyp2p;
 
 import java.awt.Rectangle;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import org.hive2hive.core.api.interfaces.IH2HNode;
 
@@ -132,7 +135,11 @@ public class LoginMenu extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String user=jTextField1.getText();
         String pwd= new String (jPasswordField1.getPassword()); 
-        new MainMenu(user,pwd,node,this.getBounds(),ips).setVisible(true);
+        try {
+            new MainMenu(user,pwd,node,this.getBounds(),ips).setVisible(true);
+        } catch (IOException ex) {
+            Logger.getLogger(LoginMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.dispose();
 
     }//GEN-LAST:event_jButton1ActionPerformed
