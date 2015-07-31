@@ -38,10 +38,8 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
@@ -65,6 +63,7 @@ import org.hive2hive.core.security.UserCredentials;
 import org.hive2hive.processframework.exceptions.InvalidProcessStateException;
 import org.hive2hive.processframework.exceptions.ProcessExecutionException;
 import util.ConsoleFileAgent;
+import net.tomp2p.peers.Number160;
 
 /**
  *
@@ -81,6 +80,7 @@ public class MainMenu extends javax.swing.JFrame {
     private String chosenDir;
     private String chosenDirFolderName;
     private JTree tree;
+    private String selectedUser;
     
     public MainMenu() {
         initComponents();
@@ -130,6 +130,8 @@ public class MainMenu extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -186,14 +188,14 @@ public class MainMenu extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 110, 180));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 130, 240));
 
         tinyButt.setBackground(new java.awt.Color(204, 255, 204));
         tinyButt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tiny7.png"))); // NOI18N
@@ -206,16 +208,16 @@ public class MainMenu extends javax.swing.JFrame {
         getContentPane().add(tinyButt, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 0, 40, 40));
 
         jTextField1.setText("jTextField1");
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 240, 200, -1));
+        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 190, 80, -1));
 
         jTextField2.setText("jTextField2");
-        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 270, 200, -1));
+        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 220, 80, -1));
 
         jLabel4.setText("message ");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 240, -1, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 190, -1, -1));
 
         jLabel5.setText("User");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 270, -1, -1));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 220, -1, -1));
 
         jButton1.setText("rec");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -223,7 +225,7 @@ public class MainMenu extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 300, -1, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 260, -1, -1));
 
         jButton2.setText("send");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -231,13 +233,13 @@ public class MainMenu extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 300, 60, -1));
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 260, 60, -1));
 
         jTextField3.setText("jTextField3");
-        getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 210, 200, -1));
+        getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 160, 80, -1));
 
         jLabel6.setText("dir");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 190, -1, -1));
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 160, -1, -1));
 
         jButton3.setText("View my shared folder");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -253,7 +255,18 @@ public class MainMenu extends javax.swing.JFrame {
                 jButton4ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(243, 150, 80, 20));
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 130, 80, 20));
+
+        jButton5.setText("get dir");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 290, -1, -1));
+
+        jLabel3.setText(" ");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, 570, -1));
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bg3.png"))); // NOI18N
         jLabel7.setText("jLabel7");
@@ -284,7 +297,7 @@ public class MainMenu extends javax.swing.JFrame {
         jLabel1.setText("Welcome, "+ username+"!");
         
         displayUsers du = new displayUsers();                      //set up timer
-        Timer tmr = new javax.swing.Timer(7000, du);
+        Timer tmr = new javax.swing.Timer(10000, du);
         
         tmr.addActionListener(du);
         tmr.setInitialDelay(0);
@@ -413,10 +426,8 @@ public class MainMenu extends javax.swing.JFrame {
     
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         try {
-           // String chosenDir ="dirList.txt";
             List<String> lines =IOUtils.readLines(new FileInputStream("dirList.txt"));
-            //String[] fntmp = chosenDir.split("\\\\");           
-            //String folderName = 
+
             DefaultMutableTreeNode root = new DefaultMutableTreeNode("Shared");
 
             DefaultTreeModel model = new DefaultTreeModel(root);
@@ -426,9 +437,7 @@ public class MainMenu extends javax.swing.JFrame {
                 buildTreeFromString(model, line);
             }
             jScrollPane2.getViewport().add(tree);
-            
-           
-            
+                  
 //            jTextField3.setText(tree.getLastSelectedPathComponent().toString());
             
         } catch ( NullPointerException | IOException ex) {
@@ -436,18 +445,100 @@ public class MainMenu extends javax.swing.JFrame {
         }      
     }//GEN-LAST:event_jButton3ActionPerformed
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        jLabel3.setText("Creating directory list");
         try {
             chosenDir = getDir();
             makeFile(chosenDir);
         } catch (IOException ex) {
             Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
         }
+        jLabel3.setText("Done");
+        uploadDirList();
+       
+        
+        // createDirList.execute();
+        
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-      jTextField3.setText(tree.getLastSelectedPathComponent().toString());
+    
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        selectedUser = lm.elementAt(online.getSelectedIndex()).toString();
+        List<String> results = null;
+        
+        try{
+            Number160 dirlistHash2 = Number160.createHash(selectedUser + "dirlist");
+            System.out.println("hash = " + dirlistHash2);
+            System.out.println("user = " + selectedUser);
+            FutureGet futureGet = node.getPeer().get(dirlistHash2).start();
+            futureGet.awaitUninterruptibly();
+            if (!futureGet.isEmpty()){
+                Object result = futureGet.data().object();
+                System.out.println(result.toString());
+                
+                String[] fs = result.toString().split(",");
+                fs[0] = fs[0].substring(1);
+                fs[fs.length-1] =  fs[fs.length-1].substring(0,fs[fs.length-1].length()-1);
+                //Remove "[" and "]"   
+                
+//
+//                FileWriter bbb = new FileWriter("oy.txt");
+//
+//                for (String f : fs){
+//                     if(f.substring(0,1).equalsIgnoreCase(" ")){
+//                        f = f.substring(1,f.length());
+//                    }
+//                     bbb.write(f+"\n");
+//                }
+//                bbb.close();
+                
+                DefaultMutableTreeNode root = new DefaultMutableTreeNode(selectedUser + "'s shared directory");
+                
+                DefaultTreeModel model = new DefaultTreeModel(root);
+                tree = new JTree(model);
+                
+                for (String line : fs){
+                    if(line.substring(0,1).equalsIgnoreCase(" ")){
+                        line = line.substring(1,line.length());
+                    }
+                    buildTreeFromString(model, line);
+                }
+                jScrollPane2.getViewport().add(tree);
+                
+            }
+        }catch(NullPointerException e){
+        } catch (ClassNotFoundException | IOException ex) {
+            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+//        DefaultMutableTreeNode root = new DefaultMutableTreeNode(selectedUser +"'s Shared directory");
+//        
+//        DefaultTreeModel model = new DefaultTreeModel(root);
+//        tree = new JTree(model);
+        
+//        for (String line : results){
+//            buildTreeFromString(model, line);
+//        }
+//        jScrollPane2.getViewport().add(tree);
+        
+        
+        
+    }//GEN-LAST:event_jButton5ActionPerformed
           
+    private void uploadDirList(){
+        jLabel3.setText("Uplodaing directory list");
+        try{
+            List<String> lines =IOUtils.readLines(new FileInputStream("dirList.txt"));
+            Number160 dirlistHash = Number160.createHash(username + "dirlist");
+            System.out.println("this hash = " + dirlistHash);
+            FuturePut futurePut = node.getPeer().put(dirlistHash).data(new Data(lines)).start();
+            futurePut.awaitUninterruptibly();
+        }catch(IOException e){System.out.println(e);}
+        jLabel3.setText("directory list uploaded");
+    }
+
     public void valueChanged(TreeSelectionEvent e) {
         //Returns the last path element of the selection.
         //This method is useful only when the selection model allows a single selection.
@@ -457,7 +548,7 @@ public class MainMenu extends javax.swing.JFrame {
             //Nothing is selected.
             return;
         
-        Object nodeInfo = node.getUserObject();
+        //Object nodeInfo = node.getUserObject();
         
         if (node.isLeaf()) {
             jTextField3.setText(node.toString());
@@ -492,27 +583,39 @@ public class MainMenu extends javax.swing.JFrame {
                     }                    
                      futureGet.cancel();
              }
-             
             online.setModel(lm);
             }catch(NullPointerException e){            
             }  
         }
     }
     
+//     SwingWorker createDirList = new SwingWorker<String, Void>() {
+//        @Override
+//        public String doInBackground() {
+//            try {
+//                chosenDir = getDir();
+//                System.out.println("creating directory list");
+//                makeFile(chosenDir);
+//                System.out.println("directory list complete");
+//            } catch (IOException ex) {
+//                Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//            return null;
+//        }
+//        };
+    
+    
     SwingWorker loginWorker = new SwingWorker<String, Void>() {
         @Override
         public String doInBackground() {
             userCredentials = new UserCredentials(username, password, "12345");
             try{
+                File f = new File ("");
                 if( registered(userCredentials)){
-                    // d = chooseDir();
-                    File f = new File ("C:\\");
                     ConsoleFileAgent fileAgent = new ConsoleFileAgent(f);
                     node.getUserManager().createLoginProcess(userCredentials, fileAgent).execute();
                 }
-                else{
-                    //d = chooseDir();
-                    File f = new File ("C:\\");
+                else{      
                     node.getUserManager().createRegisterProcess(userCredentials).execute();
                     ConsoleFileAgent fileAgent = new ConsoleFileAgent(f);
                     node.getUserManager().createLoginProcess(userCredentials, fileAgent).execute();
@@ -521,15 +624,15 @@ public class MainMenu extends javax.swing.JFrame {
             
             PutBuilder f  = new PutBuilder(node.getPeer(),node.getPeer().peerID());
             try{
-                Data d = new Data(username);
-                f.data(d);
+//                Data d = new Data(username);
+//                f.data(d);
                 FuturePut futurePut = node.getPeer().put(node.getPeer().peer().peerID()).data(new Data(username)).start();
                 futurePut.awaitUninterruptibly();
             }catch(IOException e){System.out.println(e);}
             return null;
         }
         @Override
-        public void done() {          
+        public void done() {  
         }
     };
         
@@ -551,9 +654,9 @@ public class MainMenu extends javax.swing.JFrame {
             System.out.println("File transfer complete");
             return null;
         }
-        @Override
-         public void done() {   
-         }
+//        @Override
+//         public void done() {   
+//         }
     };
 
     public String getDir() throws IOException{
@@ -569,7 +672,6 @@ public class MainMenu extends javax.swing.JFrame {
     public void makeFile(String dir) throws IOException{
         File dirList = new File("dirList.txt");
         fw = new FileWriter(dirList.getAbsoluteFile());
-        
         String[] s = chosenDir.split("\\\\");
         String ss = s[s.length-1];
         chosenDirFolderName = ss;
@@ -587,60 +689,22 @@ public class MainMenu extends javax.swing.JFrame {
             if(listOfFiles==null){
                return;
             }
-          //  listOfFiles
             
             for (File f : listOfFiles){
                 
                 if(f.isFile()){
                     fw.write(f.toString().substring(chosenDir.length()-chosenDirFolderName.length()) +" |"+ f.length()+"\n");
                 }
-                else if(f.isDirectory()) {
-                    if(f.listFiles()==null){
-                        return;
-                    }else{
+                else if(f.isDirectory()) {     
                     fw.write(f.toString().substring(chosenDir.length()-chosenDirFolderName.length())+"\n");
                     writeStuff(f.toString());
                     }
-                }
+                
                 
             } 
             fw.flush();  
     }
   
-    private DefaultMutableTreeNode addNodes(DefaultMutableTreeNode curTop, File dir) {
-        String curPath = dir.getPath();
-        DefaultMutableTreeNode curDir = new DefaultMutableTreeNode(curPath);
-        if (curTop != null) { // should only be null at root
-            curTop.add(curDir);
-        }
-        Vector ol = new Vector();
-        String[] tmp = dir.list();
-        for (String tmp1 : tmp) {
-            ol.addElement(tmp1);
-        }
-        Collections.sort(ol, String.CASE_INSENSITIVE_ORDER);
-        File f;
-        Vector files = new Vector();
-        // Make two passes, one for Dirs and one for Files. This is #1.
-        for (int i = 0; i < ol.size(); i++) {
-            String thisObject = (String) ol.elementAt(i);
-            String newPath;
-            if (curPath.equals("."))
-                newPath = thisObject;
-            else
-                newPath = curPath + File.separator + thisObject;
-            if ((f = new File(newPath)).isDirectory())
-                addNodes(curDir, f);
-            else
-                files.addElement(thisObject);
-        }
-        // Pass two: for files.
-        for (int fnum = 0; fnum < files.size(); fnum++)
-            curDir.add(new DefaultMutableTreeNode(files.elementAt(fnum)));
-        return curDir;
-    }
-    
-    
      private void buildTreeFromString(final DefaultTreeModel model, final String str) {
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
         String [] strings = str.split("\\\\");
@@ -720,9 +784,11 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JFrame jFileChooser;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -741,3 +807,36 @@ public class MainMenu extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
   
 }
+
+//    private DefaultMutableTreeNode addNodes(DefaultMutableTreeNode curTop, File dir) {
+//        String curPath = dir.getPath();
+//        DefaultMutableTreeNode curDir = new DefaultMutableTreeNode(curPath);
+//        if (curTop != null) { // should only be null at root
+//            curTop.add(curDir);
+//        }
+//        Vector ol = new Vector();
+//        String[] tmp = dir.list();
+//        for (String tmp1 : tmp) {
+//            ol.addElement(tmp1);
+//        }
+//        Collections.sort(ol, String.CASE_INSENSITIVE_ORDER);
+//        File f;
+//        Vector files = new Vector();
+//        // Make two passes, one for Dirs and one for Files. This is #1.
+//        for (int i = 0; i < ol.size(); i++) {
+//            String thisObject = (String) ol.elementAt(i);
+//            String newPath;
+//            if (curPath.equals("."))
+//                newPath = thisObject;
+//            else
+//                newPath = curPath + File.separator + thisObject;
+//            if ((f = new File(newPath)).isDirectory())
+//                addNodes(curDir, f);
+//            else
+//                files.addElement(thisObject);
+//        }
+//        // Pass two: for files.
+//        for (int fnum = 0; fnum < files.size(); fnum++)
+//            curDir.add(new DefaultMutableTreeNode(files.elementAt(fnum)));
+//        return curDir;
+//    }
