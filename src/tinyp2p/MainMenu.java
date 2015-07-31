@@ -38,6 +38,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
@@ -47,23 +48,25 @@ import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JTree;
-import javax.swing.Timer;
 import javax.swing.SwingWorker;
+import javax.swing.Timer;
+import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeSelectionModel;
 import net.tomp2p.dht.FutureGet;
 import net.tomp2p.dht.FuturePut;
 import net.tomp2p.dht.PutBuilder;
 import net.tomp2p.peers.PeerAddress;
 import net.tomp2p.storage.Data;
 import org.apache.commons.io.IOUtils;
-import util.ConsoleFileAgent;
 import org.hive2hive.core.api.interfaces.IH2HNode;
 import org.hive2hive.core.api.interfaces.IUserManager;
 import org.hive2hive.core.exceptions.NoPeerConnectionException;
 import org.hive2hive.core.security.UserCredentials;
 import org.hive2hive.processframework.exceptions.InvalidProcessStateException;
 import org.hive2hive.processframework.exceptions.ProcessExecutionException;
+import util.ConsoleFileAgent;
 
 /**
  *
@@ -77,7 +80,9 @@ public class MainMenu extends javax.swing.JFrame {
     private String[] ips;
     private DefaultListModel lm;
     private FileWriter fw ;
-    
+    private String chosenDir;
+    private String chosenDirFolderName;
+    private JTree tree;
     
     public MainMenu() {
         initComponents();
@@ -126,11 +131,11 @@ public class MainMenu extends javax.swing.JFrame {
         jTextField3 = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
 
         fileChooser.setCurrentDirectory(new java.io.File("C:\\Users\\(._.)\\.ssh"));
 
@@ -162,8 +167,6 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jScrollPane2.setOpaque(true);
         getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 60, 230, 240));
 
         jLabel1.setFont(new java.awt.Font("Aharoni", 1, 18)); // NOI18N
@@ -211,7 +214,7 @@ public class MainMenu extends javax.swing.JFrame {
         getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 270, 200, -1));
 
         jLabel4.setText("message ");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 250, -1, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 240, -1, -1));
 
         jLabel5.setText("User");
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 270, -1, -1));
@@ -238,22 +241,29 @@ public class MainMenu extends javax.swing.JFrame {
         jLabel6.setText("dir");
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 190, -1, -1));
 
-        jButton3.setText("choose");
+        jButton3.setText("View my shared folder");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 300, 70, -1));
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 30, 150, -1));
+
+        jButton4.setText("jButton4");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(243, 150, 80, 20));
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bg3.png"))); // NOI18N
         jLabel7.setText("jLabel7");
         getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 0, 600, 360));
 
         jMenuBar1.setBorder(null);
-        jMenuBar1.setOpaque(true);
 
-        jMenu1.setText("File");
+        jMenu1.setText("Settings");
 
         jMenuItem1.setText("Change shared directory");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
@@ -264,9 +274,6 @@ public class MainMenu extends javax.swing.JFrame {
         jMenu1.add(jMenuItem1);
 
         jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
 
@@ -408,17 +415,23 @@ public class MainMenu extends javax.swing.JFrame {
     
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         try {
-            String chosenDir ="dirList.txt";
-            List<String> lines =IOUtils.readLines(new FileInputStream(chosenDir));
-            
+           // String chosenDir ="dirList.txt";
+            List<String> lines =IOUtils.readLines(new FileInputStream("dirList.txt"));
+            //String[] fntmp = chosenDir.split("\\\\");           
+            //String folderName = 
             DefaultMutableTreeNode root = new DefaultMutableTreeNode("Shared");
+
             DefaultTreeModel model = new DefaultTreeModel(root);
-            JTree tree = new JTree(model);
+            tree = new JTree(model);
             
             for (String line : lines){
                 buildTreeFromString(model, line);
             }
             jScrollPane2.getViewport().add(tree);
+            
+           
+            
+//            jTextField3.setText(tree.getLastSelectedPathComponent().toString());
             
         } catch ( NullPointerException | IOException ex) {
             Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
@@ -426,13 +439,36 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         try {
-            String chosenDir = getDir();
+            chosenDir = getDir();
             makeFile(chosenDir);
         } catch (IOException ex) {
             Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+      jTextField3.setText(tree.getLastSelectedPathComponent().toString());
+    }//GEN-LAST:event_jButton4ActionPerformed
           
+    public void valueChanged(TreeSelectionEvent e) {
+        //Returns the last path element of the selection.
+        //This method is useful only when the selection model allows a single selection.
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+        
+        if (node == null)
+            //Nothing is selected.
+            return;
+        
+        Object nodeInfo = node.getUserObject();
+        
+        if (node.isLeaf()) {
+            jTextField3.setText(node.toString());
+        } else {
+            //displayURL(helpURL);
+        }
+        
+    }
+    
         //returns whether or not a person is registered or not
     private boolean registered(UserCredentials userCredentials) throws NoPeerConnectionException, InvalidProcessStateException, InterruptedException {    
         IUserManager userManager = node.getUserManager();
@@ -535,30 +571,42 @@ public class MainMenu extends javax.swing.JFrame {
     public void makeFile(String dir) throws IOException{
         File dirList = new File("dirList.txt");
         fw = new FileWriter(dirList.getAbsoluteFile());
+        
+        String[] s = chosenDir.split("\\\\");
+        String ss = s[s.length-1];
+        chosenDirFolderName = ss;
         if (!dirList.exists()) {
             dirList.createNewFile();
         } 
-        printStuff(dir);
+        writeStuff(dir);
         fw.close();
     }
     
-    public void printStuff(String dir) throws IOException{
+    public void writeStuff(String dir) throws IOException{
         File folder = new File(dir);
             File[] listOfFiles = folder.listFiles();
            
             if(listOfFiles==null){
                return;
             }
+          //  listOfFiles
+            
             for (File f : listOfFiles){
+                
                 if(f.isFile()){
-                    fw.write(f.toString() +" |"+ f.length()+"\n");
+                    fw.write(f.toString().substring(chosenDir.length()-chosenDirFolderName.length()) +" |"+ f.length()+"\n");
                 }
-                else {
-                    fw.write(f.toString()+"\n");
-                    printStuff(f.toString());
+                else if(f.isDirectory()) {
+                    if(f.listFiles()==null){
+                        return;
+                    }else{
+                    fw.write(f.toString().substring(chosenDir.length()-chosenDirFolderName.length())+"\n");
+                    writeStuff(f.toString());
+                    }
                 }
-                fw.flush();  
-            }             
+                
+            } 
+            fw.flush();  
     }
   
     private DefaultMutableTreeNode addNodes(DefaultMutableTreeNode curTop, File dir) {
@@ -673,6 +721,7 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JFrame jFileChooser;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -681,7 +730,6 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
