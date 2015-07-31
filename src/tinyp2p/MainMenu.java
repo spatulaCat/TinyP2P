@@ -38,6 +38,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.logging.Level;
@@ -81,6 +82,7 @@ public class MainMenu extends javax.swing.JFrame {
     private String chosenDirFolderName;
     private JTree tree;
     private String selectedUser;
+    private boolean stillPopulating;
     
     public MainMenu() {
         initComponents();
@@ -129,7 +131,6 @@ public class MainMenu extends javax.swing.JFrame {
         jTextField3 = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -249,21 +250,13 @@ public class MainMenu extends javax.swing.JFrame {
         });
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 30, 150, -1));
 
-        jButton4.setText("jButton4");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 130, 80, 20));
-
         jButton5.setText("get dir");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 290, -1, -1));
+        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 70, -1, -1));
 
         jLabel3.setText(" ");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, 570, -1));
@@ -427,9 +420,9 @@ public class MainMenu extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         try {
             List<String> lines =IOUtils.readLines(new FileInputStream("dirList.txt"));
-
+            
             DefaultMutableTreeNode root = new DefaultMutableTreeNode("Shared");
-
+            
             DefaultTreeModel model = new DefaultTreeModel(root);
             tree = new JTree(model);
             
@@ -437,7 +430,7 @@ public class MainMenu extends javax.swing.JFrame {
                 buildTreeFromString(model, line);
             }
             jScrollPane2.getViewport().add(tree);
-                  
+            
 //            jTextField3.setText(tree.getLastSelectedPathComponent().toString());
             
         } catch ( NullPointerException | IOException ex) {
@@ -445,24 +438,14 @@ public class MainMenu extends javax.swing.JFrame {
         }      
     }//GEN-LAST:event_jButton3ActionPerformed
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        jLabel3.setText("Creating directory list");
+       
         try {
             chosenDir = getDir();
-            makeFile(chosenDir);
         } catch (IOException ex) {
             Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
         }
-        jLabel3.setText("Done");
-        uploadDirList();
-       
-        
-        // createDirList.execute();
-        
+        createDirListSwingWorker();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-    
-    }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         selectedUser = lm.elementAt(online.getSelectedIndex()).toString();
@@ -476,7 +459,7 @@ public class MainMenu extends javax.swing.JFrame {
             futureGet.awaitUninterruptibly();
             if (!futureGet.isEmpty()){
                 Object result = futureGet.data().object();
-                System.out.println(result.toString());
+               // System.out.println(result.toString());
                 
                 String[] fs = result.toString().split(",");
                 fs[0] = fs[0].substring(1);
@@ -527,17 +510,7 @@ public class MainMenu extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton5ActionPerformed
           
-    private void uploadDirList(){
-        jLabel3.setText("Uplodaing directory list");
-        try{
-            List<String> lines =IOUtils.readLines(new FileInputStream("dirList.txt"));
-            Number160 dirlistHash = Number160.createHash(username + "dirlist");
-            System.out.println("this hash = " + dirlistHash);
-            FuturePut futurePut = node.getPeer().put(dirlistHash).data(new Data(lines)).start();
-            futurePut.awaitUninterruptibly();
-        }catch(IOException e){System.out.println(e);}
-        jLabel3.setText("directory list uploaded");
-    }
+   
 
     public void valueChanged(TreeSelectionEvent e) {
         //Returns the last path element of the selection.
@@ -589,21 +562,79 @@ public class MainMenu extends javax.swing.JFrame {
         }
     }
     
-//     SwingWorker createDirList = new SwingWorker<String, Void>() {
-//        @Override
-//        public String doInBackground() {
-//            try {
-//                chosenDir = getDir();
-//                System.out.println("creating directory list");
-//                makeFile(chosenDir);
-//                System.out.println("directory list complete");
-//            } catch (IOException ex) {
-//                Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//            return null;
-//        }
-//        };
-    
+    private void createDirListSwingWorker()
+    {
+     SwingWorker createDirList = new SwingWorker<String, Void>() {
+        @Override
+        public String doInBackground() {
+            try {
+               // chosenDir = getDir();
+                //System.out.println("writing directory list");
+                jLabel3.setText("Saving directory list");
+                makeFile(chosenDir);
+             //   System.out.println("directory list written");
+                jLabel3.setText("Directory list saved");
+            } catch (IOException ex) {
+                Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            uploadDirList();
+            return null;
+        }
+        
+         private void uploadDirList(){
+        jLabel3.setText("Uploading directory list");
+        try{
+            List<String> lines =IOUtils.readLines(new FileInputStream("dirList.txt"));
+            Number160 dirlistHash = Number160.createHash(username + "dirlist");
+            //System.out.println("this hash = " + dirlistHash);
+            FuturePut futurePut = node.getPeer().put(dirlistHash).data(new Data(lines)).start();
+            futurePut.awaitUninterruptibly();
+        }catch(IOException e){System.out.println(e);}
+        jLabel3.setText("directory list uploaded");
+         }
+         public void makeFile(String dir) throws IOException{
+             File dirList = new File("dirList.txt");
+             fw = new FileWriter(dirList.getAbsoluteFile());
+             String[] s = chosenDir.split("\\\\");
+             String ss = s[s.length-1];
+             chosenDirFolderName = ss;
+             if (!dirList.exists()) {
+                 dirList.createNewFile();
+             }
+             writeStuff(dir);
+             fw.close();
+         }
+         
+         public void writeStuff(String dir) throws IOException{
+             File folder = new File(dir);
+             File[] listOfFiles = folder.listFiles();
+             
+             if(listOfFiles==null){
+                 return;
+             }
+             
+             for (File f : listOfFiles){
+                 
+                 if(f.isFile() && !f.isHidden()){
+                         fw.write(f.toString().substring(chosenDir.length()-chosenDirFolderName.length()) +" |"+ f.length()+"\n");       
+                 }
+                 else if(f.isDirectory()&& !f.isHidden()) { 
+                     File[] ff =  f.listFiles();
+                     if(ff != null){
+                     fw.write(f.toString().substring(chosenDir.length()-chosenDirFolderName.length())+"\n");
+                     }
+                    writeStuff(f.toString());
+                 }
+                 
+                 
+             }
+             fw.flush();
+         }
+         
+     };
+     
+     createDirList.execute();
+    }
     
     SwingWorker loginWorker = new SwingWorker<String, Void>() {
         @Override
@@ -631,9 +662,9 @@ public class MainMenu extends javax.swing.JFrame {
             }catch(IOException e){System.out.println(e);}
             return null;
         }
-        @Override
-        public void done() {  
-        }
+//        @Override
+//        public void done() {  
+//        }
     };
         
     SwingWorker listener = new SwingWorker<String, Void>() {
@@ -669,47 +700,48 @@ public class MainMenu extends javax.swing.JFrame {
         return dir;
     }
     
-    public void makeFile(String dir) throws IOException{
-        File dirList = new File("dirList.txt");
-        fw = new FileWriter(dirList.getAbsoluteFile());
-        String[] s = chosenDir.split("\\\\");
-        String ss = s[s.length-1];
-        chosenDirFolderName = ss;
-        if (!dirList.exists()) {
-            dirList.createNewFile();
-        } 
-        writeStuff(dir);
-        fw.close();
-    }
-    
-    public void writeStuff(String dir) throws IOException{
-        File folder = new File(dir);
-            File[] listOfFiles = folder.listFiles();
-           
-            if(listOfFiles==null){
-               return;
-            }
-            
-            for (File f : listOfFiles){
-                
-                if(f.isFile()){
-                    fw.write(f.toString().substring(chosenDir.length()-chosenDirFolderName.length()) +" |"+ f.length()+"\n");
-                }
-                else if(f.isDirectory()) {     
-                    fw.write(f.toString().substring(chosenDir.length()-chosenDirFolderName.length())+"\n");
-                    writeStuff(f.toString());
-                    }
-                
-                
-            } 
-            fw.flush();  
-    }
-  
      private void buildTreeFromString(final DefaultTreeModel model, final String str) {
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
         String [] strings = str.split("\\\\");
         DefaultMutableTreeNode node = root;
+        int z = 1; 
         for (String s: strings) {
+            
+           // System.out.println(Arrays.toString(s.split("\\|")));
+            try{
+            if(s.substring(0,11).equalsIgnoreCase("desktop.ini")){
+                 return;
+             }
+            }catch(StringIndexOutOfBoundsException dsdf){}  
+                 
+                 
+            String[] fname = s.split("\\|");
+            if(fname.length > 1){
+                double size = Double.parseDouble(fname[1].trim());
+                String prettySize;
+                if(size>1000000){
+                    size = size/1000000;
+                    size =  (double) Math.round(size * 100) / 100;
+                     prettySize = "(" + size + " Mb)";
+                }
+                else if(size>1000){
+                    size = size/1000;
+                     prettySize = "(" + size + " Kb)";
+                }    
+                
+                else{
+                 prettySize = "(" + size + " b)";
+                }   
+                fname[1] = prettySize;
+                s = fname[0] + fname[1];
+                           }
+           //System.out.println(getName().substring(1,12));
+//            if(s.substring(1,12)){
+//                
+//            }
+            
+            
+            
             // Look for the index of a node at the current level that
             // has a value equal to the current string
             int index = childIndex(node, s);
@@ -783,7 +815,6 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JFrame jFileChooser;
     private javax.swing.JLabel jLabel1;
