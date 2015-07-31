@@ -38,6 +38,10 @@ nbproject/*
 # Windows shortcuts
 *.lnk
 
+dirList.txt
+
+
+
 # =========================
 # Operating System Files
 # =========================
