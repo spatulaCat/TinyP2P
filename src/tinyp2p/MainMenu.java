@@ -28,6 +28,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -38,6 +39,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
@@ -288,6 +290,7 @@ public class MainMenu extends javax.swing.JFrame {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         loginWorker.execute();
         jLabel1.setText("Welcome, "+ username+"!");
+        listenWorker.execute();
         
         displayUsers du = new displayUsers();                      //set up timer
         Timer tmr = new javax.swing.Timer(10000, du);
@@ -296,6 +299,9 @@ public class MainMenu extends javax.swing.JFrame {
         tmr.setInitialDelay(0);
         tmr.setRepeats(true);
         tmr.start();
+        
+       
+        
         
 //        try {
 //            ServerSocket serverSocket = new ServerSocket(15123);
@@ -336,38 +342,54 @@ public class MainMenu extends javax.swing.JFrame {
     }
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String f = jTextField1.getText();
-        
-        //  jTextField2.setText(lm.elementAt(online.getSelectedIndex()).toString());
-        //  String user = jTextField2.getText();
-        System.out.println("Requesting file");
-        
-        int filesize=1022386;
-        int bytesRead;
-        int currentTot = 0;
-        Socket socket;
         try {
-            socket = new Socket("146.231.133.148",15123);
-            
-            byte [] bytearray = new byte [filesize];
-            InputStream is = socket.getInputStream();
-            FileOutputStream fos = new FileOutputStream("bg1copy.png");
-            BufferedOutputStream bos = new BufferedOutputStream(fos);
-            bytesRead = is.read(bytearray,0,bytearray.length);
-            currentTot = bytesRead;
-            System.out.println("Listening for the file");
-            do { bytesRead = is.read(bytearray, currentTot, (bytearray.length-currentTot));
-            if(bytesRead >= 0) currentTot += bytesRead;
-            }
-            while(bytesRead > -1);
-            bos.write(bytearray, 0 , currentTot);
-            bos.flush();
-            bos.close();
-            socket.close();
-            System.out.println("file successfully transferred");
-        } catch (IOException ex) {
+            TCPClient client = new TCPClient();  
+            client.SendToServer("tiny.png" + 600);
+            client.close();
+        } catch (Exception ex) {
             Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        
+        
+        
+        
+//        String f = jTextField1.getText();
+//        
+//        //jTextField2.setText(lm.elementAt(online.getSelectedIndex()).toString());
+//        //String user = jTextField2.getText();
+//        System.out.println("Requesting file");
+//        
+//        int filesize=1022386;
+//        int bytesRead;
+//        int currentTot = 0;
+//        Socket socket;
+//        try {
+//            socket = new Socket("146.231.133.148",15123);
+//            
+//            byte [] bytearray = new byte [filesize];
+//            InputStream is = socket.getInputStream();
+//            FileOutputStream fos = new FileOutputStream("bg1copy.png");
+//            BufferedOutputStream bos = new BufferedOutputStream(fos);
+//            bytesRead = is.read(bytearray,0,bytearray.length);
+//            currentTot = bytesRead;
+//            System.out.println("Listening for the file");
+//            do { bytesRead = is.read(bytearray, currentTot, (bytearray.length-currentTot));
+//            if(bytesRead >= 0) currentTot += bytesRead;
+//            }
+//            while(bytesRead > -1);
+//            bos.write(bytearray, 0 , currentTot);
+//            bos.flush();
+//            bos.close();
+//            socket.close();
+//            System.out.println("file successfully transferred");
+//        } catch (IOException ex) {
+//            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+        
+        
+        
+        
 //        try {
 //            sendToPort(f,user);
 //
@@ -636,6 +658,40 @@ public class MainMenu extends javax.swing.JFrame {
      createDirList.execute();
     }
     
+    
+    SwingWorker listenWorker = new SwingWorker<String, Void>() {
+        @Override
+        public String doInBackground() throws Exception {
+//            try {
+//                ServerSocket serverSocket = new ServerSocket(15123);
+//                try (Socket socket = serverSocket.accept()) {
+//                  //  InputStream stream = new ByteArrayInputStream("hi".getBytes(StandardCharsets.UTF_8));
+//                  //  BufferedInputStream bin = new BufferedInputStream(stream);
+//                    //bin.read(bytearray,0,bytearray.length);
+//                    OutputStream os = socket.getOutputStream();
+//                    System.out.println("Sending Files...");
+//                    
+//                    os.write("asd".getBytes(),0,"asd".length());
+//                    os.flush();
+//                }
+//                
+//            } catch (IOException ex) {
+//                Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+            
+            TCPServer server = new TCPServer();
+           // server.run();
+            
+            
+            
+            return null;
+            
+        }
+//        @Override
+//        public void done() {
+//        }
+    };
+    
     SwingWorker loginWorker = new SwingWorker<String, Void>() {
         @Override
         public String doInBackground() {
@@ -667,28 +723,28 @@ public class MainMenu extends javax.swing.JFrame {
 //        }
     };
         
-    SwingWorker listener = new SwingWorker<String, Void>() {
-        @Override
-        public String doInBackground() throws IOException {
-            ServerSocket serverSocket = new ServerSocket(15123);
-            Socket socket = serverSocket.accept();
-            File transferFile = new File ("tiny6.png");
-            byte [] bytearray = new byte [(int)transferFile.length()];
-            FileInputStream fin = new FileInputStream(transferFile);
-            BufferedInputStream bin = new BufferedInputStream(fin);
-            bin.read(bytearray,0,bytearray.length);
-            OutputStream os = socket.getOutputStream();
-            System.out.println("Sending Files...");
-            os.write(bytearray,0,bytearray.length);
-            os.flush();
-            //socket.close();
-            System.out.println("File transfer complete");
-            return null;
-        }
+//    SwingWorker listener = new SwingWorker<String, Void>() {
 //        @Override
-//         public void done() {   
-//         }
-    };
+//        public String doInBackground() throws IOException {
+//            ServerSocket serverSocket = new ServerSocket(15123);
+//            Socket socket = serverSocket.accept();
+//            File transferFile = new File ("tiny6.png");
+//            byte [] bytearray = new byte [(int)transferFile.length()];
+//            FileInputStream fin = new FileInputStream(transferFile);
+//            BufferedInputStream bin = new BufferedInputStream(fin);
+//            bin.read(bytearray,0,bytearray.length);
+//            OutputStream os = socket.getOutputStream();
+//            System.out.println("Sending Files...");
+//            os.write(bytearray,0,bytearray.length);
+//            os.flush();
+//            //socket.close();
+//            System.out.println("File transfer complete");
+//            return null;
+//        }
+////        @Override
+////         public void done() {   
+////         }
+//    };
 
     public String getDir() throws IOException{
         String dir="";
