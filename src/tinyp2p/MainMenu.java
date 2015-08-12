@@ -360,14 +360,14 @@ public class MainMenu extends javax.swing.JFrame {
             //String suIP = userIPs.get(selectedUser);
                     
             recSocket = new Socket(userIPs.get(selectedUser).substring(1),15123);
-            
+            System.out.println(userIPs.get(selectedUser).substring(1));
             byte [] bytearray = new byte [filesize];
             InputStream is = recSocket.getInputStream();
-            FileOutputStream fos = new FileOutputStream("newfile.png");
+            FileOutputStream fos = new FileOutputStream("newfile.txt");
             BufferedOutputStream bos = new BufferedOutputStream(fos);
             bytesRead = is.read(bytearray,0,bytearray.length);
             currentTot = bytesRead;
-            System.out.println("Listening for the file");
+          //  System.out.println("Listening for the file");
             do { bytesRead = is.read(bytearray, currentTot, (bytearray.length-currentTot));
             if(bytesRead >= 0) currentTot += bytesRead;
             }

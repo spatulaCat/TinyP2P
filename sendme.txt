@@ -25,7 +25,6 @@ public class TCPServer {
     public TCPServer() throws Exception{
         //create welcoming socket at port 6789
         ServerSocket welcomeSocket = new ServerSocket(6789);
-      
         System.out.println("server listening");
         while (true) {
             //block on welcoming socket for contact by a client
@@ -35,23 +34,6 @@ public class TCPServer {
             Connection c = new Connection(connectionSocket);
         }
     }
-    
-    public void send() throws IOException{
-       
-       
-//        File transferFile = new File (reqFile);
-//        
-//        byte [] bytearray = new byte [(int)transferFile.length()];
-//        FileInputStream fin = new FileInputStream(transferFile);
-//        BufferedInputStream bin = new BufferedInputStream(fin);
-//        bin.read(bytearray,0,bytearray.length);
-//        OutputStream os = sendSocket.getOutputStream();
-//        
-//        os.write(bytearray,0,bytearray.length);
-//        os.flush();
-//        sendSocket.close();
-    }
-    
     class Connection extends Thread{
         Socket connectionSocket;
         Connection(Socket _connectionSocket){
@@ -85,24 +67,21 @@ public class TCPServer {
                     System.out.println("ip: " + reqIP);
                     System.out.println("filename: " + reqFile);
                     System.out.println("file size: " + fs);        
-                     wait(10000);
+
+                     ServerSocket serverSocket = new ServerSocket(15123);
+                     Socket sendSocket = serverSocket.accept();
+                     File transferFile = new File (reqFile);
                      
+                     byte [] bytearray = new byte [(int)transferFile.length()];
+                     FileInputStream fin = new FileInputStream(transferFile);
+                     BufferedInputStream bin = new BufferedInputStream(fin);
+                     bin.read(bytearray,0,bytearray.length);
+                     OutputStream os = sendSocket.getOutputStream();
                      
-                      ServerSocket serverSocket = new ServerSocket(15123);
-                      while(true){
-                        try (Socket sendSocket = serverSocket.accept()) {
-                            File transferFile = new File (reqFile);
-                            
-                            byte [] bytearray = new byte [(int)transferFile.length()];
-                            FileInputStream fin = new FileInputStream(transferFile);
-                            BufferedInputStream bin = new BufferedInputStream(fin);
-                            bin.read(bytearray,0,bytearray.length);
-                            OutputStream os = sendSocket.getOutputStream();
-                            
-                            os.write(bytearray,0,bytearray.length);
-                            os.flush();
-                        }
-                     }
+                     os.write(bytearray,0,bytearray.length);
+                     os.flush();
+                     sendSocket.close();
+                     
                      
                      
                      
