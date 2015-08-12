@@ -15,7 +15,7 @@ import java.net.*;
 
 class TCPClient {
     //String name="";
-    String host = "localhost";
+    String host = "146.231.123.43";
     int port = 6789;
     Socket socket = null;
 //    public static void main(String args[]) throws Exception{
