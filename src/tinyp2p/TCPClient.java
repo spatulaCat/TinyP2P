@@ -12,10 +12,11 @@ package tinyp2p;
  */
 import java.io.*;
 import java.net.*;
+import java.util.Arrays;
 
 class TCPClient {
     //String name="";
-    String host = "146.231.123.43";
+    String host = "localhost";
     int port = 6789;
     Socket socket = null;
 //    public static void main(String args[]) throws Exception{
@@ -31,11 +32,12 @@ class TCPClient {
 //        
 //    }
     
-    public static void request(String filename, int size) throws Exception{
-         TCPClient client = new TCPClient();
-        client.SendToServer(filename + size);
-         client.close();
-    }
+//    public static void request(String filename, int size) throws Exception{
+//         TCPClient client = new TCPClient();
+//         String[] d = {filename,};
+//        client.SendToServer(new String d= {filename, size};
+//         client.close();
+//    }
 
     TCPClient(String _host, int _port) throws Exception{
         host = _host;
@@ -45,11 +47,11 @@ class TCPClient {
     TCPClient() throws Exception{
         socket = new Socket(host, port);
     }
-    void SendToServer(String msg) throws Exception{
+    void SendToServer(String[] msg) throws Exception{
         //create output stream attached to socket
         PrintWriter outToServer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
         //send msg to server
-        outToServer.print(msg + '\n');
+        outToServer.print(Arrays.toString(msg) + '\n');
         outToServer.flush();
     }
     String RecieveFromServer() throws Exception{
@@ -57,6 +59,7 @@ class TCPClient {
         BufferedReader inFromServer = new BufferedReader(new InputStreamReader (socket.getInputStream()));
         //read line from server
         String res = inFromServer.readLine(); // if connection closes on server end, this throws java.net.SocketException 
+        
         return res;
     }
     void close() throws IOException{

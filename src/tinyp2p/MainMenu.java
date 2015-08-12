@@ -26,22 +26,15 @@ package tinyp2p;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -67,11 +60,11 @@ import org.hive2hive.processframework.exceptions.InvalidProcessStateException;
 import org.hive2hive.processframework.exceptions.ProcessExecutionException;
 import util.ConsoleFileAgent;
 import net.tomp2p.peers.Number160;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.concurrent.ConcurrentHashMap;
 
-/**
- *
- * @author Nicky
- */
+
 public class MainMenu extends javax.swing.JFrame {
     private String username;
     private String password;
@@ -84,7 +77,8 @@ public class MainMenu extends javax.swing.JFrame {
     private String chosenDirFolderName;
     private JTree tree;
     private String selectedUser;
-    private boolean stillPopulating;
+   // private boolean stillPopulating;
+    public ConcurrentHashMap<String, String> userIPs;
     
     public MainMenu() {
         initComponents();
@@ -104,6 +98,7 @@ public class MainMenu extends javax.swing.JFrame {
         tinyButt.setBorderPainted(false);
         
         fw = new FileWriter("dirList.txt");
+        userIPs = new ConcurrentHashMap();
     }
     
     /**
@@ -294,13 +289,13 @@ public class MainMenu extends javax.swing.JFrame {
         
         displayUsers du = new displayUsers();                      //set up timer
         Timer tmr = new javax.swing.Timer(10000, du);
-        
-        tmr.addActionListener(du);
+       
+        //tmr.addActionListener(du);
         tmr.setInitialDelay(0);
         tmr.setRepeats(true);
         tmr.start();
         
-       
+        
         
         
 //        try {
@@ -343,9 +338,46 @@ public class MainMenu extends javax.swing.JFrame {
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
-            TCPClient client = new TCPClient();  
-            client.SendToServer(username + "requeting tiny.png" + 600);
+             
+            TCPClient client = new TCPClient(userIPs.get(selectedUser).substring(1),6789);
+            //client.host = userIPs.get(selectedUser);
+            String f = tree.getSelectionPath().getLastPathComponent().toString();
+            String[] request = {username,f};
+            client.SendToServer(request);
             client.close();
+            
+            String[] parts = f.split("\\|");
+            // System.out.println(Arrays.toString(parts2));
+            String fileSize = parts[1].substring(0,parts[1].length()-1);
+           
+            int filesize = Integer.parseInt(fileSize.trim());
+            
+   
+//            int bytesRead;
+//            int currentTot = 0;
+//            Socket recSocket;
+
+            //String suIP = userIPs.get(selectedUser);
+                    
+//            recSocket = new Socket(userIPs.get(selectedUser),15123);
+//            
+//            byte [] bytearray = new byte [filesize];
+//            InputStream is = recSocket.getInputStream();
+//            FileOutputStream fos = new FileOutputStream("bg1copy.png");
+//            BufferedOutputStream bos = new BufferedOutputStream(fos);
+//            bytesRead = is.read(bytearray,0,bytearray.length);
+//            currentTot = bytesRead;
+//            System.out.println("Listening for the file");
+//            do { bytesRead = is.read(bytearray, currentTot, (bytearray.length-currentTot));
+//            if(bytesRead >= 0) currentTot += bytesRead;
+//            }
+//            while(bytesRead > -1);
+//            bos.write(bytearray, 0 , currentTot);
+//            bos.flush();
+//            bos.close();
+//            recSocket.close();
+//            System.out.println("file successfully transferred");
+            
         } catch (Exception ex) {
             Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -355,18 +387,18 @@ public class MainMenu extends javax.swing.JFrame {
         
         
 //        String f = jTextField1.getText();
-//        
+//
 //        //jTextField2.setText(lm.elementAt(online.getSelectedIndex()).toString());
 //        //String user = jTextField2.getText();
 //        System.out.println("Requesting file");
-//        
+//
 //        int filesize=1022386;
 //        int bytesRead;
 //        int currentTot = 0;
 //        Socket socket;
 //        try {
 //            socket = new Socket("146.231.133.148",15123);
-//            
+//
 //            byte [] bytearray = new byte [filesize];
 //            InputStream is = socket.getInputStream();
 //            FileOutputStream fos = new FileOutputStream("bg1copy.png");
@@ -411,24 +443,27 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
     
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // listener.execute();
-        try {
-            ServerSocket serverSocket = new ServerSocket(15123);
-            Socket socket = serverSocket.accept();
-            File transferFile = new File ("tiny6.png");
-            byte [] bytearray = new byte [(int)transferFile.length()];
-            FileInputStream fin = new FileInputStream(transferFile);
-            BufferedInputStream bin = new BufferedInputStream(fin);
-            bin.read(bytearray,0,bytearray.length);
-            OutputStream os = socket.getOutputStream();
-            System.out.println("Sending Files...");
-            os.write(bytearray,0,bytearray.length);
-            os.flush();
-            socket.close();
-            System.out.println("File transfer complete");
-        } catch (IOException ex) {
-            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
-        }
+                System.out.println(userIPs.toString());
+
+
+// listener.execute();
+//        try {
+//            ServerSocket serverSocket = new ServerSocket(15123);
+//            Socket socket = serverSocket.accept();
+//            File transferFile = new File ("tiny6.png");
+//            byte [] bytearray = new byte [(int)transferFile.length()];
+//            FileInputStream fin = new FileInputStream(transferFile);
+//            BufferedInputStream bin = new BufferedInputStream(fin);
+//            bin.read(bytearray,0,bytearray.length);
+//            OutputStream os = socket.getOutputStream();
+//            System.out.println("Sending Files...");
+//            os.write(bytearray,0,bytearray.length);
+//            os.flush();
+//            socket.close();
+//            System.out.println("File transfer complete");
+//        } catch (IOException ex) {
+//            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+//        }
 //        try {
 //            int bytesRead;
 //            Socket socket = new Socket("146.231.133.148",15123);
@@ -562,21 +597,22 @@ public class MainMenu extends javax.swing.JFrame {
     class displayUsers implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent evt){
-            lm = new DefaultListModel();
+            lm = new DefaultListModel();    
             online.setModel(lm);
             try{
              List<PeerAddress> peerMap = node.getPeer().peerBean().peerMap().all();
-             for (PeerAddress pa : peerMap){                 
+             for (PeerAddress pa : peerMap){   
                     FutureGet futureGet = node.getPeer().get(pa.peerId()).start();
                     futureGet.awaitUninterruptibly();                   
                     if (!futureGet.isEmpty()){
-                        try {                 
-                            lm.addElement(futureGet.data().object());
-                            online.setModel(lm);
+                        try {          
+                            Object n = futureGet.data().object();
+                            lm.addElement(n);
+                            userIPs.putIfAbsent(n.toString(),pa.inetAddress().toString());
+
                         } catch (ClassNotFoundException | IOException ex) {
                         }
-                    }                    
-                     futureGet.cancel();
+                    }        
              }
             online.setModel(lm);
             }catch(NullPointerException e){            
@@ -771,26 +807,26 @@ public class MainMenu extends javax.swing.JFrame {
             }catch(StringIndexOutOfBoundsException dsdf){}  
                  
                  
-            String[] fname = s.split("\\|");
-            if(fname.length > 1){
-                double size = Double.parseDouble(fname[1].trim());
-                String prettySize;
-                if(size>1000000){
-                    size = size/1000000;
-                    size =  (double) Math.round(size * 100) / 100;
-                     prettySize = "(" + size + " Mb)";
-                }
-                else if(size>1000){
-                    size = size/1000;
-                     prettySize = "(" + size + " Kb)";
-                }    
-                
-                else{
-                 prettySize = "(" + size + " b)";
-                }   
-                fname[1] = prettySize;
-                s = fname[0] + fname[1];
-                           }
+//            String[] fname = s.split("\\|");
+//            if(fname.length > 1){
+//                double size = Double.parseDouble(fname[1].trim());
+//                String prettySize;
+//                if(size>1000000){
+//                    size = size/1000000;
+//                    size =  (double) Math.round(size * 100) / 100;
+//                     prettySize = "(" + size + " Mb)";
+//                }
+//                else if(size>1000){
+//                    size = size/1000;
+//                     prettySize = "(" + size + " Kb)";
+//                }    
+//                
+//                else{
+//                 prettySize = "(" + size + " b)";
+//                }   
+//                fname[1] = prettySize;
+//                s = fname[0] + fname[1];
+//                           }
            //System.out.println(getName().substring(1,12));
 //            if(s.substring(1,12)){
 //                
