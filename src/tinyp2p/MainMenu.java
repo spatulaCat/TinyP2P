@@ -356,11 +356,12 @@ public class MainMenu extends javax.swing.JFrame {
             int bytesRead;
             int currentTot = 0;
             Socket recSocket;
-
+              System.out.println(userIPs.get(selectedUser).substring(1));
+            
             //String suIP = userIPs.get(selectedUser);
-                    
-            recSocket = new Socket(userIPs.get(selectedUser).substring(1),15123);
-            System.out.println(userIPs.get(selectedUser).substring(1));
+          
+            recSocket = new Socket(userIPs.get(selectedUser).substring(1),6789);
+           
             byte [] bytearray = new byte [filesize];
             InputStream is = recSocket.getInputStream();
             FileOutputStream fos = new FileOutputStream("newfile.txt");
