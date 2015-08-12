@@ -353,30 +353,30 @@ public class MainMenu extends javax.swing.JFrame {
             int filesize = Integer.parseInt(fileSize.trim());
             
    
-//            int bytesRead;
-//            int currentTot = 0;
-//            Socket recSocket;
+            int bytesRead;
+            int currentTot = 0;
+            Socket recSocket;
 
             //String suIP = userIPs.get(selectedUser);
                     
-//            recSocket = new Socket(userIPs.get(selectedUser),15123);
-//            
-//            byte [] bytearray = new byte [filesize];
-//            InputStream is = recSocket.getInputStream();
-//            FileOutputStream fos = new FileOutputStream("bg1copy.png");
-//            BufferedOutputStream bos = new BufferedOutputStream(fos);
-//            bytesRead = is.read(bytearray,0,bytearray.length);
-//            currentTot = bytesRead;
-//            System.out.println("Listening for the file");
-//            do { bytesRead = is.read(bytearray, currentTot, (bytearray.length-currentTot));
-//            if(bytesRead >= 0) currentTot += bytesRead;
-//            }
-//            while(bytesRead > -1);
-//            bos.write(bytearray, 0 , currentTot);
-//            bos.flush();
-//            bos.close();
-//            recSocket.close();
-//            System.out.println("file successfully transferred");
+            recSocket = new Socket(userIPs.get(selectedUser).substring(1),15123);
+            
+            byte [] bytearray = new byte [filesize];
+            InputStream is = recSocket.getInputStream();
+            FileOutputStream fos = new FileOutputStream("newfile.png");
+            BufferedOutputStream bos = new BufferedOutputStream(fos);
+            bytesRead = is.read(bytearray,0,bytearray.length);
+            currentTot = bytesRead;
+            System.out.println("Listening for the file");
+            do { bytesRead = is.read(bytearray, currentTot, (bytearray.length-currentTot));
+            if(bytesRead >= 0) currentTot += bytesRead;
+            }
+            while(bytesRead > -1);
+            bos.write(bytearray, 0 , currentTot);
+            bos.flush();
+            bos.close();
+            recSocket.close();
+            System.out.println("file successfully transferred");
             
         } catch (Exception ex) {
             Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
@@ -510,8 +510,8 @@ public class MainMenu extends javax.swing.JFrame {
         
         try{
             Number160 dirlistHash2 = Number160.createHash(selectedUser + "dirlist");
-            System.out.println("hash = " + dirlistHash2);
-            System.out.println("user = " + selectedUser);
+//            System.out.println("hash = " + dirlistHash2);
+//            System.out.println("user = " + selectedUser);
             FutureGet futureGet = node.getPeer().get(dirlistHash2).start();
             futureGet.awaitUninterruptibly();
             if (!futureGet.isEmpty()){

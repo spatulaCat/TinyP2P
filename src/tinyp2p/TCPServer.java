@@ -62,7 +62,7 @@ public class TCPServer {
                     
                      
                    // System.out.println(connectionSocket.getInetAddress());
-                    System.out.println("Client sent: "+clientSentence+"\n");
+                  //  System.out.println("Client sent: "+clientSentence+"\n");
                     System.out.println("user: " + reqUser);
                     System.out.println("ip: " + reqIP);
                     System.out.println("filename: " + reqFile);
