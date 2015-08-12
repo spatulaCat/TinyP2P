@@ -344,7 +344,7 @@ public class MainMenu extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
             TCPClient client = new TCPClient();  
-            client.SendToServer("tiny.png" + 600);
+            client.SendToServer(username + "requeting tiny.png" + 600);
             client.close();
         } catch (Exception ex) {
             Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
