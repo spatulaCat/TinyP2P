@@ -97,9 +97,10 @@ public class TCPServer {
                     
                     
                  //   File transferFile = new File (reqFile);
-                    File transferFile = new File ("C:\\Users\\Nicky\\Documents\\GitHub\\tomp2p-core-5.0-Beta6.jar");
+                    File transferFile = new File ("C:\\Users\\Nicky\\Music\\iTunes\\iTunes Media\\Music\\Tinashe\\TheLastNight.mp3");
                     byte [] bytearray = new byte [(int)transferFile.length()];
                      System.out.println("File input stream");
+                     System.out.println(transferFile.length());
                     FileInputStream fin = new FileInputStream(transferFile);
                       System.out.println(fin.toString());
                     System.out.println("buffered input stream");

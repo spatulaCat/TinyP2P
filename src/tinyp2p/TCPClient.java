@@ -60,28 +60,51 @@ class TCPClient {
 //        //read line from server
 //        String res = inFromServer.readLine(); // if connection closes on server end, this throws java.net.SocketException
 //
-        int bytesRead;
-        int currentTot = 0;
-        int filesize = 483329;
+       // int bytesRead;
+       // int currentTot = 0;
+       // int filesize = 483329;
       
-        byte [] bytearray = new byte [filesize];
+        
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+       // int byteToBeRead = -1;
+        //byte [] bytearray = new byte [filesize];
         InputStream is = socket.getInputStream();
-        FileOutputStream fos = new FileOutputStream("tomp2pcopy.jar");
+        FileOutputStream fos = new FileOutputStream("song.mp3");
         System.out.println("opening stream");
-        try (BufferedOutputStream bos = new BufferedOutputStream(fos)) {
-            System.out.println("reading bytes");
-            bytesRead = is.read(bytearray,0,bytearray.length);
-            System.out.println("update total");
-            currentTot = bytesRead;
-            System.out.println("Listening for the file");
-            do { bytesRead = is.read(bytearray, currentTot, (bytearray.length-currentTot));
-            if(bytesRead >= 0) currentTot += bytesRead;
-            }
-            while(bytesRead > -1);
-            bos.write(bytearray, 0 , currentTot);
-            bos.flush();
-            socket.close();
+        BufferedOutputStream bos = new BufferedOutputStream(fos);
+        
+        int count;
+        byte[] buffer = new byte[8192];
+        while ((count = is.read(buffer)) > 0)
+        {
+            bos.write(buffer, 0, count);
+             bos.flush();
         }
+       
+            socket.close();
+        
+//        try (BufferedOutputStream bos = new BufferedOutputStream(fos)) {
+//            System.out.println("reading bytes");
+//            bytesRead = is.read(bytearray,0,bytearray.length);
+//            System.out.println("update total");
+//            currentTot = bytesRead;
+//            System.out.println("Listening for the file");
+//            do { bytesRead = is.read(bytearray, currentTot, (bytearray.length-currentTot));
+//            if(bytesRead >= 0) currentTot += bytesRead;
+//            }
+//            
+//            int count;
+//            byte[] buffer = new byte[8192];
+//            while ((count = in.read(buffer)) > 0)
+//            {
+//                out.write(buffer, 0, count);
+//            }
+//            
+//            while(bytesRead > -1);
+//            bos.write(bytearray, 0 , currentTot);
+//            bos.flush();
+//            socket.close();
+ //       }
        
         System.out.println("file successfully transferred");
         
