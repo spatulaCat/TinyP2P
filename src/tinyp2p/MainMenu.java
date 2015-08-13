@@ -63,6 +63,7 @@ import net.tomp2p.peers.Number160;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.concurrent.ConcurrentHashMap;
+import javax.swing.tree.TreePath;
 
 
 public class MainMenu extends javax.swing.JFrame {
@@ -78,7 +79,8 @@ public class MainMenu extends javax.swing.JFrame {
     private JTree tree;
     private String selectedUser;
    // private boolean stillPopulating;
-    public ConcurrentHashMap<String, String> userIPs;
+    private ConcurrentHashMap<String, String> userIPs;
+    public TCPServer server;
     
     public MainMenu() {
         initComponents();
@@ -282,6 +284,10 @@ public class MainMenu extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
     
+    public String getMyDir(){
+        return chosenDir;
+    }
+    
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         loginWorker.execute();
         jLabel1.setText("Welcome, "+ username+"!");
@@ -337,13 +343,19 @@ public class MainMenu extends javax.swing.JFrame {
     }
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try {
+        try { 
+            String fname = tree.getSelectionPath().getLastPathComponent().toString();
+            String[] request = {username,fname};
+            TCPClient client = new TCPClient(userIPs.get(selectedUser).substring(1),6789,fname);
              
-            TCPClient client = new TCPClient(userIPs.get(selectedUser).substring(1),6789);
-            //client.host = userIPs.get(selectedUser);
-            String f = tree.getSelectionPath().getLastPathComponent().toString();
-            String[] request = {username,f};
+            
+            
+            
+            
             client.SendToServer(request);
+           
+            
+            
             System.out.println(client.RecieveFromServer());
             client.close();
             
@@ -676,7 +688,9 @@ public class MainMenu extends javax.swing.JFrame {
              for (File f : listOfFiles){
                  
                  if(f.isFile() && !f.isHidden()){
-                         fw.write(f.toString().substring(chosenDir.length()-chosenDirFolderName.length()) +" |"+ f.length()+"\n");       
+                        // fw.write(f.toString().substring(chosenDir.length()-chosenDirFolderName.length()) +" |"+ f.length()+"\n");       
+                 fw.write(f.toString().substring(chosenDir.length()-chosenDirFolderName.length())+"\n");       
+                 
                  }
                  else if(f.isDirectory()&& !f.isHidden()) { 
                      File[] ff =  f.listFiles();
@@ -716,8 +730,9 @@ public class MainMenu extends javax.swing.JFrame {
 //            } catch (IOException ex) {
 //                Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
 //            }
+            //System.out.println(chosenDir);
+            server = new TCPServer();
             
-            TCPServer server = new TCPServer();
            // server.run();
             
             
@@ -725,6 +740,12 @@ public class MainMenu extends javax.swing.JFrame {
             return null;
             
         }
+        
+//        public void setMD(String md){
+//            server.setMyDir(md);
+//        }
+//        
+        
 //        @Override
 //        public void done() {
 //        }
@@ -791,7 +812,13 @@ public class MainMenu extends javax.swing.JFrame {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             dir =  fileChooser.getSelectedFile().getAbsolutePath();     
         }
-        return dir;
+        //System.out.println(dir);
+       // server.setMyDir(dir);
+        File settings = new File("TinyP2PSettings.txt");
+        try (FileWriter fw2 = new FileWriter(settings)) {
+            fw2.write(dir);
+        }
+         return dir;
     }
     
      private void buildTreeFromString(final DefaultTreeModel model, final String str) {

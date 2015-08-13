@@ -12,8 +12,10 @@ package tinyp2p;
 import java.io.*;
 import java.net.*;
 import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.io.IOUtils;
 
 public class TCPServer {
 //    public static void main (String args[]) throws Exception{
@@ -23,8 +25,11 @@ public class TCPServer {
     String reqUser;
     String reqIP;
     String reqFile;
+    String myDir;
     
     public TCPServer() throws Exception{
+        //this.myDir = myDir;
+        
         //create welcoming socket at port 6789
         ServerSocket welcomeSocket = new ServerSocket(6789);
         
@@ -37,6 +42,27 @@ public class TCPServer {
             Connection c = new Connection(connectionSocket);
         }
     }
+    
+    public void setMyDir() throws FileNotFoundException, IOException{
+        List<String> lines =IOUtils.readLines(new FileInputStream("TinyP2PSettings.txt"));
+        myDir = lines.get(0);
+
+//        BufferedReader br = new BufferedReader(new FileReader("TinP2PSettings.txt"));
+//        try {
+//            StringBuilder sb = new StringBuilder();
+//            String line = br.readLine();
+//            
+//            while (line != null) {
+//                sb.append(line);
+//                sb.append(System.lineSeparator());
+//                line = br.readLine();
+//            }
+//            String everything = sb.toString();
+//        } finally {
+//            br.close();
+//        }
+    }
+    
 //    class Send extends Thread{
 //        public void run(){
 //            while(true){
@@ -82,27 +108,33 @@ public class TCPServer {
                     String[] parts = clientSentence.split(",");
                     reqUser = parts[0].substring(1) ;
                     reqIP = connectionSocket.getInetAddress().toString();
-                    reqFile = parts[1];
+                    reqFile = parts[1].substring(0,parts[1].length()-1);
                     
-                    String[] parts2 = reqFile.split("\\|");
+                    //String[] parts2 = reqFile.split("\\|");
                     // System.out.println(Arrays.toString(parts2));
-                    String fileSize = parts2[1].substring(0,parts2[1].length()-1);
-                    int fs = Integer.parseInt(fileSize.trim());
-                    reqFile = parts2[0];
+                    //String fileSize = parts2[1].substring(0,parts2[1].length()-1);
+                    //int fs = Integer.parseInt(fileSize.trim());
+                   // reqFile = parts2[0];
                     
                     System.out.println("user: " + reqUser);
                     System.out.println("ip: " + reqIP);
                     System.out.println("filename: " + reqFile);
-                    System.out.println("file size: " + fs);
+                   // System.out.println("file size: " + fs);
                     
+                    setMyDir();
+                    System.out.println("File located: " + myDir );
                     
+                    System.out.println("complete path = " + myDir + "\\" + reqFile.substring(1));
+                    String fullpath = myDir + "\\" + reqFile.substring(1);
+                    String newpath = fullpath.replaceAll("\\\\","/");
+                    System.out.println(newpath);
                  //   File transferFile = new File (reqFile);
-                    File transferFile = new File ("C:\\Users\\Nicky\\Music\\iTunes\\iTunes Media\\Music\\Tinashe\\TheLastNight.mp3");
+                    File transferFile = new File (newpath);
                     byte [] bytearray = new byte [(int)transferFile.length()];
                      System.out.println("File input stream");
-                     System.out.println(transferFile.length());
+                     System.out.println("File size " + transferFile.length());
                     FileInputStream fin = new FileInputStream(transferFile);
-                      System.out.println(fin.toString());
+                   //   System.out.println(fin.toString());
                     System.out.println("buffered input stream");
                     BufferedInputStream bin = new BufferedInputStream(fin);
                     System.out.println("read in file");

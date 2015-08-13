@@ -19,6 +19,7 @@ class TCPClient {
     String host = "localhost";
     int port = 6789;
     Socket socket = null;
+    String fname;
 //    public static void main(String args[]) throws Exception{
 //       // TCPClient client = new TCPClient();
 //       // client.SendToServer("");
@@ -39,10 +40,11 @@ class TCPClient {
 //         client.close();
 //    }
     
-    TCPClient(String _host, int _port) throws Exception{
+    TCPClient(String _host, int _port, String fname) throws Exception{
         host = _host;
         port = _port;
         socket = new Socket(host, port);
+        this.fname = fname;
     }
     TCPClient() throws Exception{
         socket = new Socket(host, port);
@@ -69,7 +71,8 @@ class TCPClient {
        // int byteToBeRead = -1;
         //byte [] bytearray = new byte [filesize];
         InputStream is = socket.getInputStream();
-        FileOutputStream fos = new FileOutputStream("song.mp3");
+        System.out.println(fname);
+        FileOutputStream fos = new FileOutputStream(fname);
         System.out.println("opening stream");
         BufferedOutputStream bos = new BufferedOutputStream(fos);
         
