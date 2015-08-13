@@ -66,13 +66,13 @@ class TCPClient {
        // int currentTot = 0;
        // int filesize = 483329;
       
-        
+        new File("C:\\TinyP2P Downloads").mkdir();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
        // int byteToBeRead = -1;
         //byte [] bytearray = new byte [filesize];
         InputStream is = socket.getInputStream();
         System.out.println(fname);
-        FileOutputStream fos = new FileOutputStream(fname);
+        FileOutputStream fos = new FileOutputStream("C:\\TinyP2P Downloads\\" + fname);
         System.out.println("opening stream");
         BufferedOutputStream bos = new BufferedOutputStream(fos);
         
@@ -83,7 +83,7 @@ class TCPClient {
             bos.write(buffer, 0, count);
              bos.flush();
         }
-       
+       bos.close();
             socket.close();
         
 //        try (BufferedOutputStream bos = new BufferedOutputStream(fos)) {

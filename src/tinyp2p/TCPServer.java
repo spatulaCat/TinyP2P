@@ -116,16 +116,31 @@ public class TCPServer {
                     //int fs = Integer.parseInt(fileSize.trim());
                    // reqFile = parts2[0];
                     
-                    System.out.println("user: " + reqUser);
-                    System.out.println("ip: " + reqIP);
+                 //   System.out.println("user: " + reqUser);
+                  //  System.out.println("ip: " + reqIP);
                     System.out.println("filename: " + reqFile);
                    // System.out.println("file size: " + fs);
                     
-                    setMyDir();
-                    System.out.println("File located: " + myDir );
+                    String[] sdf = reqFile.split("\\\\");
+                    String[] dsf = new String[sdf.length-3];
                     
-                    System.out.println("complete path = " + myDir + "\\" + reqFile.substring(1));
-                    String fullpath = myDir + "\\" + reqFile.substring(1);
+                    System.arraycopy(sdf, 3, dsf,0 , sdf.length-3); 
+                    System.out.println(Arrays.toString(dsf));
+                    
+                    StringBuilder sb = new StringBuilder();
+                    Object[] nodes = dsf;
+                    for(int i=0;i<nodes.length;i++) {
+                        sb.append(File.separatorChar).append(nodes[i].toString());
+                    }
+                    
+                    
+                    reqFile = sb.toString().substring(1);
+                    
+                    setMyDir();
+                    System.out.println("my shared dir: " + myDir );
+                    
+                    System.out.println("complete path = " + myDir + "\\" + reqFile);
+                    String fullpath = myDir + "\\" + reqFile;
                     String newpath = fullpath.replaceAll("\\\\","/");
                     System.out.println(newpath);
                  //   File transferFile = new File (reqFile);
@@ -135,11 +150,11 @@ public class TCPServer {
                      System.out.println("File size " + transferFile.length());
                     FileInputStream fin = new FileInputStream(transferFile);
                    //   System.out.println(fin.toString());
-                    System.out.println("buffered input stream");
+                   // System.out.println("buffered input stream");
                     BufferedInputStream bin = new BufferedInputStream(fin);
-                    System.out.println("read in file");
+                   // System.out.println("read in file");
                     bin.read(bytearray,0,bytearray.length);
-                    System.out.println("outputsocket");
+                  //  System.out.println("outputsocket");
                     OutputStream os = connectionSocket.getOutputStream();
                     System.out.println("Sending Files...");
                     os.write(bytearray,0,bytearray.length);

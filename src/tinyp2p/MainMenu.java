@@ -101,6 +101,9 @@ public class MainMenu extends javax.swing.JFrame {
         
         fw = new FileWriter("dirList.txt");
         userIPs = new ConcurrentHashMap();
+        
+        List<String> lines =IOUtils.readLines(new FileInputStream("TinyP2PSettings.txt"));
+        chosenDir =  lines.get(0);
     }
     
     /**
@@ -121,14 +124,7 @@ public class MainMenu extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         online = new javax.swing.JList();
         tinyButt = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jTextField3 = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
@@ -207,39 +203,13 @@ public class MainMenu extends javax.swing.JFrame {
         });
         getContentPane().add(tinyButt, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 0, 40, 40));
 
-        jTextField1.setText("jTextField1");
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 190, 80, -1));
-
-        jTextField2.setText("jTextField2");
-        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 220, 80, -1));
-
-        jLabel4.setText("message ");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 190, -1, -1));
-
-        jLabel5.setText("User");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 220, -1, -1));
-
-        jButton1.setText("rec");
+        jButton1.setText("Download");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 260, -1, -1));
-
-        jButton2.setText("send");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 260, 60, -1));
-
-        jTextField3.setText("jTextField3");
-        getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 160, 80, -1));
-
-        jLabel6.setText("dir");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 160, -1, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 60, -1, -1));
 
         jButton3.setText("View my shared folder");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -249,20 +219,20 @@ public class MainMenu extends javax.swing.JFrame {
         });
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 30, 150, -1));
 
-        jButton5.setText("get dir");
+        jButton5.setText("Show Files");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 70, -1, -1));
+        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 60, -1, -1));
 
         jLabel3.setText(" ");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, 570, -1));
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bg3.png"))); // NOI18N
         jLabel7.setText("jLabel7");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 0, 600, 360));
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 0, 600, 370));
 
         jMenuBar1.setBorder(null);
 
@@ -284,9 +254,6 @@ public class MainMenu extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
     
-    public String getMyDir(){
-        return chosenDir;
-    }
     
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         loginWorker.execute();
@@ -345,7 +312,25 @@ public class MainMenu extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try { 
             String fname = tree.getSelectionPath().getLastPathComponent().toString();
-            String[] request = {username,fname};
+            
+//            String path = tree.getSelectionPath().toString().replaceAll("\\]| |\\[|", "").replaceAll(",", File.separator);
+//            File fp = new File(path);
+//            System.out.println("path "+fp.toString());
+//            
+            
+            StringBuilder sb = new StringBuilder();
+            Object[] nodes = tree.getSelectionPath().getPath();
+            for(int i=0;i<nodes.length;i++) {
+                sb.append(File.separatorChar).append(nodes[i].toString());
+            }
+            
+            System.out.println("path "+sb.toString());
+            
+            
+            String[] request = {username,sb.toString()};
+            
+            
+          //  String[] request = {username,fname};
             TCPClient client = new TCPClient(userIPs.get(selectedUser).substring(1),6789,fname);
              
             
@@ -455,39 +440,7 @@ public class MainMenu extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_jButton1ActionPerformed
-    
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-                System.out.println(userIPs.toString());
-
-
-// listener.execute();
-//        try {
-//            ServerSocket serverSocket = new ServerSocket(15123);
-//            Socket socket = serverSocket.accept();
-//            File transferFile = new File ("tiny6.png");
-//            byte [] bytearray = new byte [(int)transferFile.length()];
-//            FileInputStream fin = new FileInputStream(transferFile);
-//            BufferedInputStream bin = new BufferedInputStream(fin);
-//            bin.read(bytearray,0,bytearray.length);
-//            OutputStream os = socket.getOutputStream();
-//            System.out.println("Sending Files...");
-//            os.write(bytearray,0,bytearray.length);
-//            os.flush();
-//            socket.close();
-//            System.out.println("File transfer complete");
-//        } catch (IOException ex) {
-//            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        try {
-//            int bytesRead;
-//            Socket socket = new Socket("146.231.133.148",15123);
-//            InputStream is = socket.getInputStream();
-//            // bytesRead = is.read(bytearray,0,bytearray.length);
-//        } catch (IOException ex) {
-//            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-    }//GEN-LAST:event_jButton2ActionPerformed
-    
+        
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         try {
             List<String> lines =IOUtils.readLines(new FileInputStream("dirList.txt"));
@@ -594,11 +547,6 @@ public class MainMenu extends javax.swing.JFrame {
         
         //Object nodeInfo = node.getUserObject();
         
-        if (node.isLeaf()) {
-            jTextField3.setText(node.toString());
-        } else {
-            //displayURL(helpURL);
-        }
         
     }
     
@@ -934,16 +882,12 @@ public class MainMenu extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFileChooser fileChooser;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton5;
     private javax.swing.JFrame jFileChooser;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
@@ -951,9 +895,6 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
     private javax.swing.JList online;
     private javax.swing.JButton tinyButt;
     // End of variables declaration//GEN-END:variables
