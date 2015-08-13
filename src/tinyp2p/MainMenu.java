@@ -102,8 +102,11 @@ public class MainMenu extends javax.swing.JFrame {
         fw = new FileWriter("dirList.txt");
         userIPs = new ConcurrentHashMap();
         
+        try{
         List<String> lines =IOUtils.readLines(new FileInputStream("TinyP2PSettings.txt"));
+        
         chosenDir =  lines.get(0);
+        }catch(IndexOutOfBoundsException e){}
     }
     
     /**
