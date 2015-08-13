@@ -344,40 +344,41 @@ public class MainMenu extends javax.swing.JFrame {
             String f = tree.getSelectionPath().getLastPathComponent().toString();
             String[] request = {username,f};
             client.SendToServer(request);
+            System.out.println(client.RecieveFromServer());
             client.close();
             
-            String[] parts = f.split("\\|");
-            // System.out.println(Arrays.toString(parts2));
-            String fileSize = parts[1].substring(0,parts[1].length()-1);
-           
-            int filesize = Integer.parseInt(fileSize.trim());
-            
-   
-            int bytesRead;
-            int currentTot = 0;
-            Socket recSocket;
-              System.out.println(userIPs.get(selectedUser).substring(1));
-            
-            //String suIP = userIPs.get(selectedUser);
-          
-            recSocket = new Socket(userIPs.get(selectedUser).substring(1),6789);
-           
-            byte [] bytearray = new byte [filesize];
-            InputStream is = recSocket.getInputStream();
-            FileOutputStream fos = new FileOutputStream("newfile.txt");
-            BufferedOutputStream bos = new BufferedOutputStream(fos);
-            bytesRead = is.read(bytearray,0,bytearray.length);
-            currentTot = bytesRead;
-          //  System.out.println("Listening for the file");
-            do { bytesRead = is.read(bytearray, currentTot, (bytearray.length-currentTot));
-            if(bytesRead >= 0) currentTot += bytesRead;
-            }
-            while(bytesRead > -1);
-            bos.write(bytearray, 0 , currentTot);
-            bos.flush();
-            bos.close();
-            recSocket.close();
-            System.out.println("file successfully transferred");
+//            String[] parts = f.split("\\|");
+//            // System.out.println(Arrays.toString(parts2));
+//            String fileSize = parts[1].substring(0,parts[1].length()-1);
+//           
+//            int filesize = Integer.parseInt(fileSize.trim());
+//            
+//   
+//            int bytesRead;
+//            int currentTot = 0;
+//            Socket recSocket;
+//              System.out.println(userIPs.get(selectedUser).substring(1));
+//            
+//            //String suIP = userIPs.get(selectedUser);
+//          
+//            recSocket = new Socket(userIPs.get(selectedUser).substring(1),6789);
+//           
+//            byte [] bytearray = new byte [filesize];
+//            InputStream is = recSocket.getInputStream();
+//            FileOutputStream fos = new FileOutputStream("newfile.txt");
+//            BufferedOutputStream bos = new BufferedOutputStream(fos);
+//            bytesRead = is.read(bytearray,0,bytearray.length);
+//            currentTot = bytesRead;
+//          //  System.out.println("Listening for the file");
+//            do { bytesRead = is.read(bytearray, currentTot, (bytearray.length-currentTot));
+//            if(bytesRead >= 0) currentTot += bytesRead;
+//            }
+//            while(bytesRead > -1);
+//            bos.write(bytearray, 0 , currentTot);
+//            bos.flush();
+//            bos.close();
+//            recSocket.close();
+//            System.out.println("file successfully transferred");
             
         } catch (Exception ex) {
             Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);

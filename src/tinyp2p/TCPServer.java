@@ -37,33 +37,33 @@ public class TCPServer {
             Connection c = new Connection(connectionSocket);
         }
     }
-    class Send extends Thread{
-        public void run(){
-            while(true){
-                // try (Socket sendSocket = serverSocket.accept()) {
-                try {
-                    ServerSocket serverSocket = new ServerSocket(15123);
-                    System.out.println("server listening again");
-                    Socket socket = serverSocket.accept();
-                    File transferFile = new File (reqFile);
-                    System.out.println("Accepted connection : " + socket);
-                    byte [] bytearray = new byte [(int)transferFile.length()];
-                    FileInputStream fin = new FileInputStream(transferFile);
-                    BufferedInputStream bin = new BufferedInputStream(fin);
-                    bin.read(bytearray,0,bytearray.length);
-                    OutputStream os = socket.getOutputStream();
-                    System.out.println("Sending Files...");
-                    os.write(bytearray,0,bytearray.length);
-                    os.flush();
-                    socket.close();
-                    System.out.println("File transfer complete");
-                } catch (IOException ex) {
-                    Logger.getLogger(TCPServer.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-        
-    }
+//    class Send extends Thread{
+//        public void run(){
+//            while(true){
+//                // try (Socket sendSocket = serverSocket.accept()) {
+//                try {
+//                    ServerSocket serverSocket = new ServerSocket(15123);
+//                    System.out.println("server listening again");
+//                    Socket socket = serverSocket.accept();
+//                    File transferFile = new File (reqFile);
+//                    System.out.println("Accepted connection : " + socket);
+//                    byte [] bytearray = new byte [(int)transferFile.length()];
+//                    FileInputStream fin = new FileInputStream(transferFile);
+//                    BufferedInputStream bin = new BufferedInputStream(fin);
+//                    bin.read(bytearray,0,bytearray.length);
+//                    OutputStream os = socket.getOutputStream();
+//                    System.out.println("Sending Files...");
+//                    os.write(bytearray,0,bytearray.length);
+//                    os.flush();
+//                    socket.close();
+//                    System.out.println("File transfer complete");
+//                } catch (IOException ex) {
+//                    Logger.getLogger(TCPServer.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+//        }
+//        
+//    }
     class Connection extends Thread{
         Socket connectionSocket;
         Connection(Socket _connectionSocket){
@@ -75,7 +75,7 @@ public class TCPServer {
                 //create input stream attached to socket
                 BufferedReader inFromClient = new BufferedReader(new InputStreamReader (connectionSocket.getInputStream()));
                 //create output stream attached to socket
-                //PrintWriter outToClient = new PrintWriter(new OutputStreamWriter(connectionSocket.getOutputStream()));
+                // PrintWriter outToClient = new PrintWriter(new OutputStreamWriter(connectionSocket.getOutputStream()));
                 //read in line from the socket
                 String clientSentence;
                 while ((clientSentence = inFromClient.readLine()) != null) {
@@ -89,43 +89,64 @@ public class TCPServer {
                     String fileSize = parts2[1].substring(0,parts2[1].length()-1);
                     int fs = Integer.parseInt(fileSize.trim());
                     reqFile = parts2[0];
-                  
                     
-                    // System.out.println(connectionSocket.getInetAddress());
-                    //  System.out.println("Client sent: "+clientSentence+"\n");
                     System.out.println("user: " + reqUser);
                     System.out.println("ip: " + reqIP);
                     System.out.println("filename: " + reqFile);
                     System.out.println("file size: " + fs);
-          
-                   // connectionSocket.close();
-                   
-                    //  Send s = new Send();
                     
+                    
+                 //   File transferFile = new File (reqFile);
+                    File transferFile = new File ("C:\\Users\\Nicky\\Documents\\GitHub\\tomp2p-core-5.0-Beta6.jar");
+                    byte [] bytearray = new byte [(int)transferFile.length()];
+                     System.out.println("File input stream");
+                    FileInputStream fin = new FileInputStream(transferFile);
+                      System.out.println(fin.toString());
+                    System.out.println("buffered input stream");
+                    BufferedInputStream bin = new BufferedInputStream(fin);
+                    System.out.println("read in file");
+                    bin.read(bytearray,0,bytearray.length);
+                    System.out.println("outputsocket");
+                    OutputStream os = connectionSocket.getOutputStream();
+                    System.out.println("Sending Files...");
+                    os.write(bytearray,0,bytearray.length);
+                    
+                    os.flush();
+                    connectionSocket.close();
+                    System.out.println("File transfer complete");
+                    
+                
+                
+                
+                    // System.out.println(connectionSocket.getInetAddress());
+                    //  System.out.println("Client sent: "+clientSentence+"\n");
+                
+                }
+                // connectionSocket.close();
+                
+                //  Send s = new Send();
+                
 //                     ServerSocket serverSocket = new ServerSocket(15123);
 //        Socket socket = serverSocket.accept();
 //        System.out.println("Accepted connection : " + socket);
-//        File transferFile = new File ("bg1.png");
-//        byte [] bytearray = new byte [(int)transferFile.length()];
-//        FileInputStream fin = new FileInputStream(transferFile);
-//        BufferedInputStream bin = new BufferedInputStream(fin);
-//        bin.read(bytearray,0,bytearray.length);
-//        OutputStream os = socket.getOutputStream();
-//        System.out.println("Sending Files...");
-//        os.write(bytearray,0,bytearray.length);
-//        os.flush();
-//        socket.close();
-//        System.out.println("File transfer complete");
-                    
-                    
-                    
-                    
-                    //process
-                    // String capitalizedSentence = clientSentence.toUpperCase() + '\n';
-                    //write out line to socket
-                    //outToClient.print(capitalizedSentence);
-                    //outToClient.flush();
-                }
+      
+               
+                
+                
+                //process
+                // PrintWriter outToClient = new PrintWriter(new OutputStreamWriter(connectionSocket.getOutputStream()));
+                // String capitalizedSentence = clientSentence.toUpperCase() + '\n';
+                //write out line to socket
+                
+                
+                //outToClient.print(capitalizedSentence);
+                //outToClient.flush();
+                
+                
+                
+                
+                
+                
             }catch(Exception e){}
         }
     }

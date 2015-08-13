@@ -1,9 +1,9 @@
 
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this license header, choose License Headers in Project Properties.
+* To change this template file, choose Tools | Templates
+* and open the template in the editor.
+*/
 package tinyp2p;
 
 /**
@@ -26,10 +26,10 @@ class TCPClient {
 //        client.SendToServer("Hey dude 2");
 //        System.out.println("Server Said(2): "+client.RecieveFromServer());
 //       // client.close();
-//        
+//
 //        //request("tiny.png",255);
-//        
-//        
+//
+//
 //    }
     
 //    public static void request(String filename, int size) throws Exception{
@@ -38,7 +38,7 @@ class TCPClient {
 //        client.SendToServer(new String d= {filename, size};
 //         client.close();
 //    }
-
+    
     TCPClient(String _host, int _port) throws Exception{
         host = _host;
         port = _port;
@@ -56,11 +56,37 @@ class TCPClient {
     }
     String RecieveFromServer() throws Exception{
         //create input stream attached to socket
-        BufferedReader inFromServer = new BufferedReader(new InputStreamReader (socket.getInputStream()));
-        //read line from server
-        String res = inFromServer.readLine(); // if connection closes on server end, this throws java.net.SocketException 
+//        BufferedReader inFromServer = new BufferedReader(new InputStreamReader (socket.getInputStream()));
+//        //read line from server
+//        String res = inFromServer.readLine(); // if connection closes on server end, this throws java.net.SocketException
+//
+        int bytesRead;
+        int currentTot = 0;
+        int filesize = 483329;
+      
+        byte [] bytearray = new byte [filesize];
+        InputStream is = socket.getInputStream();
+        FileOutputStream fos = new FileOutputStream("tomp2pcopy.jar");
+        System.out.println("opening stream");
+        try (BufferedOutputStream bos = new BufferedOutputStream(fos)) {
+            System.out.println("reading bytes");
+            bytesRead = is.read(bytearray,0,bytearray.length);
+            System.out.println("update total");
+            currentTot = bytesRead;
+            System.out.println("Listening for the file");
+            do { bytesRead = is.read(bytearray, currentTot, (bytearray.length-currentTot));
+            if(bytesRead >= 0) currentTot += bytesRead;
+            }
+            while(bytesRead > -1);
+            bos.write(bytearray, 0 , currentTot);
+            bos.flush();
+            socket.close();
+        }
+       
+        System.out.println("file successfully transferred");
         
-        return res;
+        
+        return "success";
     }
     void close() throws IOException{
         socket.close();
