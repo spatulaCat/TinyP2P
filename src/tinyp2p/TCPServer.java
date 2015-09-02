@@ -96,6 +96,49 @@ public class TCPServer {
             connectionSocket = _connectionSocket;
             this.start();
         }
+        
+        public void send(File path) throws IOException{
+            File[] listOfFiles = path.listFiles();
+            if(listOfFiles==null){
+                 return;
+             }
+            for (File f : listOfFiles){
+                 
+                 if(f.isFile() && !f.isHidden()){
+                     sendFile(f);
+                 }
+                 else if(f.isDirectory()&& !f.isHidden()) { 
+                     File[] ff =  f.listFiles();
+                     if(ff != null){
+                         for (File fff : ff){
+                             send(fff);
+                         }
+                     }
+                    
+                 }   
+             }
+        }
+        
+        public void sendFile(File transferFile) throws FileNotFoundException, IOException{
+             byte [] bytearray = new byte [(int)transferFile.length()];
+                     System.out.println("File input stream");
+                     System.out.println("File size " + transferFile.length());
+                    FileInputStream fin = new FileInputStream(transferFile);
+                   //   System.out.println(fin.toString());
+                   // System.out.println("buffered input stream");
+                    BufferedInputStream bin = new BufferedInputStream(fin);
+                   // System.out.println("read in file");
+                    bin.read(bytearray,0,bytearray.length);
+                  //  System.out.println("outputsocket");
+                    OutputStream os = connectionSocket.getOutputStream();
+                    System.out.println("Sending Files...");
+                    os.write(bytearray,0,bytearray.length);
+                    
+                    os.flush();
+                    connectionSocket.close();
+                    System.out.println("File transfer complete");
+        }
+        
         public void run(){
             try{
                 //create input stream attached to socket
@@ -141,9 +184,9 @@ public class TCPServer {
                     
                     System.out.println("complete path = " + myDir + "\\" + reqFile);
                     String fullpath = myDir + "\\" + reqFile;
-                    String newpath = fullpath.replaceAll("\\\\","/");
+                    String newpath = fullpath.replaceAll("\\\\","/");  
                     System.out.println(newpath);
-                 //   File transferFile = new File (reqFile);
+                    
                     File transferFile = new File (newpath);
                     byte [] bytearray = new byte [(int)transferFile.length()];
                      System.out.println("File input stream");
@@ -162,14 +205,40 @@ public class TCPServer {
                     os.flush();
                     connectionSocket.close();
                     System.out.println("File transfer complete");
+                    }
+//                    if(transferFile.isFile()){
+//                        
+//                        
+//                    }
+//                    
                     
+                 //   File transferFile = new File (reqFile);
+                 
+//                    byte [] bytearray = new byte [(int)transferFile.length()];
+//                     System.out.println("File input stream");
+//                     System.out.println("File size " + transferFile.length());
+//                    FileInputStream fin = new FileInputStream(transferFile);
+//                   //   System.out.println(fin.toString());
+//                   // System.out.println("buffered input stream");
+//                    BufferedInputStream bin = new BufferedInputStream(fin);
+//                   // System.out.println("read in file");
+//                    bin.read(bytearray,0,bytearray.length);
+//                  //  System.out.println("outputsocket");
+//                    OutputStream os = connectionSocket.getOutputStream();
+//                    System.out.println("Sending Files...");
+//                    os.write(bytearray,0,bytearray.length);
+//                    
+//                    os.flush();
+//                    connectionSocket.close();
+//                    System.out.println("File transfer complete");
+//                    
                 
                 
                 
                     // System.out.println(connectionSocket.getInetAddress());
                     //  System.out.println("Client sent: "+clientSentence+"\n");
                 
-                }
+                
                 // connectionSocket.close();
                 
                 //  Send s = new Send();
@@ -189,13 +258,8 @@ public class TCPServer {
                 
                 //outToClient.print(capitalizedSentence);
                 //outToClient.flush();
-                
-                
-                
-                
-                
-                
-            }catch(Exception e){}
+       
+            }catch(IOException e){}
         }
     }
 }

@@ -1,54 +1,38 @@
-/*
-* The MIT License
-*
-* Copyright 2015 Nicky.
-*
-* Permission is hereby granted, free of charge, to any person obtaining a copy
-* of this software and associated documentation files (the "Software"), to deal
-* in the Software without restriction, including without limitation the rights
-* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-* copies of the Software, and to permit persons to whom the Software is
-* furnished to do so, subject to the following conditions:
-*
-* The above copyright notice and this permission notice shall be included in
-* all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-* THE SOFTWARE.
-*/
 package tinyp2p;
 
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedOutputStream;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.JTree;
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.Timer;
-import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 import net.tomp2p.dht.FutureGet;
 import net.tomp2p.dht.FuturePut;
 import net.tomp2p.dht.PutBuilder;
+import net.tomp2p.peers.Number160;
 import net.tomp2p.peers.PeerAddress;
 import net.tomp2p.storage.Data;
 import org.apache.commons.io.IOUtils;
@@ -59,11 +43,6 @@ import org.hive2hive.core.security.UserCredentials;
 import org.hive2hive.processframework.exceptions.InvalidProcessStateException;
 import org.hive2hive.processframework.exceptions.ProcessExecutionException;
 import util.ConsoleFileAgent;
-import net.tomp2p.peers.Number160;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.concurrent.ConcurrentHashMap;
-import javax.swing.tree.TreePath;
 
 
 public class MainMenu extends javax.swing.JFrame {
@@ -103,10 +82,16 @@ public class MainMenu extends javax.swing.JFrame {
         userIPs = new ConcurrentHashMap();
         
         try{
+            
         List<String> lines =IOUtils.readLines(new FileInputStream("TinyP2PSettings.txt"));
         
         chosenDir =  lines.get(0);
-        }catch(IndexOutOfBoundsException e){}
+        }catch(IndexOutOfBoundsException | FileNotFoundException  e){}
+        
+        //online.setComponentPopupMenu(jPopupMenu1);
+        //jScrollPane2.setComponentPopupMenu(jPopupMenu1);
+            
+        
     }
     
     /**
@@ -120,6 +105,7 @@ public class MainMenu extends javax.swing.JFrame {
 
         jFileChooser = new javax.swing.JFrame();
         fileChooser = new javax.swing.JFileChooser();
+        jPopupMenu1 = new javax.swing.JPopupMenu();
         jScrollPane2 = new javax.swing.JScrollPane();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -166,6 +152,12 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jScrollPane2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jScrollPane2MouseClicked(evt);
+            }
+        });
         getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 60, 230, 240));
 
         jLabel1.setFont(new java.awt.Font("Aharoni", 1, 18)); // NOI18N
@@ -180,6 +172,11 @@ public class MainMenu extends javax.swing.JFrame {
             String[] strings = { "" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
+        });
+        online.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                onlineMouseClicked(evt);
+            }
         });
         jScrollPane1.setViewportView(online);
 
@@ -257,7 +254,86 @@ public class MainMenu extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
     
+//    JPopupMenu jPopupMenu = new JPopupMenu() {
+//   
+// @Override
+//    public void show(Component invoker, int x, int y) {
+//        int row = online.locationToIndex(new Point(x, y));
+//        if (row != -1) {
+//            online.setSelectedIndex(row);
+//        }
+//        super.show(invoker, x, y);
+//    }
+//};
+
     
+    MouseAdapter n = new MouseAdapter(){
+        @Override
+        public void mousePressed ( MouseEvent e )
+        {
+            try{
+                selectedUser = lm.elementAt(online.getSelectedIndex()).toString();
+                showFiles();
+            }catch(ArrayIndexOutOfBoundsException ex){}
+        }
+        
+        
+    };
+    
+    MouseAdapter m = new MouseAdapter ()
+    { 
+       String p;
+     TreePath path;
+        @Override
+        public void mousePressed ( MouseEvent e )
+        {
+            if ( SwingUtilities.isRightMouseButton ( e ) )
+            {
+                path = tree.getPathForLocation ( e.getX (), e.getY () );
+                Rectangle pathBounds = tree.getUI ().getPathBounds ( tree, path );
+                if ( pathBounds != null && pathBounds.contains ( e.getX (), e.getY () ) )
+                {
+                    JPopupMenu menu = new JPopupMenu ();
+                    // menu.add ( new JMenuItem ( "Download " + path.getLastPathComponent().toString() ) );
+                    p = path.getLastPathComponent().toString();
+                    JMenuItem jm = new JMenuItem("Download " + p); 
+               
+                    MouseListener popupListener = new PopupListener();
+                    jm.addMouseListener(popupListener);
+                    menu.add(jm);
+                    menu.show ( tree, pathBounds.x, pathBounds.y + pathBounds.height );
+                }
+            }
+        }
+        
+        
+        
+        class PopupListener extends MouseAdapter {
+            @Override
+            public void mousePressed(MouseEvent e) {
+              new downloadWorkerClass(path).execute();
+              //  download(path);
+                System.out.println(path);
+               // maybeShowPopup(e);
+            }
+            
+//            @Override
+//            public void mouseReleased(MouseEvent e) {
+//                
+//                maybeShowPopup(e);
+//            }
+//            
+//            private void maybeShowPopup(MouseEvent e) {
+//                if (e.isPopupTrigger()) {
+//            download(path);
+////                    //  popup.show(e.getComponent(),
+////                    //    e.getX(), e.getY());
+//                }
+//            }
+        }
+        
+    };
+            
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         loginWorker.execute();
         jLabel1.setText("Welcome, "+ username+"!");
@@ -271,7 +347,7 @@ public class MainMenu extends javax.swing.JFrame {
         tmr.setRepeats(true);
         tmr.start();
         
-        
+        online.addMouseListener(n);
         
         
 //        try {
@@ -312,41 +388,13 @@ public class MainMenu extends javax.swing.JFrame {
         
     }
     
+    
+
+    
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try { 
-            String fname = tree.getSelectionPath().getLastPathComponent().toString();
-            
-//            String path = tree.getSelectionPath().toString().replaceAll("\\]| |\\[|", "").replaceAll(",", File.separator);
-//            File fp = new File(path);
-//            System.out.println("path "+fp.toString());
-//            
-            
-            StringBuilder sb = new StringBuilder();
-            Object[] nodes = tree.getSelectionPath().getPath();
-            for(int i=0;i<nodes.length;i++) {
-                sb.append(File.separatorChar).append(nodes[i].toString());
-            }
-            
-            System.out.println("path "+sb.toString());
-            
-            
-            String[] request = {username,sb.toString()};
-            
-            
-          //  String[] request = {username,fname};
-            TCPClient client = new TCPClient(userIPs.get(selectedUser).substring(1),6789,fname);
-             
-            
-            
-            
-            
-            client.SendToServer(request);
-           
-            
-            
-            System.out.println(client.RecieveFromServer());
-            client.close();
-            
+       new downloadWorkerClass(null).execute();
+        
 //            String[] parts = f.split("\\|");
 //            // System.out.println(Arrays.toString(parts2));
 //            String fileSize = parts[1].substring(0,parts[1].length()-1);
@@ -380,9 +428,7 @@ public class MainMenu extends javax.swing.JFrame {
 //            recSocket.close();
 //            System.out.println("file successfully transferred");
             
-        } catch (Exception ex) {
-            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       
         
         
         
@@ -445,6 +491,7 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
         
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+ 
         try {
             List<String> lines =IOUtils.readLines(new FileInputStream("dirList.txt"));
             
@@ -452,13 +499,23 @@ public class MainMenu extends javax.swing.JFrame {
             
             DefaultTreeModel model = new DefaultTreeModel(root);
             tree = new JTree(model);
+            tree.addMouseListener ( m );
+            
+            
+            
+            //jm.action(null, root)
             
             for (String line : lines){
                 buildTreeFromString(model, line);
             }
             jScrollPane2.getViewport().add(tree);
+       //     jScrollPane2.setComponentPopupMenu(jPopupMenu1);
+            //tree.setComponentPopupMenu(jPopupMenu1);
             
 //            jTextField3.setText(tree.getLastSelectedPathComponent().toString());
+            
+            
+            
             
         } catch ( NullPointerException | IOException ex) {
             Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
@@ -474,10 +531,22 @@ public class MainMenu extends javax.swing.JFrame {
         createDirListSwingWorker();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        selectedUser = lm.elementAt(online.getSelectedIndex()).toString();
-        List<String> results = null;
+                
+//@Override
+//public void mouseClicked(MouseEvent e) {
+//
+//    if (SwingUtilities.isRightMouseButton(e)) {
+//
+//        int row = tree.getClosestRowForLocation(e.getX(), e.getY());
+//        tree.setSelectionRow(row);
+//        jPopupMenu1.show(e.getComponent(), e.getX(), e.getY());
+//    }
+//}
+    
+    private void showFiles(){
         
+     //   List<String> results = null;
+       
         try{
             Number160 dirlistHash2 = Number160.createHash(selectedUser + "dirlist");
 //            System.out.println("hash = " + dirlistHash2);
@@ -492,23 +561,13 @@ public class MainMenu extends javax.swing.JFrame {
                 fs[0] = fs[0].substring(1);
                 fs[fs.length-1] =  fs[fs.length-1].substring(0,fs[fs.length-1].length()-1);
                 //Remove "[" and "]"   
-                
-//
-//                FileWriter bbb = new FileWriter("oy.txt");
-//
-//                for (String f : fs){
-//                     if(f.substring(0,1).equalsIgnoreCase(" ")){
-//                        f = f.substring(1,f.length());
-//                    }
-//                     bbb.write(f+"\n");
-//                }
-//                bbb.close();
-                
+                            
                 DefaultMutableTreeNode root = new DefaultMutableTreeNode(selectedUser + "'s shared directory");
                 
                 DefaultTreeModel model = new DefaultTreeModel(root);
                 tree = new JTree(model);
-                
+                tree.addMouseListener ( m );
+                try{
                 for (String line : fs){
                     if(line.substring(0,1).equalsIgnoreCase(" ")){
                         line = line.substring(1,line.length());
@@ -516,12 +575,20 @@ public class MainMenu extends javax.swing.JFrame {
                     buildTreeFromString(model, line);
                 }
                 jScrollPane2.getViewport().add(tree);
-                
+                }catch(StringIndexOutOfBoundsException e){
+                    
+                }
             }
+              
         }catch(NullPointerException e){
         } catch (ClassNotFoundException | IOException ex) {
             Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+    }
+    
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        showFiles();
 
 //        DefaultMutableTreeNode root = new DefaultMutableTreeNode(selectedUser +"'s Shared directory");
 //        
@@ -536,22 +603,33 @@ public class MainMenu extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void onlineMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onlineMouseClicked
+//       online.setComponentPopupMenu(jPopupMenu1);
+//     //  jScrollPane2.setComponentPopupMenu(jPopupMenu1);
+//       jPopupMenu1.show();
+    }//GEN-LAST:event_onlineMouseClicked
+
+    private void jScrollPane2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jScrollPane2MouseClicked
+//     jScrollPane2.setComponentPopupMenu(jPopupMenu1);
+//       jPopupMenu1.show();
+    }//GEN-LAST:event_jScrollPane2MouseClicked
           
    
 
-    public void valueChanged(TreeSelectionEvent e) {
-        //Returns the last path element of the selection.
-        //This method is useful only when the selection model allows a single selection.
-        DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
-        
-        if (node == null)
-            //Nothing is selected.
-            return;
-        
-        //Object nodeInfo = node.getUserObject();
-        
-        
-    }
+//    public void valueChanged(TreeSelectionEvent e) {
+//        //Returns the last path element of the selection.
+//        //This method is useful only when the selection model allows a single selection.
+//        DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+//        
+//        if (node == null)
+//            //Nothing is selected.
+//            return;
+//        
+//        //Object nodeInfo = node.getUserObject();
+//        
+//        
+//    }
     
         //returns whether or not a person is registered or not
     private boolean registered(UserCredentials userCredentials) throws NoPeerConnectionException, InvalidProcessStateException, InterruptedException {    
@@ -559,6 +637,13 @@ public class MainMenu extends javax.swing.JFrame {
         return userManager.isRegistered(userCredentials.getUserId());
     }
    
+//    class downloadItem implements ActionListener{
+//        @Override
+//        public void actionPerformed(ActionEvent evt){
+//            download("");
+//        }
+//    }
+    
     class displayUsers implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent evt){
@@ -585,6 +670,121 @@ public class MainMenu extends javax.swing.JFrame {
         }
     }
     
+    class downloadWorkerClass extends SwingWorker<Void, TreePath>{
+        private TreePath tp;
+        public downloadWorkerClass(TreePath t){
+            this.tp = t;
+        }
+        
+        @Override
+        public Void doInBackground(){
+            String fname;
+         Object[] nodes;
+        try {
+            if(tp==null){
+                fname  = tree.getSelectionPath().getLastPathComponent().toString();
+                nodes = tree.getSelectionPath().getPath();
+               
+                
+            }
+            else{
+                fname = tp.getLastPathComponent().toString();
+               nodes = tp.getPath();
+                
+            }
+            
+            
+//            String path = tree.getSelectionPath().toString().replaceAll("\\]| |\\[|", "").replaceAll(",", File.separator);
+//            File fp = new File(path);
+//            System.out.println("path "+fp.toString());
+//
+             StringBuilder sb = new StringBuilder();
+                
+                for(int i=0;i<nodes.length;i++) {
+                    sb.append(File.separatorChar).append(nodes[i].toString());
+                }
+            
+            System.out.println("path "+sb.toString());
+            
+            
+            String[] request = {username,sb.toString()};
+            
+            
+            //  String[] request = {username,fname};
+            TCPClient client = new TCPClient(userIPs.get(selectedUser).substring(1),6789,fname);
+            
+            client.SendToServer(request);
+   
+            System.out.println(client.RecieveFromServer());
+            client.close();
+            
+        } catch (Exception ex) {
+            //  Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
+        }
+            
+            return null;
+        }
+    }
+    
+//    SwingWorker downloadWorker = new SwingWorker<String, TreePath>() {
+//        @Override
+//        public String doInBackground() {
+//          
+//            
+//            return null;
+//        }
+//        
+//            public void download(TreePath path){
+//        
+//        String fname;
+//         Object[] nodes;
+//        try {
+//            if(path==null){
+//                fname  = tree.getSelectionPath().getLastPathComponent().toString();
+//                nodes = tree.getSelectionPath().getPath();
+//               
+//                
+//            }
+//            else{
+//                fname = path.getLastPathComponent().toString();
+//               nodes = path.getPath();
+//                
+//            }
+//            
+//            
+////            String path = tree.getSelectionPath().toString().replaceAll("\\]| |\\[|", "").replaceAll(",", File.separator);
+////            File fp = new File(path);
+////            System.out.println("path "+fp.toString());
+////
+//             StringBuilder sb = new StringBuilder();
+//                
+//                for(int i=0;i<nodes.length;i++) {
+//                    sb.append(File.separatorChar).append(nodes[i].toString());
+//                }
+//            
+//            System.out.println("path "+sb.toString());
+//            
+//            
+//            String[] request = {username,sb.toString()};
+//            
+//            
+//            //  String[] request = {username,fname};
+//            TCPClient client = new TCPClient(userIPs.get(selectedUser).substring(1),6789,fname);
+//            
+//            client.SendToServer(request);
+//   
+//            System.out.println(client.RecieveFromServer());
+//            client.close();
+//            
+//        } catch (Exception ex) {
+//            //  Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+//            System.out.println(ex);
+//        }
+//        
+//    }
+//    };
+//    
     private void createDirListSwingWorker()
     {
      SwingWorker createDirList = new SwingWorker<String, Void>() {
@@ -632,9 +832,9 @@ public class MainMenu extends javax.swing.JFrame {
              File folder = new File(dir);
              File[] listOfFiles = folder.listFiles();
              
-             if(listOfFiles==null){
-                 return;
-             }
+             if(listOfFiles!=null){
+                
+             
              
              for (File f : listOfFiles){
                  
@@ -654,6 +854,7 @@ public class MainMenu extends javax.swing.JFrame {
                  
              }
              fw.flush();
+             }
          }
          
      };
@@ -776,7 +977,7 @@ public class MainMenu extends javax.swing.JFrame {
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
         String [] strings = str.split("\\\\");
         DefaultMutableTreeNode node = root;
-        int z = 1; 
+    //    int z = 1; 
         for (String s: strings) {
             
            // System.out.println(Arrays.toString(s.split("\\|")));
@@ -896,6 +1097,7 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JList online;
