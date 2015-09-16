@@ -1,41 +1,10 @@
-/*
-* The MIT License
-*
-* Copyright 2015 Nicky.
-*
-* Permission is hereby granted, free of charge, to any person obtaining a copy
-* of this software and associated documentation files (the "Software"), to deal
-* in the Software without restriction, including without limitation the rights
-* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-* copies of the Software, and to permit persons to whom the Software is
-* furnished to do so, subject to the following conditions:
-*
-* The above copyright notice and this permission notice shall be included in
-* all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-* THE SOFTWARE.
-*/
+
 package tinyp2p;
 
 import java.awt.Rectangle;
 import org.hive2hive.core.api.interfaces.IH2HNode;
 
-/**
- *
- * @author Nicky
- */
-
 public class ConnectInfo extends javax.swing.JFrame {
-    
-    /**
-     * Creates new form ConnectInfo
-     */
     
     private IH2HNode node;
     private String[] ips;
@@ -141,7 +110,6 @@ public class ConnectInfo extends javax.swing.JFrame {
         jTextField2.setToolTipText("");
         jTextField2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jTextField2.setMargin(new java.awt.Insets(3, 0, 0, 0));
-        jTextField2.setOpaque(true);
         jTextField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField2ActionPerformed(evt);

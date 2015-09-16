@@ -19,8 +19,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
@@ -113,9 +115,7 @@ public class MainMenu extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         online = new javax.swing.JList();
         tinyButt = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -203,14 +203,6 @@ public class MainMenu extends javax.swing.JFrame {
         });
         getContentPane().add(tinyButt, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 0, 40, 40));
 
-        jButton1.setText("Download");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 60, -1, -1));
-
         jButton3.setText("View my shared folder");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -218,14 +210,6 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 30, 150, -1));
-
-        jButton5.setText("Show Files");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 60, -1, -1));
 
         jLabel3.setText(" ");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, 570, -1));
@@ -253,20 +237,7 @@ public class MainMenu extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-    
-//    JPopupMenu jPopupMenu = new JPopupMenu() {
-//   
-// @Override
-//    public void show(Component invoker, int x, int y) {
-//        int row = online.locationToIndex(new Point(x, y));
-//        if (row != -1) {
-//            online.setSelectedIndex(row);
-//        }
-//        super.show(invoker, x, y);
-//    }
-//};
-
-    
+      
     MouseAdapter n = new MouseAdapter(){
         @Override
         public void mousePressed ( MouseEvent e )
@@ -276,8 +247,6 @@ public class MainMenu extends javax.swing.JFrame {
                 showFiles();
             }catch(ArrayIndexOutOfBoundsException ex){}
         }
-        
-        
     };
     
     MouseAdapter m = new MouseAdapter ()
@@ -371,127 +340,28 @@ public class MainMenu extends javax.swing.JFrame {
         h.setVisible(true);       
     }//GEN-LAST:event_tinyButtActionPerformed
     
-    public void sendToPort(String ip, String msg) throws IOException {
-        Socket socket = null;
-        OutputStreamWriter osw;
-        //String str = "Hello World";
-        try {
-            socket = new Socket(ip, 4014);
-            osw =new OutputStreamWriter(socket.getOutputStream(), "UTF-8");
-            osw.write(msg, 0, msg.length());
-            osw.flush();
-        } catch (IOException e) {
-            System.err.print(e);
-        } finally {
-            socket.close();
-        }
-        
-    }
-    
+//    public void sendToPort(String ip, String msg) throws IOException {
+//        Socket socket = null;
+//        OutputStreamWriter osw;
+//        //String str = "Hello World";
+//        try {
+//            socket = new Socket(ip, 4014);
+//            osw =new OutputStreamWriter(socket.getOutputStream(), "UTF-8");
+//            osw.write(msg, 0, msg.length());
+//            osw.flush();
+//        } catch (IOException e) {
+//            System.err.print(e);
+//        } finally {
+//            socket.close();
+//        }
+//        
+//    }
+//    
     
 
     
-    
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       new downloadWorkerClass(null).execute();
-        
-//            String[] parts = f.split("\\|");
-//            // System.out.println(Arrays.toString(parts2));
-//            String fileSize = parts[1].substring(0,parts[1].length()-1);
-//           
-//            int filesize = Integer.parseInt(fileSize.trim());
-//            
-//   
-//            int bytesRead;
-//            int currentTot = 0;
-//            Socket recSocket;
-//              System.out.println(userIPs.get(selectedUser).substring(1));
-//            
-//            //String suIP = userIPs.get(selectedUser);
-//          
-//            recSocket = new Socket(userIPs.get(selectedUser).substring(1),6789);
-//           
-//            byte [] bytearray = new byte [filesize];
-//            InputStream is = recSocket.getInputStream();
-//            FileOutputStream fos = new FileOutputStream("newfile.txt");
-//            BufferedOutputStream bos = new BufferedOutputStream(fos);
-//            bytesRead = is.read(bytearray,0,bytearray.length);
-//            currentTot = bytesRead;
-//          //  System.out.println("Listening for the file");
-//            do { bytesRead = is.read(bytearray, currentTot, (bytearray.length-currentTot));
-//            if(bytesRead >= 0) currentTot += bytesRead;
-//            }
-//            while(bytesRead > -1);
-//            bos.write(bytearray, 0 , currentTot);
-//            bos.flush();
-//            bos.close();
-//            recSocket.close();
-//            System.out.println("file successfully transferred");
             
-       
-        
-        
-        
-        
-        
-//        String f = jTextField1.getText();
-//
-//        //jTextField2.setText(lm.elementAt(online.getSelectedIndex()).toString());
-//        //String user = jTextField2.getText();
-//        System.out.println("Requesting file");
-//
-//        int filesize=1022386;
-//        int bytesRead;
-//        int currentTot = 0;
-//        Socket socket;
-//        try {
-//            socket = new Socket("146.231.133.148",15123);
-//
-//            byte [] bytearray = new byte [filesize];
-//            InputStream is = socket.getInputStream();
-//            FileOutputStream fos = new FileOutputStream("bg1copy.png");
-//            BufferedOutputStream bos = new BufferedOutputStream(fos);
-//            bytesRead = is.read(bytearray,0,bytearray.length);
-//            currentTot = bytesRead;
-//            System.out.println("Listening for the file");
-//            do { bytesRead = is.read(bytearray, currentTot, (bytearray.length-currentTot));
-//            if(bytesRead >= 0) currentTot += bytesRead;
-//            }
-//            while(bytesRead > -1);
-//            bos.write(bytearray, 0 , currentTot);
-//            bos.flush();
-//            bos.close();
-//            socket.close();
-//            System.out.println("file successfully transferred");
-//        } catch (IOException ex) {
-//            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-        
-        
-        
-        
-//        try {
-//            sendToPort(f,user);
-//
-//        } catch (IOException ex) {
-//            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//
-//      Socket socket = new Socket("ip address", 4014);
-//       //OutputStream outstream = socket .getOutputStream();
-//      // PrintWriter out = new PrintWriter(outstream);
-//
-//       String toSend = "String to send";
-//
-//       out.print(toSend );
-//
-//
-        
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
-        
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
- 
         try {
             List<String> lines =IOUtils.readLines(new FileInputStream("dirList.txt"));
             
@@ -587,23 +457,6 @@ public class MainMenu extends javax.swing.JFrame {
         
     }
     
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        showFiles();
-
-//        DefaultMutableTreeNode root = new DefaultMutableTreeNode(selectedUser +"'s Shared directory");
-//        
-//        DefaultTreeModel model = new DefaultTreeModel(root);
-//        tree = new JTree(model);
-        
-//        for (String line : results){
-//            buildTreeFromString(model, line);
-//        }
-//        jScrollPane2.getViewport().add(tree);
-        
-        
-        
-    }//GEN-LAST:event_jButton5ActionPerformed
-
     private void onlineMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onlineMouseClicked
 //       online.setComponentPopupMenu(jPopupMenu1);
 //     //  jScrollPane2.setComponentPopupMenu(jPopupMenu1);
@@ -636,6 +489,8 @@ public class MainMenu extends javax.swing.JFrame {
         IUserManager userManager = node.getUserManager();
         return userManager.isRegistered(userCredentials.getUserId());
     }
+
+ 
    
 //    class downloadItem implements ActionListener{
 //        @Override
@@ -683,6 +538,7 @@ public class MainMenu extends javax.swing.JFrame {
         try {
             if(tp==null){
                 fname  = tree.getSelectionPath().getLastPathComponent().toString();
+                
                 nodes = tree.getSelectionPath().getPath();
                
                 
@@ -692,12 +548,24 @@ public class MainMenu extends javax.swing.JFrame {
                nodes = tp.getPath();
                 
             }
+  
+            int dlExe = 0;
             
+            if (fname.substring(fname.length()-4,fname.length()).equalsIgnoreCase(".exe")){
+                JCheckBox checkbox = new JCheckBox("Do not show this warning again.");
+                String message1 = "This file is an executable and may be malicious or harmful.\n";
+                String message2 = "Are you sure you want to download " + fname + "?";
+                Object[] params = {message1, message2, checkbox};
+                dlExe = JOptionPane.showConfirmDialog(null, params, "Disconnect Products", JOptionPane.YES_NO_OPTION);
+                boolean dontShow = checkbox.isSelected();
+            }
             
 //            String path = tree.getSelectionPath().toString().replaceAll("\\]| |\\[|", "").replaceAll(",", File.separator);
 //            File fp = new File(path);
 //            System.out.println("path "+fp.toString());
-//
+
+            if(dlExe == 0){
+            
              StringBuilder sb = new StringBuilder();
                 
                 for(int i=0;i<nodes.length;i++) {
@@ -717,7 +585,7 @@ public class MainMenu extends javax.swing.JFrame {
    
             System.out.println(client.RecieveFromServer());
             client.close();
-            
+            }
         } catch (Exception ex) {
             //  Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println(ex);
@@ -725,6 +593,7 @@ public class MainMenu extends javax.swing.JFrame {
             
             return null;
         }
+        
     }
     
 //    SwingWorker downloadWorker = new SwingWorker<String, TreePath>() {
@@ -821,21 +690,22 @@ public class MainMenu extends javax.swing.JFrame {
              String[] s = chosenDir.split("\\\\");
              String ss = s[s.length-1];
              chosenDirFolderName = ss;
+             File chd = new File(chosenDir);
              if (!dirList.exists()) {
                  dirList.createNewFile();
              }
-             writeStuff(dir);
+             writeStuff(chd);
              fw.close();
          }
          
-         public void writeStuff(String dir) throws IOException{
-             File folder = new File(dir);
-             File[] listOfFiles = folder.listFiles();
-             
-             if(listOfFiles!=null){
-                
+         public void writeStuff(File dir) throws IOException{
+             //File folder = new File(dir);
+             File[] listOfFiles = dir.listFiles();
              
              
+             
+             if(listOfFiles!=null  ){
+
              for (File f : listOfFiles){
                  
                  if(f.isFile() && !f.isHidden()){
@@ -843,18 +713,36 @@ public class MainMenu extends javax.swing.JFrame {
                  fw.write(f.toString().substring(chosenDir.length()-chosenDirFolderName.length())+"\n");       
                  
                  }
-                 else if(f.isDirectory()&& !f.isHidden()) { 
-                     File[] ff =  f.listFiles();
-                     if(ff != null){
-                     fw.write(f.toString().substring(chosenDir.length()-chosenDirFolderName.length())+"\n");
+                 else if(f.isDirectory()) { 
+                    // File[] ff =  f.listFiles(); 
+                    // fw.write(f.toString().substring(chosenDir.length()-chosenDirFolderName.length())+"\n");
+                    // if(ff!=null){
+                         
+                          
+                    // }
+                         
+                         
+                         if(f.listFiles().length==0){
+                        // fw.write(f.toString().substring(chosenDir.length()-chosenDirFolderName.length())+" [empty] \n");
+//                          
+                         
                      }
-                    writeStuff(f.toString());
+                         else{
+                             fw.write(f.toString().substring(chosenDir.length()-chosenDirFolderName.length())+"\n");
+                               writeStuff(f);                        
+                         }
+                    // else{
+                       //  fw.write(f.toString().substring(chosenDir.length()-chosenDirFolderName.length())+"(emopty) "+"\n");
+                    // }
+                      
+                   
                  }
                  
-                 
+                   fw.flush();
              }
-             fw.flush();
+           
              }
+            
          }
          
      };
@@ -1085,9 +973,7 @@ public class MainMenu extends javax.swing.JFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFileChooser fileChooser;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton5;
     private javax.swing.JFrame jFileChooser;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
