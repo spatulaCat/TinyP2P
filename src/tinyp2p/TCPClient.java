@@ -65,7 +65,11 @@ class TCPClient {
        // int bytesRead;
        // int currentTot = 0;
        // int filesize = 483329;
-      
+//      if(fname.endsWith("CHTMSG")){
+//          System.out.println("asdsa");
+//            socket.close();
+//      }
+//      else{
         new File("C:\\TinyP2P Downloads").mkdir();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
        // int byteToBeRead = -1;
@@ -85,7 +89,7 @@ class TCPClient {
         }
        bos.close();
             socket.close();
-        
+//      }
 //        try (BufferedOutputStream bos = new BufferedOutputStream(fos)) {
 //            System.out.println("reading bytes");
 //            bytesRead = is.read(bytearray,0,bytearray.length);

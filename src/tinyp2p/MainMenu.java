@@ -200,7 +200,6 @@ public class MainMenu extends javax.swing.JFrame {
 
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jButton1.setText("Send");
-        jButton1.setMargin(new java.awt.Insets(0, 0, 0, 0));
         jButton1.setPreferredSize(new java.awt.Dimension(50, 30));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -531,27 +530,32 @@ public class MainMenu extends javax.swing.JFrame {
         
         
         List<PeerAddress> peerMap = node.getPeer().peerBean().peerMap().all();
-       // for (PeerAddress pa : peerMap){
+        for (PeerAddress pa : peerMap){
             try{
-                PeerAddress pa = peerMap.get(0);
-            System.out.println(pa.inetAddress().toString());
+            //    PeerAddress pa = peerMap.get(0);
+            //System.out.println(pa.inetAddress().toString());
             
-            ChatClient cClient = new ChatClient(pa.inetAddress().toString().substring(1),6788);
-            
+            TCPClient cClient = new TCPClient(pa.inetAddress().toString().substring(1),6789,"CHTMSG");
+            mess+="CHTMSG";
+            System.out.println("I sent: " + mess );
             String[] a = {mess};
+            
             cClient.SendToServer(a);
             
-            System.out.println(cClient.RecieveFromServer());
+          //  System.out.println(cClient.RecieveFromServer());
             cClient.close();
             }catch(Exception e){ System.err.println(e);}
            
-       // }
-        
-        
-        
+        }
+          
     }//GEN-LAST:event_jButton1ActionPerformed
           
-   
+   public void updateChat(String ms){
+       jTextArea1.append(ms + "\n");
+       
+   }
+    
+    
 
 //    public void valueChanged(TreeSelectionEvent e) {
 //        //Returns the last path element of the selection.
@@ -834,10 +838,15 @@ public class MainMenu extends javax.swing.JFrame {
      createDirList.execute();
     }
     
-    
+    private void createServer() throws IOException{
+         server = new TCPServer(this); //port 6789
+    }
     SwingWorker listenWorker = new SwingWorker<String, Void>() {
         @Override
         public String doInBackground() throws Exception {
+           createServer();
+             return null;
+           // chatServer = new ChatServer(); // port 6788
 //            try {
 //                ServerSocket serverSocket = new ServerSocket(15123);
 //                try (Socket socket = serverSocket.accept()) {
@@ -856,17 +865,17 @@ public class MainMenu extends javax.swing.JFrame {
 //            }
             //System.out.println(chosenDir);
             
-            server = new TCPServer(); //port 6789
-            chatServer = new ChatServer(); // port 6788
+
             
            // server.run();
             
             
             
-            return null;
+           
             
         }
         
+       
 //        public void setMD(String md){
 //            server.setMyDir(md);
 //        }

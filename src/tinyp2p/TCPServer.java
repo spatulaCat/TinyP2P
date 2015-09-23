@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.SwingWorker;
 import org.apache.commons.io.IOUtils;
 
 public class TCPServer {
@@ -26,8 +27,9 @@ public class TCPServer {
     String reqIP;
     String reqFile;
     String myDir;
+    MainMenu sw;
     
-    public TCPServer() throws Exception{
+    public  TCPServer() throws Exception{
         //this.myDir = myDir;
         
         //create welcoming socket at port 6789
@@ -42,6 +44,22 @@ public class TCPServer {
             Connection c = new Connection(connectionSocket);
         }
     }
+
+    TCPServer(MainMenu aThis) throws IOException {
+        sw = aThis;
+        ServerSocket welcomeSocket = new ServerSocket(6789);
+        
+        System.out.println("server listening");
+        while (true) {
+            //block on welcoming socket for contact by a client
+            Socket connectionSocket = welcomeSocket.accept();
+            
+            // create thread for client
+            Connection c = new Connection(connectionSocket);
+        }
+    }
+
+   
     
     public void setMyDir() throws FileNotFoundException, IOException{
         List<String> lines =IOUtils.readLines(new FileInputStream("TinyP2PSettings.txt"));
@@ -147,7 +165,13 @@ public class TCPServer {
                 // PrintWriter outToClient = new PrintWriter(new OutputStreamWriter(connectionSocket.getOutputStream()));
                 //read in line from the socket
                 String clientSentence;
-                while ((clientSentence = inFromClient.readLine()) != null) {
+                while ((clientSentence = inFromClient.readLine()) != null) {                
+                    if(clientSentence.endsWith("CHTMSG]")){
+                        System.out.println("message recieved: " + clientSentence);
+                        connectionSocket.close();
+                        sw.updateChat(clientSentence);
+                    }
+                    else{
                     String[] parts = clientSentence.split(",");
                     reqUser = parts[0].substring(1) ;
                     reqIP = connectionSocket.getInetAddress().toString();
@@ -206,58 +230,8 @@ public class TCPServer {
                     connectionSocket.close();
                     System.out.println("File transfer complete");
                     }
-//                    if(transferFile.isFile()){
-//                        
-//                        
-//                    }
-//                    
-                    
-                 //   File transferFile = new File (reqFile);
-                 
-//                    byte [] bytearray = new byte [(int)transferFile.length()];
-//                     System.out.println("File input stream");
-//                     System.out.println("File size " + transferFile.length());
-//                    FileInputStream fin = new FileInputStream(transferFile);
-//                   //   System.out.println(fin.toString());
-//                   // System.out.println("buffered input stream");
-//                    BufferedInputStream bin = new BufferedInputStream(fin);
-//                   // System.out.println("read in file");
-//                    bin.read(bytearray,0,bytearray.length);
-//                  //  System.out.println("outputsocket");
-//                    OutputStream os = connectionSocket.getOutputStream();
-//                    System.out.println("Sending Files...");
-//                    os.write(bytearray,0,bytearray.length);
-//                    
-//                    os.flush();
-//                    connectionSocket.close();
-//                    System.out.println("File transfer complete");
-//                    
-                
-                
-                
-                    // System.out.println(connectionSocket.getInetAddress());
-                    //  System.out.println("Client sent: "+clientSentence+"\n");
-                
-                
-                // connectionSocket.close();
-                
-                //  Send s = new Send();
-                
-//                     ServerSocket serverSocket = new ServerSocket(15123);
-//        Socket socket = serverSocket.accept();
-//        System.out.println("Accepted connection : " + socket);
-      
-               
-                
-                
-                //process
-                // PrintWriter outToClient = new PrintWriter(new OutputStreamWriter(connectionSocket.getOutputStream()));
-                // String capitalizedSentence = clientSentence.toUpperCase() + '\n';
-                //write out line to socket
-                
-                
-                //outToClient.print(capitalizedSentence);
-                //outToClient.flush();
+                }
+//                   
        
             }catch(IOException e){}
         }
