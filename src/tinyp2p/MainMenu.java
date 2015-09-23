@@ -129,9 +129,11 @@ public class MainMenu extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         online = new javax.swing.JList();
+        jTextField2 = new javax.swing.JTextField();
         jTextField1 = new javax.swing.JTextField();
         tinyButt = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
@@ -188,7 +190,7 @@ public class MainMenu extends javax.swing.JFrame {
                 jButton3ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 280, 210, 30));
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 250, 210, 30));
 
         jScrollPane2.setBackground(new java.awt.Color(255, 215, 197));
         jScrollPane2.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -196,7 +198,7 @@ public class MainMenu extends javax.swing.JFrame {
                 jScrollPane2MouseClicked(evt);
             }
         });
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 60, 210, 240));
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 60, 210, 200));
 
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jButton1.setText("Send");
@@ -219,6 +221,15 @@ public class MainMenu extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         jLabel5.setText("Files");
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 40, -1, -1));
+
+        jButton2.setFont(new java.awt.Font("sansserif", 0, 10)); // NOI18N
+        jButton2.setText("Go");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 280, -1, 30));
 
         online.setBackground(new java.awt.Color(222, 255, 204));
         online.setModel(new javax.swing.AbstractListModel() {
@@ -245,6 +256,19 @@ public class MainMenu extends javax.swing.JFrame {
         );
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 130, 250));
+
+        jTextField2.setText("Search...");
+        jTextField2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTextField2MouseClicked(evt);
+            }
+        });
+        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField2ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 280, 200, 30));
 
         jTextField1.setBackground(new java.awt.Color(255, 253, 221));
         getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 280, 190, 30));
@@ -421,7 +445,7 @@ public class MainMenu extends javax.swing.JFrame {
             
             DefaultTreeModel model = new DefaultTreeModel(root);
             tree = new JTree(model);  
-         //   tree.setCellRenderer(new FileTreeCellRenderer());
+            tree.setCellRenderer(new FileTreeCellRenderer());
             tree.addMouseListener ( m );
     
            
@@ -550,7 +574,40 @@ public class MainMenu extends javax.swing.JFrame {
         }
           
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTextField2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField2MouseClicked
+         jTextField2.setText("");
+    }//GEN-LAST:event_jTextField2MouseClicked
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {
+            fileSearch(jTextField2.getText());
+        } catch (ClassNotFoundException | IOException ex) {
+            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+        try {
+            fileSearch(jTextField2.getText());
+        } catch (ClassNotFoundException | IOException ex) {
+            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jTextField2ActionPerformed
           
+   public void fileSearch(String srch) throws ClassNotFoundException, IOException{
+      srch = extractFname(srch);
+       Number160 myHash =  Number160.createHash(srch);
+        System.out.println("get hash = " + myHash);
+        FutureGet futureGet = node.getPeer().get(myHash).start();
+                    futureGet.awaitUninterruptibly();                   
+                    if (!futureGet.isEmpty()){      
+                            Object n = futureGet.data().object();
+                          System.out.println("File found at " + n.toString());
+                    }
+   } 
+   
+    
    public void updateChat(String ms){
        while(ms.endsWith("]")){
            ms = ms.substring(0, ms.length()-1);
@@ -561,10 +618,7 @@ public class MainMenu extends javax.swing.JFrame {
        while(ms.endsWith("CHTMSG")){
            ms = ms.substring(0, ms.length()-6);
        }
-       
-       
-       
-       
+
        jTextArea1.append(ms + "\n");
        
    }
@@ -624,6 +678,17 @@ public class MainMenu extends javax.swing.JFrame {
             }catch(NullPointerException e){            
             }  
         }
+    }
+    
+    public static String extractFname(String path){
+        //System.out.println(path);
+        String[] parts = path.split("\\\\");
+        String fname = parts[parts.length-1];
+       // System.out.println(fname);
+        String[] parts2 = fname.split("\\.");
+        fname = parts2[0];
+        //System.out.println(Arrays.toString(parts2));
+        return fname.toLowerCase();
     }
     
     class downloadWorkerClass extends SwingWorker<Void, TreePath>{
@@ -811,9 +876,16 @@ public class MainMenu extends javax.swing.JFrame {
              for (File f : listOfFiles){
                  
                  if(f.isFile() && !f.isHidden()){
-                        // fw.write(f.toString().substring(chosenDir.length()-chosenDirFolderName.length()) +" |"+ f.length()+"\n");       
-                 fw.write(f.toString().substring(chosenDir.length()-chosenDirFolderName.length())+"\n");       
                  
+                     // fw.write(f.toString().substring(chosenDir.length()-chosenDirFolderName.length()) +" |"+ f.length()+"\n");       
+                String leFile = f.toString().substring(chosenDir.length()-chosenDirFolderName.length());
+                     fw.write(leFile+"\n");    
+                     String fileName = extractFname(leFile);
+                     Number160 sHash = Number160.createHash(fileName);
+                     System.out.println(fileName);
+                     System.out.println("put hash = " + sHash);
+                  FuturePut futurePut = node.getPeer().put(sHash).data(new Data(username)).start();
+                futurePut.awaitUninterruptibly();
                  }
                  else if(f.isDirectory()) { 
                     // File[] ff =  f.listFiles(); 
@@ -1083,6 +1155,7 @@ public class MainMenu extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFileChooser fileChooser;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JFrame jFileChooser;
     private javax.swing.JLabel jLabel1;
@@ -1102,6 +1175,7 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
     private javax.swing.JList online;
     private javax.swing.JButton tinyButt;
     // End of variables declaration//GEN-END:variables

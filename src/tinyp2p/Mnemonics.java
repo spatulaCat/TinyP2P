@@ -324,7 +324,11 @@ public class Mnemonics {
         return ip.substring(0,ip.length()-1);
     }
     
-//    public static void main (String args[]){
+    
+    
+    
+   // public static void main (String args[]){
+   //   System.out.println(extractFname("C:\\Users\\Nicky\\Documents\\GitHub\\TinyP2P\\build\\classes"));
 //        System.out.println(getMnemonics("127.0.0.1"));
 //        System.out.println(getMnemonics("192.168.123.213"));
 //        System.out.println(getMnemonics("146.18.6.99"));
@@ -342,6 +346,6 @@ public class Mnemonics {
 //           ms = ms.substring(0, ms.length()-6);
 //       }
 //       System.out.println(ms);
-//    }
+   // }
     
 }
