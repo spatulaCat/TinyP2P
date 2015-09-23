@@ -329,7 +329,19 @@ public class Mnemonics {
 //        System.out.println(getMnemonics("192.168.123.213"));
 //        System.out.println(getMnemonics("146.18.6.99"));
         
+//       
+//        String ms  = "[hiCHTMSGCHTMSGCHTMSGCHTMSG]";
 //        
+//       while(ms.endsWith("]")){
+//           ms = ms.substring(0, ms.length()-1);
+//       }
+//        while(ms.substring(0,1).equalsIgnoreCase("[")){
+//           ms = ms.substring(1, ms.length());
+//       }
+//       while(ms.endsWith("CHTMSG")){
+//           ms = ms.substring(0, ms.length()-6);
+//       }
+//       System.out.println(ms);
 //    }
     
 }

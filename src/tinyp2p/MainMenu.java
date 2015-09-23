@@ -555,6 +555,9 @@ public class MainMenu extends javax.swing.JFrame {
        while(ms.endsWith("]")){
            ms = ms.substring(0, ms.length()-1);
        }
+        while(ms.substring(0,1).equalsIgnoreCase("[")){
+           ms = ms.substring(1, ms.length());
+       }
        while(ms.endsWith("CHTMSG")){
            ms = ms.substring(0, ms.length()-6);
        }
