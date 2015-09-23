@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -121,10 +122,11 @@ public class MainMenu extends javax.swing.JFrame {
         fileChooser = new javax.swing.JFileChooser();
         jPopupMenu1 = new javax.swing.JPopupMenu();
         jScrollBar1 = new javax.swing.JScrollBar();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextArea2 = new javax.swing.JTextArea();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jButton3 = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -174,6 +176,23 @@ public class MainMenu extends javax.swing.JFrame {
         });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jScrollPane2.setBackground(new java.awt.Color(255, 215, 197));
+        jScrollPane2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jScrollPane2MouseClicked(evt);
+            }
+        });
+
+        jTextArea2.setEditable(false);
+        jTextArea2.setColumns(20);
+        jTextArea2.setRows(5);
+        jScrollPane2.setViewportView(jTextArea2);
+
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 60, 210, 200));
+
+        jScrollPane3.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane3.setToolTipText("");
+
         jTextArea1.setEditable(false);
         jTextArea1.setBackground(new java.awt.Color(255, 253, 221));
         jTextArea1.setColumns(20);
@@ -191,14 +210,6 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 250, 210, 30));
-
-        jScrollPane2.setBackground(new java.awt.Color(255, 215, 197));
-        jScrollPane2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jScrollPane2MouseClicked(evt);
-            }
-        });
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 60, 210, 200));
 
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jButton1.setText("Send");
@@ -271,6 +282,11 @@ public class MainMenu extends javax.swing.JFrame {
         getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 280, 200, 30));
 
         jTextField1.setBackground(new java.awt.Color(255, 253, 221));
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField1KeyPressed(evt);
+            }
+        });
         getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 280, 190, 30));
 
         tinyButt.setBackground(new java.awt.Color(204, 255, 204));
@@ -319,6 +335,10 @@ public class MainMenu extends javax.swing.JFrame {
         public void mousePressed ( MouseEvent e )
         {
             try{
+                              
+        jTextArea2.setText("");
+        jScrollPane2.getViewport().remove(jTextArea2);
+         jScrollPane2.getViewport().add(tree);
                 selectedUser = lm.elementAt(online.getSelectedIndex()).toString();
                 showFiles();
             }catch(ArrayIndexOutOfBoundsException ex){}
@@ -594,17 +614,35 @@ public class MainMenu extends javax.swing.JFrame {
             Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jTextField2ActionPerformed
+
+    private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
+   if (evt.getKeyCode()==KeyEvent.VK_ENTER){
+            jButton1.doClick();
+        }          
+    }//GEN-LAST:event_jTextField1KeyPressed
           
    public void fileSearch(String srch) throws ClassNotFoundException, IOException{
       srch = extractFname(srch);
        Number160 myHash =  Number160.createHash(srch);
         System.out.println("get hash = " + myHash);
         FutureGet futureGet = node.getPeer().get(myHash).start();
-                    futureGet.awaitUninterruptibly();                   
-                    if (!futureGet.isEmpty()){      
-                            Object n = futureGet.data().object();
-                          System.out.println("File found at " + n.toString());
-                    }
+        futureGet.awaitUninterruptibly();
+        if (!futureGet.isEmpty()){
+      
+            Object n = futureGet.data().object();
+            System.out.println("File found at " + n.toString());
+            
+            jTextArea2.setText( n.toString() + " has " + srch);
+            jScrollPane2.getViewport().remove(tree);
+            jScrollPane2.getViewport().add(jTextArea2);
+        }
+        else{
+            jTextArea2.setText(srch + " not found");
+            jScrollPane2.getViewport().remove(tree);
+            jScrollPane2.getViewport().add(jTextArea2);
+        }
+        
+        
    } 
    
     
@@ -1174,6 +1212,7 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JList online;
