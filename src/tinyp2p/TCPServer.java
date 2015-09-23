@@ -168,7 +168,7 @@ public class TCPServer {
                 while ((clientSentence = inFromClient.readLine()) != null) {                
                     if(clientSentence.endsWith("CHTMSG]")){
                         System.out.println("message recieved: " + clientSentence);
-                        connectionSocket.close();
+                        connectionSocket.close();                  
                         sw.updateChat(clientSentence);
                     }
                     else{

@@ -529,13 +529,14 @@ public class MainMenu extends javax.swing.JFrame {
         
         
         
-        List<PeerAddress> peerMap = node.getPeer().peerBean().peerMap().all();
-        for (PeerAddress pa : peerMap){
+        //List<PeerAddress> peerMap = node.getPeer().peerBean().peerMap().all();
+        // ConcurrentHashMap<String, String> userIPs;
+        for (String  userip : userIPs.values()){
             try{
             //    PeerAddress pa = peerMap.get(0);
             //System.out.println(pa.inetAddress().toString());
             
-            TCPClient cClient = new TCPClient(pa.inetAddress().toString().substring(1),6789,"CHTMSG");
+            TCPClient cClient = new TCPClient(userip.substring(1),6789,"CHTMSG");
             mess+="CHTMSG";
             System.out.println("I sent: " + mess );
             String[] a = {mess};
@@ -551,6 +552,16 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
           
    public void updateChat(String ms){
+       while(ms.endsWith("]")){
+           ms = ms.substring(0, ms.length()-1);
+       }
+       while(ms.endsWith("CHTMSG")){
+           ms = ms.substring(0, ms.length()-6);
+       }
+       
+       
+       
+       
        jTextArea1.append(ms + "\n");
        
    }
