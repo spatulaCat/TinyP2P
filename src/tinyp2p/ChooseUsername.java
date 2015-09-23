@@ -134,7 +134,7 @@ public class ChooseUsername extends javax.swing.JFrame {
         try {
             new MainMenu(user,pwd,node,this.getBounds(),ips).setVisible(true);
         } catch (IOException ex) {
-            Logger.getLogger(ChooseUsername.class.getName()).log(Level.SEVERE, null, ex);
+           // Logger.getLogger(ChooseUsername.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.dispose();
 

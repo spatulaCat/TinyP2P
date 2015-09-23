@@ -1,5 +1,7 @@
 package tinyp2p;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,6 +15,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,6 +24,7 @@ import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
@@ -28,7 +32,9 @@ import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.Timer;
+import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import net.tomp2p.dht.FutureGet;
@@ -47,6 +53,7 @@ import org.hive2hive.processframework.exceptions.ProcessExecutionException;
 import util.ConsoleFileAgent;
 
 
+
 public class MainMenu extends javax.swing.JFrame {
     private String username;
     private String password;
@@ -62,6 +69,7 @@ public class MainMenu extends javax.swing.JFrame {
    // private boolean stillPopulating;
     private ConcurrentHashMap<String, String> userIPs;
     public TCPServer server;
+    private ChatServer chatServer;
     
     public MainMenu() {
         initComponents();
@@ -93,6 +101,10 @@ public class MainMenu extends javax.swing.JFrame {
         //online.setComponentPopupMenu(jPopupMenu1);
         //jScrollPane2.setComponentPopupMenu(jPopupMenu1);
             
+//        tree = new JTree();
+//        tree.setBackground(new java.awt.Color(255,215,197));
+       // jScrollPane2.setBackground(Color.red);
+       
         
     }
     
@@ -108,14 +120,21 @@ public class MainMenu extends javax.swing.JFrame {
         jFileChooser = new javax.swing.JFrame();
         fileChooser = new javax.swing.JFileChooser();
         jPopupMenu1 = new javax.swing.JPopupMenu();
+        jScrollBar1 = new javax.swing.JScrollBar();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jButton3 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
+        jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         online = new javax.swing.JList();
+        jTextField1 = new javax.swing.JTextField();
         tinyButt = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -153,19 +172,54 @@ public class MainMenu extends javax.swing.JFrame {
         });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jTextArea1.setEditable(false);
+        jTextArea1.setBackground(new java.awt.Color(255, 253, 221));
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane3.setViewportView(jTextArea1);
+
+        getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 60, 190, 220));
+
+        jButton3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jButton3.setText("View my shared folder");
+        jButton3.setMargin(new java.awt.Insets(2, 9, 2, 9));
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 280, 210, 30));
+
+        jScrollPane2.setBackground(new java.awt.Color(255, 215, 197));
         jScrollPane2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jScrollPane2MouseClicked(evt);
             }
         });
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 60, 230, 240));
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 60, 210, 240));
+
+        jButton1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jButton1.setText("Send");
+        jButton1.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        jButton1.setPreferredSize(new java.awt.Dimension(50, 30));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 280, 70, 30));
 
         jLabel1.setFont(new java.awt.Font("Aharoni", 1, 18)); // NOI18N
         jLabel1.setText("Welcome");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 10, 295, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 10, 295, -1));
 
+        jLabel2.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         jLabel2.setText("Online users");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, -1, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, -1, -1));
+
+        jLabel5.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        jLabel5.setText("Files");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 40, -1, -1));
 
         online.setBackground(new java.awt.Color(222, 255, 204));
         online.setModel(new javax.swing.AbstractListModel() {
@@ -188,10 +242,13 @@ public class MainMenu extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 130, 240));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 130, 250));
+
+        jTextField1.setBackground(new java.awt.Color(255, 253, 221));
+        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 280, 190, 30));
 
         tinyButt.setBackground(new java.awt.Color(204, 255, 204));
         tinyButt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tiny7.png"))); // NOI18N
@@ -203,13 +260,9 @@ public class MainMenu extends javax.swing.JFrame {
         });
         getContentPane().add(tinyButt, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 0, 40, 40));
 
-        jButton3.setText("View my shared folder");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 30, 150, -1));
+        jLabel4.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        jLabel4.setText("Chat");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 40, -1, -1));
 
         jLabel3.setText(" ");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, 570, -1));
@@ -368,16 +421,17 @@ public class MainMenu extends javax.swing.JFrame {
             DefaultMutableTreeNode root = new DefaultMutableTreeNode("Shared");
             
             DefaultTreeModel model = new DefaultTreeModel(root);
-            tree = new JTree(model);
+            tree = new JTree(model);  
+         //   tree.setCellRenderer(new FileTreeCellRenderer());
             tree.addMouseListener ( m );
-            
-            
-            
+    
+           
             //jm.action(null, root)
             
             for (String line : lines){
                 buildTreeFromString(model, line);
             }
+           
             jScrollPane2.getViewport().add(tree);
        //     jScrollPane2.setComponentPopupMenu(jPopupMenu1);
             //tree.setComponentPopupMenu(jPopupMenu1);
@@ -448,6 +502,7 @@ public class MainMenu extends javax.swing.JFrame {
                 }catch(StringIndexOutOfBoundsException e){
                     
                 }
+                tree.setCellRenderer(new FileTreeCellRenderer());
             }
               
         }catch(NullPointerException e){
@@ -467,6 +522,34 @@ public class MainMenu extends javax.swing.JFrame {
 //     jScrollPane2.setComponentPopupMenu(jPopupMenu1);
 //       jPopupMenu1.show();
     }//GEN-LAST:event_jScrollPane2MouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String mess = username +": "+ jTextField1.getText();
+        jTextArea1.append(mess+"\n");
+        jTextField1.setText("");
+        
+        
+        
+        List<PeerAddress> peerMap = node.getPeer().peerBean().peerMap().all();
+       // for (PeerAddress pa : peerMap){
+            try{
+                PeerAddress pa = peerMap.get(0);
+            System.out.println(pa.inetAddress().toString());
+            
+            ChatClient cClient = new ChatClient(pa.inetAddress().toString().substring(1),6788);
+            
+            String[] a = {mess};
+            cClient.SendToServer(a);
+            
+            System.out.println(cClient.RecieveFromServer());
+            cClient.close();
+            }catch(Exception e){ System.err.println(e);}
+           
+       // }
+        
+        
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
           
    
 
@@ -526,6 +609,7 @@ public class MainMenu extends javax.swing.JFrame {
     }
     
     class downloadWorkerClass extends SwingWorker<Void, TreePath>{
+      
         private TreePath tp;
         public downloadWorkerClass(TreePath t){
             this.tp = t;
@@ -538,7 +622,7 @@ public class MainMenu extends javax.swing.JFrame {
         try {
             if(tp==null){
                 fname  = tree.getSelectionPath().getLastPathComponent().toString();
-                
+               
                 nodes = tree.getSelectionPath().getPath();
                
                 
@@ -771,7 +855,9 @@ public class MainMenu extends javax.swing.JFrame {
 //                Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
 //            }
             //System.out.println(chosenDir);
-            server = new TCPServer();
+            
+            server = new TCPServer(); //port 6789
+            chatServer = new ChatServer(); // port 6788
             
            // server.run();
             
@@ -973,24 +1059,77 @@ public class MainMenu extends javax.swing.JFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFileChooser fileChooser;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
     private javax.swing.JFrame jFileChooser;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPopupMenu jPopupMenu1;
+    private javax.swing.JScrollBar jScrollBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JList online;
     private javax.swing.JButton tinyButt;
     // End of variables declaration//GEN-END:variables
   
+    
+    
+    class FileTreeCellRenderer extends DefaultTreeCellRenderer {
+
+    private FileSystemView fileSystemView;
+
+    private JLabel label;
+
+    FileTreeCellRenderer() {
+        label = new JLabel();
+        label.setOpaque(true);
+        fileSystemView = FileSystemView.getFileSystemView();
+    }
+
+    @Override
+    public Component getTreeCellRendererComponent(
+        JTree tree,
+        Object value,
+        boolean selected,
+        boolean expanded,
+        boolean leaf,
+        int row,
+        boolean hasFocus) {
+        
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode)value;
+        // System.out.println(Arrays.toString(node.getPath()));
+        // System.out.println(node.getUserObject().toString());
+         
+        File file =  new File(node.getUserObject().toString());     
+       // System.out.println(file.toString());
+        label.setIcon(fileSystemView.getSystemIcon(file));
+        label.setText(fileSystemView.getSystemDisplayName(file));
+        label.setToolTipText(file.getPath());
+
+        if (selected) {
+            label.setBackground(backgroundSelectionColor);
+            label.setForeground(textSelectionColor);
+        } else {
+            label.setBackground(backgroundNonSelectionColor);
+            label.setForeground(textNonSelectionColor);
+        }
+
+        return label;
+    }
+    }
 }
+
 
 //    private DefaultMutableTreeNode addNodes(DefaultMutableTreeNode curTop, File dir) {
 //        String curPath = dir.getPath();
