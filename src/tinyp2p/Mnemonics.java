@@ -324,11 +324,25 @@ public class Mnemonics {
         return ip.substring(0,ip.length()-1);
     }
     
+//    
+        public static String extractFname(String path){
+        //System.out.println(path);
+        String[] parts = path.split("\\\\");
+        String fname = parts[parts.length-1];
+       // System.out.println(fname);
+        String[] parts2 = fname.split("\\.");
+        fname="";
+        for(int i = 0; i<parts2.length-1;i++){
+            fname += parts2[i];
+        }
+        
+       // fname = parts2[0];
+        //System.out.println(Arrays.toString(parts2));
+        return fname.toLowerCase();
+    }
     
-    
-    
-   // public static void main (String args[]){
-   //   System.out.println(extractFname("C:\\Users\\Nicky\\Documents\\GitHub\\TinyP2P\\build\\classes"));
+    public static void main (String args[]){
+      System.out.println(extractFname("01.11 - Catbug.mp4"));
 //        System.out.println(getMnemonics("127.0.0.1"));
 //        System.out.println(getMnemonics("192.168.123.213"));
 //        System.out.println(getMnemonics("146.18.6.99"));
@@ -346,6 +360,6 @@ public class Mnemonics {
 //           ms = ms.substring(0, ms.length()-6);
 //       }
 //       System.out.println(ms);
-   // }
+    }
     
 }

@@ -108,9 +108,6 @@
           <Color blue="c5" green="d7" red="ff" type="rgb"/>
         </Property>
       </Properties>
-      <Events>
-        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jScrollPane2MouseClicked"/>
-      </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
           <AbsoluteConstraints x="170" y="60" width="210" height="200"/>
@@ -125,6 +122,9 @@
             <Property name="columns" type="int" value="20"/>
             <Property name="rows" type="int" value="5"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jTextArea2MouseClicked"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -282,9 +282,6 @@
                   <Connection code="new javax.swing.AbstractListModel() {&#xa;    String[] strings = { &quot;&quot; };&#xa;    public int getSize() { return strings.length; }&#xa;    public Object getElementAt(int i) { return strings[i]; }&#xa;}" type="code"/>
                 </Property>
               </Properties>
-              <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="onlineMouseClicked"/>
-              </Events>
             </Component>
           </SubComponents>
         </Container>
