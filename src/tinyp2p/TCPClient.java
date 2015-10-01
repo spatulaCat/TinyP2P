@@ -70,13 +70,13 @@ class TCPClient {
 //            socket.close();
 //      }
 //      else{
-        new File("C:\\TinyP2P Downloads").mkdir();
+        new File("TinyP2P Downloads").mkdir();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
        // int byteToBeRead = -1;
         //byte [] bytearray = new byte [filesize];
         InputStream is = socket.getInputStream();
         System.out.println(fname);
-        FileOutputStream fos = new FileOutputStream("C:\\TinyP2P Downloads\\" + fname);
+        FileOutputStream fos = new FileOutputStream("TinyP2P Downloads\\" + fname);
         System.out.println("opening stream");
         BufferedOutputStream bos = new BufferedOutputStream(fos);
         

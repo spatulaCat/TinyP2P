@@ -1,6 +1,7 @@
 package tinyp2p;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,6 +14,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -25,6 +28,8 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
@@ -67,6 +72,7 @@ public class MainMenu extends javax.swing.JFrame {
     public TCPServer server;
     private boolean filefound;
     private String searchTerm;
+    ArrayList<String> badExts = new ArrayList();
     
     public MainMenu() {
         initComponents();
@@ -88,11 +94,11 @@ public class MainMenu extends javax.swing.JFrame {
         fw = new FileWriter("dirList.txt");
         userIPs = new ConcurrentHashMap();
         
-        try{            
-            List<String> lines =IOUtils.readLines(new FileInputStream("TinyP2PSettings.txt"));       
+        try{
+            List<String> lines =IOUtils.readLines(new FileInputStream("TinyP2PSettings.txt"));
             chosenDir =  lines.get(0);
         }catch(IndexOutOfBoundsException | FileNotFoundException  e){}
-  
+        
     }
     
     @SuppressWarnings("unchecked")
@@ -310,7 +316,7 @@ public class MainMenu extends javax.swing.JFrame {
         @Override
         public void mousePressed ( MouseEvent e )
         {
-            try{   
+            try{
                 jTextArea2.setText("");
                 jScrollPane2.getViewport().remove(jTextArea2);
                 jScrollPane2.getViewport().add(tree);
@@ -394,19 +400,23 @@ public class MainMenu extends javax.swing.JFrame {
             }
             
             jScrollPane2.getViewport().add(tree);
-  
+            
         } catch ( NullPointerException | IOException ex) {
-            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+            
         }      
     }//GEN-LAST:event_jButton3ActionPerformed
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-       
+       String chDirTemp = "";
         try {
-            chosenDir = getDir();
+            chDirTemp = getDir();
+            
         } catch (IOException ex) {
-            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+      
         }
+        if(chDirTemp != null){
+            chosenDir = chDirTemp;
         createDirListSwingWorker();
+        }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
                 
@@ -499,7 +509,7 @@ public class MainMenu extends javax.swing.JFrame {
                 Enumeration<DefaultMutableTreeNode> e = root.depthFirstEnumeration();
         while (e.hasMoreElements()) {
             DefaultMutableTreeNode node = e.nextElement();
-            if (removeExtension(node.toString()).equalsIgnoreCase(s)) {
+            if (extractExtension(node.toString())[0].equalsIgnoreCase(s)) {
                 System.out.println(node.toString());
                 return new TreePath(node.getPath());
             }
@@ -585,15 +595,33 @@ public class MainMenu extends javax.swing.JFrame {
         }
     }
     
-    public String removeExtension(String n){
-         String[] parts2 = n.split("\\.(?=[^\\.]+$)");
-        return parts2[0];
+     public String[] extractExtension(String n){
+      String[] parts = n.split("\\.(?=[^\\.]+$)");
+      if(parts.length<2){
+          String[] parts2 = {parts[0], ".file"};
+          return parts2;
+      }
+         
+      else return parts; 
     }
+    
+//    public String removeExtension(String n){
+//         String[] parts2 = n.split("\\.(?=[^\\.]+$)");
+//        return parts2[0];
+//    }
     
    public String extractFname(String path){
         String[] parts = path.split("\\\\");
         String fname = parts[parts.length-1];
         return fname.toLowerCase();
+    }
+   
+    public String checkUp(String file){
+        String[] bads = {"DOC","PDF","DOCX","XLS","DBX","DOCM", "DOTM", "XLSM", "XLTM", "XLAM", "PPTM", "POTM", "PPAM", "PPSM", "SLDM", "DBX"};
+        if(Arrays.asList(bads).contains(file.toUpperCase())){
+            return file;
+        }
+        return null;
     }
     
     class downloadWorkerClass extends SwingWorker<Void, TreePath>{
@@ -690,9 +718,38 @@ public class MainMenu extends javax.swing.JFrame {
                 dirList.createNewFile();
             }
              writeStuff(chd);
-             fw.close();
+            
+             if(badExts!=null){ 
+                 String list ="";
+                 for(String a : badExts){
+                     list = list+extractFname(a)+"\n";
+                 }
+              String msg = "The following files may contain personal information!\n\n" + list +  "\nAre you sure you still want to share?";
+              
+              JTextArea textArea = new JTextArea(msg);
+              JScrollPane scrollPane = new JScrollPane(textArea);
+              textArea.setLineWrap(true);
+              textArea.setWrapStyleWord(true);
+              scrollPane.setPreferredSize( new Dimension( 300, 360 ) );
+
+
+              int yn = JOptionPane.showConfirmDialog(null, scrollPane);
+              if(yn == 0){
+                  for(String b : badExts){
+                     fw.write(b+"\n");
+                  //   String fileName = ;
+                     FuturePut futurePut = node.getPeer().put(Number160.createHash(extractExtension(extractFname(b))[0])).data(new Data(username)).start();
+                     futurePut.awaitUninterruptibly();
+                  }
+                badExts.clear();
+               // unverified.clear();
+              }
+              
+             }
+              fw.close();
          }
-         
+//         
+        // ArrayList<String> unverified = new ArrayList();
          public void writeStuff(File dir) throws IOException{
              File[] listOfFiles = dir.listFiles();
              if(listOfFiles!=null  ){
@@ -700,24 +757,37 @@ public class MainMenu extends javax.swing.JFrame {
                  if(f.isFile() && !f.isHidden()){                
                      // fw.write(f.toString().substring(chosenDir.length()-chosenDirFolderName.length()) +" |"+ f.length()+"\n");
                      String leFile = f.toString().substring(chosenDir.length()-chosenDirFolderName.length());
-                     fw.write(leFile+"\n");
-                     String fileName = removeExtension(extractFname(leFile));
-                     FuturePut futurePut = node.getPeer().put(Number160.createHash(fileName)).data(new Data(username)).start();
-                     futurePut.awaitUninterruptibly();
-                 }
-                 else if(f.isDirectory()) { 
-                         if(f.listFiles().length==0){  
-                     }
-                         else{
-                             fw.write(f.toString().substring(chosenDir.length()-chosenDirFolderName.length())+"\n");
-                               writeStuff(f);                        
+                    
+                     if(checkUp(extractExtension(leFile)[1]) != null){
+                         if(  !badExts.contains(leFile)){
+                             badExts.add(leFile);
                          }
+                     }   
+                     
+                     else{
+                     fw.write(leFile+"\n");
+                     FuturePut futurePut = node.getPeer().put(Number160.createHash(extractExtension(extractFname(leFile))[0])).data(new Data(username)).start();
+                     futurePut.awaitUninterruptibly();
+                     }
+                 }
+                 else if(f.isDirectory() && !f.isHidden()) {
+                      System.out.println("dir "+f);
+                       System.out.println(f.listFiles().length);
+                     if(f.listFiles().length==0){
+//                             fw.write(f.toString().substring(chosenDir.length()-chosenDirFolderName.length())+"\n");
+//                         
+                     }
+//                     else{
+                         fw.write(f.toString().substring(chosenDir.length()-chosenDirFolderName.length())+"\n");
+//                     }
+                     writeStuff(f);
+                
                  }    
-                   fw.flush();
-             }   
-             }           
-         }       
-     };  
+              //  System.out.println(f.toString());
+                   fw.flush(); 
+             }
+            
+             }}};   
      createDirList.execute();
     }
     
@@ -766,11 +836,16 @@ public class MainMenu extends javax.swing.JFrame {
         int returnVal = fileChooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             dir =  fileChooser.getSelectedFile().getAbsolutePath();     
-        }
+        
         File settings = new File("TinyP2PSettings.txt");
         try (FileWriter fw2 = new FileWriter(settings)) {
             fw2.write(dir);
         }
+        }
+        else if(returnVal == JFileChooser.CANCEL_OPTION || returnVal == JFileChooser.ABORT){
+            dir = null;
+        }
+            
          return dir;
     }
     
