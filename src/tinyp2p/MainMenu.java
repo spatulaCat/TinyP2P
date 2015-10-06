@@ -43,6 +43,8 @@ import javax.swing.tree.TreePath;
 import net.tomp2p.dht.FutureGet;
 import net.tomp2p.dht.FuturePut;
 import net.tomp2p.dht.PutBuilder;
+import net.tomp2p.futures.BaseFuture;
+import net.tomp2p.futures.BaseFutureListener;
 import net.tomp2p.peers.Number160;
 import net.tomp2p.peers.Number640;
 import net.tomp2p.peers.PeerAddress;
@@ -557,10 +559,31 @@ public class MainMenu extends javax.swing.JFrame {
           
    public void fileSearch(String srch) throws ClassNotFoundException, IOException{
      searchTerm = srch;
-       srch = extractFname(srch);
-       Number160 myHash =  Number160.createHash(srch);
+       final String pooky = extractFname(srch);
+       Number160 myHash =  Number160.createHash(pooky);
+        jTextArea2.setText("");
         FutureGet futureGet = node.getPeer().get(myHash).all().start();
         futureGet.awaitUninterruptibly();
+        futureGet.addListener(new BaseFutureListener<FutureGet>() {
+         @Override
+         public void operationComplete(FutureGet f) throws Exception {
+            filefound = true;
+            for (Map.Entry<Number640, Data> entry : f.dataMap().entrySet()) {
+                Object nn = entry.getValue().object();
+                selectedUser = nn.toString();
+                jTextArea2.append(nn.toString() + " has " + pooky + "\n");
+       //     jScrollPane2.getViewport().remove(tree);
+                jScrollPane2.getViewport().add(jTextArea2);
+            }
+         }
+
+         @Override
+         public void exceptionCaught(Throwable thrwbl) throws Exception {
+             throw new UnsupportedOperationException("YOLO");
+         }
+            
+        });
+/*        
         if (!futureGet.isEmpty()){
             filefound = true;
             Map<Number640, Data> results = futureGet.dataMap();
@@ -579,6 +602,7 @@ public class MainMenu extends javax.swing.JFrame {
 //            jScrollPane2.getViewport().remove(tree);
             jScrollPane2.getViewport().add(jTextArea2);
         }    
+*/
    } 
    
     
