@@ -65,6 +65,7 @@ public class MainMenu extends javax.swing.JFrame {
     private DefaultListModel lm;
     private FileWriter fw ;
     private String chosenDir;
+    private ArrayList<String> chosenDirs = null;
     private String chosenDirFolderName;
     private JTree tree;
     private String selectedUser;
@@ -131,6 +132,8 @@ public class MainMenu extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
 
         fileChooser.setCurrentDirectory(new java.io.File("C:\\Users\\(._.)\\.ssh"));
 
@@ -149,9 +152,7 @@ public class MainMenu extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(600, 383));
         setMinimumSize(new java.awt.Dimension(600, 383));
-        setPreferredSize(new java.awt.Dimension(600, 383));
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
@@ -304,6 +305,22 @@ public class MainMenu extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem1);
 
+        jMenuItem2.setText("Add shared directory");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem2);
+
+        jMenuItem3.setText("Remove shared directory");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem3);
+
         jMenuBar1.add(jMenu1);
 
         setJMenuBar(jMenuBar1);
@@ -415,6 +432,7 @@ public class MainMenu extends javax.swing.JFrame {
         }
         if(chDirTemp != null){
             chosenDir = chDirTemp;
+            chosenDirs.add(chosenDir);
         createDirListSwingWorker();
         }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
@@ -526,6 +544,14 @@ public class MainMenu extends javax.swing.JFrame {
             tree.scrollPathToVisible(path);
         }
     }//GEN-LAST:event_jTextArea2MouseClicked
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
           
    public void fileSearch(String srch) throws ClassNotFoundException, IOException{
      searchTerm = srch;
@@ -725,15 +751,16 @@ public class MainMenu extends javax.swing.JFrame {
                      list = list+extractFname(a)+"\n";
                  }
               String msg = "The following files may contain personal information!\n\n" + list +  "\nAre you sure you still want to share?";
-              
-              JTextArea textArea = new JTextArea(msg);
+              JCheckBox checkbox = new JCheckBox("Do not show this warning again.");
+              JTextArea textArea = new JTextArea(msg);            
               JScrollPane scrollPane = new JScrollPane(textArea);
+              Object[] params = {scrollPane, checkbox};
               textArea.setLineWrap(true);
               textArea.setWrapStyleWord(true);
-              scrollPane.setPreferredSize( new Dimension( 300, 360 ) );
+              scrollPane.setPreferredSize( new Dimension( 300, 250 ) );
 
 
-              int yn = JOptionPane.showConfirmDialog(null, scrollPane);
+              int yn = JOptionPane.showConfirmDialog(null, params, "Warning!",  JOptionPane.YES_NO_OPTION);
               if(yn == 0){
                   for(String b : badExts){
                      fw.write(b+"\n");
@@ -772,11 +799,12 @@ public class MainMenu extends javax.swing.JFrame {
                  }
                  else if(f.isDirectory() && !f.isHidden()) {
                       System.out.println("dir "+f);
-                       System.out.println(f.listFiles().length);
-                     if(f.listFiles().length==0){
+                      
+//                               System.out.println(f.canWrite());
+//                     if(f.listFiles().length==0){
 //                             fw.write(f.toString().substring(chosenDir.length()-chosenDirFolderName.length())+"\n");
 //                         
-                     }
+//                     }
 //                     else{
                          fw.write(f.toString().substring(chosenDir.length()-chosenDirFolderName.length())+"\n");
 //                     }
@@ -835,12 +863,12 @@ public class MainMenu extends javax.swing.JFrame {
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int returnVal = fileChooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            dir =  fileChooser.getSelectedFile().getAbsolutePath();     
-        
-        File settings = new File("TinyP2PSettings.txt");
-        try (FileWriter fw2 = new FileWriter(settings)) {
-            fw2.write(dir);
-        }
+            dir =  fileChooser.getSelectedFile().getAbsolutePath();
+            
+            File settings = new File("TinyP2PSettings.txt");
+            try (FileWriter fw2 = new FileWriter(settings)) {
+                fw2.write(dir);
+            }
         }
         else if(returnVal == JFileChooser.CANCEL_OPTION || returnVal == JFileChooser.ABORT){
             dir = null;
@@ -971,6 +999,8 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollBar jScrollBar1;
