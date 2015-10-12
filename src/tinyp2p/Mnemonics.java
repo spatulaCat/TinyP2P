@@ -321,7 +321,7 @@ public class Mnemonics {
     }
     
     public static void main (String args[]){
-      System.out.println(extractFname("01.11 - Catbug.mp4"));
+    //  System.out.println(extractFname("01.11 - Catbug.mp4"));
 //        System.out.println(getMnemonics("127.0.0.1"));
 //        System.out.println(getMnemonics("192.168.123.213"));
 //        System.out.println(getMnemonics("146.18.6.99"));
@@ -339,6 +339,27 @@ public class Mnemonics {
 //           ms = ms.substring(0, ms.length()-6);
 //       }
 //       System.out.println(ms);
+        String myDir = "C:\\Users\\Nicky\\Documents\\Uni stuff";
+        String reqFile = "Uni stuff\\AI\\AI paper 1 references.bak";
+        
+        String[] xcvxcv = myDir.split("\\\\");
+        String[] qweqwe = reqFile.split("\\\\");
+        if(xcvxcv[xcvxcv.length-1].equalsIgnoreCase(qweqwe[0])){
+            String[] newp = new String[qweqwe.length-1];
+            System.arraycopy(qweqwe, 1, newp, 0, qweqwe.length -1);
+            //Arrays.copyOf(qweqwe, qweqwe.length-2);
+            //new String[reqFile.length-2];
+            //System.arraycopy( qweqwe, 1, newp, 0, qweqwe.length-2 );
+            System.out.println(Arrays.toString(newp));
+        }
+        
+        
+        
     }
+      
+        
+        
+        
+    
     
 }

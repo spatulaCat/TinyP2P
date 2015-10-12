@@ -798,7 +798,7 @@ public class MainMenu extends javax.swing.JFrame {
                 fname = tp.getLastPathComponent().toString();
                nodes = tp.getPath();          
             }
-  
+            System.out.println("NODES " + Arrays.toString(nodes));
             int dlExe = 0;
             
             if (fname.substring(fname.length()-4,fname.length()).equalsIgnoreCase(".exe")){
@@ -817,6 +817,8 @@ public class MainMenu extends javax.swing.JFrame {
                 for(int i=0;i<nodes.length;i++) {
                     sb.append(File.separatorChar).append(nodes[i].toString());
                 }
+                
+                
             
             System.out.println("path "+sb.toString());        
             String[] request = {username,sb.toString()};
@@ -872,7 +874,7 @@ public class MainMenu extends javax.swing.JFrame {
             }
              writeStuff(chd);
             
-             if(badExts!=null){ 
+             if(badExts!=null && !badExts.isEmpty()){ 
                  String list ="";
                  for(String a : badExts){
                      list = list+extractFname(a)+"\n";
