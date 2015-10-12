@@ -172,8 +172,11 @@ public class TCPServer {
                        
                        String[] parts = clientSentence.split(",");
                        String sender = parts[0].substring(1);
+                       System.out.println("Sender " +  sender);
                        String reqFile = parts[1].substring(0,parts[1].length()-6);
+                       System.out.println("reqFile " +  reqFile);
                        reqIP = connectionSocket.getInetAddress().toString();
+                       System.out.println("reqIP" + reqIP);
                        int yn = JOptionPane.showConfirmDialog(null, sender + " wants to send you the file \"" + reqFile +"\"\nDo you want to recieve it?");
                       connectionSocket.close(); 
                     // if(yn==0){

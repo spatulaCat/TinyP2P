@@ -401,18 +401,24 @@ public class MainMenu extends javax.swing.JFrame {
     
     public void beginDownloadFromSender( String file, String IP) throws Exception
     {
-        String[] request = {username,file};
-        
+        String fname = extractFname(file);
+        String[] request = {username,fname};
+       
+        System.out.println("Requesting yo " + Arrays.toString(request));
         TCPClient client = new TCPClient(IP,6789,file);
         
         client.SendToServer(request);
-        System.out.println("Requesting yo " + Arrays.toString(request));
+        
+        System.out.println(client.RecieveFromServer());
+        client.close();
+        
+        //  System.out.println("Requesting yo " + Arrays.toString(request));
     }
     
 //    String[] request = {username,sb.toString()};
 //
 //    TCPClient client = new TCPClient(userIPs.get(selectedUser).substring(1),6789,fname);
-     
+    
     
     class uploadWorkerClass extends SwingWorker<Void, TreePath>{
       
@@ -874,7 +880,7 @@ public class MainMenu extends javax.swing.JFrame {
               textArea.setLineWrap(true);
               textArea.setWrapStyleWord(true);
               scrollPane.setPreferredSize( new Dimension( 300, 250 ) );
-
+                
 
               int yn = JOptionPane.showConfirmDialog(null, params, "Warning!",  JOptionPane.YES_NO_OPTION);
               if(yn == 0){
