@@ -191,10 +191,6 @@ public class TCPServer {
                         sw.updateChat(clientSentence);
                     }
                     else{
-                       
-                    setMyDir();
-                    System.out.println("my shared dir: " + myDir );
-                    
                     String[] parts = clientSentence.split(",");
                     reqUser = parts[0].substring(1) ;
                     reqIP = connectionSocket.getInetAddress().toString();
@@ -209,32 +205,12 @@ public class TCPServer {
                  //   System.out.println("user: " + reqUser);
                   //  System.out.println("ip: " + reqIP);
                     System.out.println("filename: " + reqFile);
-                    // System.out.println("file size: " + fs);
+                   // System.out.println("file size: " + fs);
                     
-                   // String[] sdf = reqFile.split("\\\\");
-                   // String[] dsf = new String[sdf.length-3];
-                    String[] dsf ;
+                    String[] sdf = reqFile.split("\\\\");
+                    String[] dsf = new String[sdf.length-3];
                     
-                    String[] xcvxcv = myDir.split("\\\\");
-                    String[] qweqwe = reqFile.split("\\\\");
-                 //   String[] dsf = new String[qweqwe.length-3];
-                      System.out.println("is " + xcvxcv[xcvxcv.length-1] + " = " + qweqwe[0]);
-                    if(xcvxcv[xcvxcv.length-1].equalsIgnoreCase(qweqwe[0])){
-                       // System.out.println("is " + xcvxcv[xcvxcv.length-1] + " = " + qweqwe[0]);
-                        String[] newp = Arrays.copyOf(qweqwe, qweqwe.length-2);
-                        //new String[reqFile.length-2];
-                        System.arraycopy( qweqwe, 1, newp, 0, qweqwe.length-2 );
-                         dsf = new String[newp.length-3];
-                    }
-                    
-                  // sdf = reqFile.split("\\\\");
-                    
-                    else{
-                    dsf = new String[qweqwe.length-3];
-                    
-                    }
-                    
-                    System.arraycopy(qweqwe, 3, dsf,0 , qweqwe.length-3); 
+                    System.arraycopy(sdf, 3, dsf,0 , sdf.length-3); 
                     System.out.println(Arrays.toString(dsf));
                     
                     StringBuilder sb = new StringBuilder();
@@ -246,6 +222,8 @@ public class TCPServer {
                     
                     reqFile = sb.toString().substring(1);
                     
+                    setMyDir();
+                    System.out.println("my shared dir: " + myDir );
                     
                     
                     
