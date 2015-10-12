@@ -74,6 +74,7 @@ public class MainMenu extends javax.swing.JFrame {
     private boolean filefound;
     private String searchTerm;
     ArrayList<String> badExts = new ArrayList();
+    private boolean viewingMine;
     
     public MainMenu() {
         initComponents();
@@ -94,7 +95,7 @@ public class MainMenu extends javax.swing.JFrame {
         
         fw = new FileWriter("dirList.txt");
         userIPs = new ConcurrentHashMap();
-        
+        viewingMine = false;
         try{
             List<String> lines =IOUtils.readLines(new FileInputStream("TinyP2PSettings.txt"));
             chosenDir =  lines.get(0);
@@ -329,7 +330,7 @@ public class MainMenu extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
     
-    MouseAdapter n = new MouseAdapter(){
+    MouseAdapter n = new MouseAdapter(){//click on user name
         @Override
         public void mousePressed ( MouseEvent e )
         {
@@ -358,11 +359,22 @@ public class MainMenu extends javax.swing.JFrame {
                 {
                     JPopupMenu menu = new JPopupMenu ();
                     p = path.getLastPathComponent().toString();
-                    JMenuItem jm = new JMenuItem("Download " + p);
-                    MouseListener popupListener = new PopupListener();
-                    jm.addMouseListener(popupListener);
-                    menu.add(jm);
-                    menu.show ( tree, pathBounds.x, pathBounds.y + pathBounds.height );
+                    if(viewingMine){//my dir
+                        JMenuItem jm = new JMenuItem("Send " + p);
+                        MouseListener popupListener = new PopupListener();
+                        jm.addMouseListener(popupListener);
+                        menu.add(jm);
+                        menu.show ( tree, pathBounds.x, pathBounds.y + pathBounds.height );
+                    }
+                    else{//their dir
+                        JMenuItem jm = new JMenuItem("Download " + p);
+                        MouseListener popupListener = new PopupListener();
+                        jm.addMouseListener(popupListener);
+                        menu.add(jm);
+                        menu.show ( tree, pathBounds.x, pathBounds.y + pathBounds.height );
+                    }
+                    
+                    
                 }
             }
         }
@@ -370,7 +382,12 @@ public class MainMenu extends javax.swing.JFrame {
         class PopupListener extends MouseAdapter {
             @Override
             public void mousePressed(MouseEvent e) {
-                new downloadWorkerClass(path).execute();
+                if(viewingMine){
+                   //viewingMine=false;
+                }else{
+                     new downloadWorkerClass(path).execute();
+                }
+               
             }
         }
     };
@@ -402,6 +419,7 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_tinyButtActionPerformed
     
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+       viewingMine = true;
         try {
             List<String> lines =IOUtils.readLines(new FileInputStream("dirList.txt"));
             
@@ -440,6 +458,7 @@ public class MainMenu extends javax.swing.JFrame {
                 
 
     private void showFiles(){
+      viewingMine = false;
         try{
             Number160 dirlistHash2 = Number160.createHash(selectedUser + "dirlist");
             FutureGet futureGet = node.getPeer().get(dirlistHash2).start();
