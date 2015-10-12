@@ -61,7 +61,7 @@ import util.ConsoleFileAgent;
 
 
 public class MainMenu extends javax.swing.JFrame {
-    private String username;
+    public String username;
     private String password;
     private IH2HNode node;
     private UserCredentials userCredentials;
@@ -100,10 +100,10 @@ public class MainMenu extends javax.swing.JFrame {
         fw = new FileWriter("dirList.txt");
         userIPs = new ConcurrentHashMap();
         viewingMine = false;
-        try{
-            List<String> lines =IOUtils.readLines(new FileInputStream("TinyP2PSettings.txt"));
-            chosenDir =  lines.get(0);
-        }catch(IndexOutOfBoundsException | FileNotFoundException  e){}
+//        try{
+//            List<String> lines =IOUtils.readLines(new FileInputStream("TinyP2PSettings.txt"));
+//            chosenDir =  lines.get(0);
+//        }catch(IndexOutOfBoundsException | FileNotFoundException  e){}
         
     }
     
@@ -365,14 +365,14 @@ public class MainMenu extends javax.swing.JFrame {
                     p = path.getLastPathComponent().toString();
                     if(viewingMine){//my dir
                         JMenuItem jm = new JMenuItem("Send " + p);
-                        MouseListener popupListener = new PopupListener();
+                        MouseListener popupListener = new ULPopupListener();
                         jm.addMouseListener(popupListener);
                         menu.add(jm);
                         menu.show ( tree, pathBounds.x, pathBounds.y + pathBounds.height );
                     }
                     else{//their dir
                         JMenuItem jm = new JMenuItem("Download " + p);
-                        MouseListener popupListener = new PopupListener();
+                        MouseListener popupListener = new DLPopupListener();
                         jm.addMouseListener(popupListener);
                         menu.add(jm);
                         menu.show ( tree, pathBounds.x, pathBounds.y + pathBounds.height );
@@ -383,18 +383,85 @@ public class MainMenu extends javax.swing.JFrame {
             }
         }
         
-        class PopupListener extends MouseAdapter {
+        class ULPopupListener extends MouseAdapter {
             @Override
             public void mousePressed(MouseEvent e) {
-                if(viewingMine){
-                   //viewingMine=false;
-                }else{
-                     new downloadWorkerClass(path).execute();
-                }
-               
+                new uploadWorkerClass(path).execute();
+            }
+        }
+  
+        class DLPopupListener extends MouseAdapter {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                new downloadWorkerClass(path).execute();
             }
         }
     };
+    
+    
+    public void beginDownloadFromSender( String file, String IP) throws Exception
+    {
+        String[] request = {username,file};
+        
+        TCPClient client = new TCPClient(IP,6789,file);
+        
+        client.SendToServer(request);
+        System.out.println("Requesting yo " + Arrays.toString(request));
+    }
+    
+//    String[] request = {username,sb.toString()};
+//
+//    TCPClient client = new TCPClient(userIPs.get(selectedUser).substring(1),6789,fname);
+     
+    
+    class uploadWorkerClass extends SwingWorker<Void, TreePath>{
+      
+        private TreePath tp;
+        public uploadWorkerClass(TreePath t){
+            this.tp = t;
+        }
+        public void ads(){
+            
+        }
+        @Override
+        public Void doInBackground(){
+            String fname;
+            Object[] nodes;
+            try {
+                if(tp==null){
+                    fname  = tree.getSelectionPath().getLastPathComponent().toString();     
+                    nodes = tree.getSelectionPath().getPath();
+                }
+                else{
+                    fname = tp.getLastPathComponent().toString();
+                    nodes = tp.getPath();
+                }
+                
+                StringBuilder sb = new StringBuilder();
+                
+                for(int i=0;i<nodes.length;i++) {
+                    sb.append(File.separatorChar).append(nodes[i].toString());
+                }
+                String[] request = {username,sb.toString()};
+                selectedUser = JOptionPane.showInputDialog(null,"");
+                System.out.println("I am " + username + " sending a file to " + selectedUser + " at " + userIPs.get(selectedUser));
+
+                TCPClient client = new TCPClient(userIPs.get(selectedUser).substring(1),6789,fname);
+                
+                //client.SendToServer(request);
+                client.UploadRequest(request);
+              
+                //System.out.println(client.RecieveFromServer());
+                client.close();
+                
+            } catch (Exception ex) {
+                System.out.println(ex);
+            }
+            return null;
+        }
+    }
+   
+    
     
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         loginWorker.execute();

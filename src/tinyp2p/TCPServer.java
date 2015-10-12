@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import org.apache.commons.io.IOUtils;
 
@@ -166,7 +167,22 @@ public class TCPServer {
                 //read in line from the socket
                 String clientSentence;
                 while ((clientSentence = inFromClient.readLine()) != null) {                
-                    if(clientSentence.endsWith("CHTMSG]")){
+                   if(clientSentence.endsWith("SNDRQ")){
+                       System.out.println("request: "+clientSentence);
+                       
+                       String[] parts = clientSentence.split(",");
+                       String sender = parts[0].substring(1);
+                       String reqFile = parts[1].substring(0,parts[1].length()-6);
+                       reqIP = connectionSocket.getInetAddress().toString();
+                       int yn = JOptionPane.showConfirmDialog(null, sender + " wants to send you the file \"" + reqFile +"\"\nDo you want to recieve it?");
+                      connectionSocket.close(); 
+                    // if(yn==0){
+                           sw.beginDownloadFromSender(reqFile, reqIP);
+                      // }
+                            
+                   
+                   }     
+                   else if(clientSentence.endsWith("CHTMSG]")){
                         System.out.println("message recieved: " + clientSentence);
                         connectionSocket.close();                  
                         sw.updateChat(clientSentence);
@@ -233,7 +249,9 @@ public class TCPServer {
                 }
 //                   
        
-            }catch(IOException e){}
+            }catch(IOException e){} catch (Exception ex) {
+                Logger.getLogger(TCPServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 }

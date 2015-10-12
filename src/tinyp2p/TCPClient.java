@@ -56,6 +56,14 @@ class TCPClient {
         outToServer.print(Arrays.toString(msg) + '\n');
         outToServer.flush();
     }
+    
+    void UploadRequest(String[] msg) throws IOException{
+         PrintWriter outToServer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+        //send msg to server
+        outToServer.print(Arrays.toString(msg) +"SNDRQ");
+        outToServer.flush();    
+    }
+    
     String RecieveFromServer() throws Exception{
         //create input stream attached to socket
 //        BufferedReader inFromServer = new BufferedReader(new InputStreamReader (socket.getInputStream()));
