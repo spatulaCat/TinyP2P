@@ -817,11 +817,13 @@ public class MainMenu extends javax.swing.JFrame {
                 for(int i=0;i<nodes.length;i++) {
                     sb.append(File.separatorChar).append(nodes[i].toString());
                 }
-                
-                
+                String pt = sb.toString();
+                if(pt.substring(0,3).equalsIgnoreCase("\\ \\")){
+                    pt = pt.substring(3,pt.length()-1);
+                }
             
-            System.out.println("path "+sb.toString());        
-            String[] request = {username,sb.toString()};
+            System.out.println("path "+pt);        
+            String[] request = {username,pt};
             System.out.println("dl request" + Arrays.toString(request));
             TCPClient client = new TCPClient(userIPs.get(selectedUser).substring(1),6789,fname);
             

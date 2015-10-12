@@ -339,22 +339,26 @@ public class Mnemonics {
 //           ms = ms.substring(0, ms.length()-6);
 //       }
 //       System.out.println(ms);
-        String myDir = "C:\\Users\\Nicky\\Documents\\Uni stuff";
-        String reqFile = "Uni stuff\\AI\\AI paper 1 references.bak";
+//        String myDir = "C:\\Users\\Nicky\\Documents\\Uni stuff";
+//        String reqFile = "Uni stuff\\AI\\AI paper 1 references.bak";
+//        
+//        String[] xcvxcv = myDir.split("\\\\");
+//        String[] qweqwe = reqFile.split("\\\\");
+//        if(xcvxcv[xcvxcv.length-1].equalsIgnoreCase(qweqwe[0])){
+//            String[] newp = new String[qweqwe.length-1];
+//            System.arraycopy(qweqwe, 1, newp, 0, qweqwe.length -1);
+//            //Arrays.copyOf(qweqwe, qweqwe.length-2);
+//            //new String[reqFile.length-2];
+//            //System.arraycopy( qweqwe, 1, newp, 0, qweqwe.length-2 );
+//            System.out.println(Arrays.toString(newp));
+//        }
+        String pt = "\\ \\Shared\\Documents\\GitHub\\";
+         if(pt.substring(0,3).equalsIgnoreCase("\\ \\")){
+                    pt = pt.substring(3,pt.length()-1);
+                System.out.println(pt);
+         }
         
-        String[] xcvxcv = myDir.split("\\\\");
-        String[] qweqwe = reqFile.split("\\\\");
-        if(xcvxcv[xcvxcv.length-1].equalsIgnoreCase(qweqwe[0])){
-            String[] newp = new String[qweqwe.length-1];
-            System.arraycopy(qweqwe, 1, newp, 0, qweqwe.length -1);
-            //Arrays.copyOf(qweqwe, qweqwe.length-2);
-            //new String[reqFile.length-2];
-            //System.arraycopy( qweqwe, 1, newp, 0, qweqwe.length-2 );
-            System.out.println(Arrays.toString(newp));
-        }
-        
-        
-        
+       
     }
       
         

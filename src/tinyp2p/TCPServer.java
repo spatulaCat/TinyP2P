@@ -218,9 +218,9 @@ public class TCPServer {
                     String[] xcvxcv = myDir.split("\\\\");
                     String[] qweqwe = reqFile.split("\\\\");
                  //   String[] dsf = new String[qweqwe.length-3];
-                     
+                      System.out.println("is " + xcvxcv[xcvxcv.length-1] + " = " + qweqwe[0]);
                     if(xcvxcv[xcvxcv.length-1].equalsIgnoreCase(qweqwe[0])){
-                        System.out.println("is " + xcvxcv[xcvxcv.length-1] + " = " + qweqwe[0]);
+                       // System.out.println("is " + xcvxcv[xcvxcv.length-1] + " = " + qweqwe[0]);
                         String[] newp = Arrays.copyOf(qweqwe, qweqwe.length-2);
                         //new String[reqFile.length-2];
                         System.arraycopy( qweqwe, 1, newp, 0, qweqwe.length-2 );

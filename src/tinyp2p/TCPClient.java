@@ -58,7 +58,7 @@ class TCPClient {
         outToServer.print(Arrays.toString(msg) + '\n');
         
         outToServer.flush();
-         socket.close();
+       //  socket.close();
     }
     
     void UploadRequest(String[] msg) throws IOException{
