@@ -178,7 +178,7 @@ public class TCPServer {
                        reqIP = connectionSocket.getInetAddress().toString();
                        System.out.println("reqIP" + reqIP);
                        int yn = JOptionPane.showConfirmDialog(null, sender + " wants to send you the file \"" + reqFile +"\"\nDo you want to recieve it?");
-                      connectionSocket.close(); 
+                      //connectionSocket.close(); 
                     // if(yn==0){
                            sw.beginDownloadFromSender(reqFile, reqIP);
                       // }

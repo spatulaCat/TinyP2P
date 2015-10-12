@@ -52,9 +52,13 @@ class TCPClient {
     void SendToServer(String[] msg) throws Exception{
         //create output stream attached to socket
         PrintWriter outToServer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+       System.out.println("Sending to server!  "+Arrays.toString(msg));
+   
         //send msg to server
         outToServer.print(Arrays.toString(msg) + '\n');
+        
         outToServer.flush();
+         socket.close();
     }
     
     void UploadRequest(String[] msg) throws IOException{
@@ -62,7 +66,7 @@ class TCPClient {
         //send msg to server
         outToServer.print(Arrays.toString(msg) +"SNDRQ");
         outToServer.flush();    
-        socket.close();
+      //  socket.close();
     }
     
     String RecieveFromServer() throws Exception{

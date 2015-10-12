@@ -401,17 +401,21 @@ public class MainMenu extends javax.swing.JFrame {
     
     public void beginDownloadFromSender( String file, String IP) throws Exception
     {
-        String fname = extractFname(file);
-        String[] request = {username,file};
-       
-        System.out.println("Requesting yo " + Arrays.toString(request));
-        TCPClient client = new TCPClient(IP,6789,fname);
+        TreePath t = new TreePath(file);
+        new downloadWorkerClass(t).execute();
         
-        client.SendToServer(request);
-        
-        System.out.println(client.RecieveFromServer());
-        client.close();
-        
+//        String fname = extractFname(file);
+//        String[] request = {username,file};
+//       
+//        System.out.println("Requesting yo " + Arrays.toString(request));
+//       
+//        TCPClient client = new TCPClient(IP,6789,fname);
+//        
+//        client.SendToServer(request);
+//        
+//        System.out.println(client.RecieveFromServer());
+//        client.close();
+//        
         //  System.out.println("Requesting yo " + Arrays.toString(request));
     }
     
