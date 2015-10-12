@@ -402,10 +402,10 @@ public class MainMenu extends javax.swing.JFrame {
     public void beginDownloadFromSender( String file, String IP) throws Exception
     {
         String fname = extractFname(file);
-        String[] request = {username,fname};
+        String[] request = {username,file};
        
         System.out.println("Requesting yo " + Arrays.toString(request));
-        TCPClient client = new TCPClient(IP,6789,file);
+        TCPClient client = new TCPClient(IP,6789,fname);
         
         client.SendToServer(request);
         
@@ -815,7 +815,7 @@ public class MainMenu extends javax.swing.JFrame {
             
             System.out.println("path "+sb.toString());        
             String[] request = {username,sb.toString()};
-
+            System.out.println("dl request" + Arrays.toString(request));
             TCPClient client = new TCPClient(userIPs.get(selectedUser).substring(1),6789,fname);
             
             client.SendToServer(request);

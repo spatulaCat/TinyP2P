@@ -62,6 +62,7 @@ class TCPClient {
         //send msg to server
         outToServer.print(Arrays.toString(msg) +"SNDRQ");
         outToServer.flush();    
+        socket.close();
     }
     
     String RecieveFromServer() throws Exception{
