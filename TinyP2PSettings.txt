@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 C:\Users\Nicky\Documents\TinyP2P-master
+=======
+C:\Users\Nicky\Documents\GitHub
+>>>>>>> 752371d464d38afda57c99ddb4d6f487272ef0e2

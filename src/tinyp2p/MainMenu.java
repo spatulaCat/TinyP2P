@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,7 +43,10 @@ import javax.swing.tree.TreePath;
 import net.tomp2p.dht.FutureGet;
 import net.tomp2p.dht.FuturePut;
 import net.tomp2p.dht.PutBuilder;
+import net.tomp2p.futures.BaseFuture;
+import net.tomp2p.futures.BaseFutureListener;
 import net.tomp2p.peers.Number160;
+import net.tomp2p.peers.Number640;
 import net.tomp2p.peers.PeerAddress;
 import net.tomp2p.storage.Data;
 import org.apache.commons.io.IOUtils;
@@ -450,7 +454,7 @@ public class MainMenu extends javax.swing.JFrame {
         }
         if(chDirTemp != null){
             chosenDir = chDirTemp;
-            chosenDirs.add(chosenDir);
+          //  chosenDirs.add(chosenDir);
         createDirListSwingWorker();
         }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
@@ -574,17 +578,42 @@ public class MainMenu extends javax.swing.JFrame {
           
    public void fileSearch(String srch) throws ClassNotFoundException, IOException{
      searchTerm = srch;
-       srch = extractFname(srch);
-       Number160 myHash =  Number160.createHash(srch);
-        FutureGet futureGet = node.getPeer().get(myHash).start();
+       final String pooky = extractFname(srch);
+       Number160 myHash =  Number160.createHash(pooky);
+        jTextArea2.setText("");
+        FutureGet futureGet = node.getPeer().get(myHash).all().start();
         futureGet.awaitUninterruptibly();
+        futureGet.addListener(new BaseFutureListener<FutureGet>() {
+         @Override
+         public void operationComplete(FutureGet f) throws Exception {
+            filefound = true;
+            for (Map.Entry<Number640, Data> entry : f.dataMap().entrySet()) {
+                Object nn = entry.getValue().object();
+                selectedUser = nn.toString();
+                jTextArea2.append(nn.toString() + " has " + pooky + "\n");
+       //     jScrollPane2.getViewport().remove(tree);
+                jScrollPane2.getViewport().add(jTextArea2);
+            }
+         }
+
+         @Override
+         public void exceptionCaught(Throwable thrwbl) throws Exception {
+             throw new UnsupportedOperationException("YOLO");
+         }
+            
+        });
+/*        
         if (!futureGet.isEmpty()){
             filefound = true;
-            Object nn = futureGet.data().object();
-            selectedUser = nn.toString();
-            jTextArea2.setText( nn.toString() + " has " + srch);
+            Map<Number640, Data> results = futureGet.dataMap();
+            jTextArea2.setText("");
+            for (Map.Entry<Number640, Data> entry : results.entrySet()) {
+                Object nn = entry.getValue().object();
+                selectedUser = nn.toString();
+                jTextArea2.append(nn.toString() + " has " + srch + "\n");
        //     jScrollPane2.getViewport().remove(tree);
-            jScrollPane2.getViewport().add(jTextArea2);
+                jScrollPane2.getViewport().add(jTextArea2);
+            }
         }
         else{
             filefound = false;
@@ -592,6 +621,7 @@ public class MainMenu extends javax.swing.JFrame {
 //            jScrollPane2.getViewport().remove(tree);
             jScrollPane2.getViewport().add(jTextArea2);
         }    
+*/
    } 
    
     
@@ -817,7 +847,7 @@ public class MainMenu extends javax.swing.JFrame {
                      }
                  }
                  else if(f.isDirectory() && !f.isHidden()) {
-                      System.out.println("dir "+f);
+                    //  System.out.println("dir "+f);
                       
 //                               System.out.println(f.canWrite());
 //                     if(f.listFiles().length==0){
