@@ -452,6 +452,7 @@ public class MainMenu extends javax.swing.JFrame {
                 for(int i=0;i<nodes.length;i++) {
                     sb.append(File.separatorChar).append(nodes[i].toString());
                 }
+                
                 String[] request = {username,sb.toString()};
                 selectedUser = JOptionPane.showInputDialog(null,"");
                 System.out.println("I am " + username + " sending a file to " + selectedUser + " at " + userIPs.get(selectedUser));
@@ -462,7 +463,7 @@ public class MainMenu extends javax.swing.JFrame {
                 client.UploadRequest(request);
               
                 //System.out.println(client.RecieveFromServer());
-                client.close();
+              //  client.close();
                 
             } catch (Exception ex) {
                 System.out.println(ex);
