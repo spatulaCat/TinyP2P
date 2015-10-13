@@ -818,8 +818,9 @@ public class MainMenu extends javax.swing.JFrame {
                     sb.append(File.separatorChar).append(nodes[i].toString());
                 }
                 String pt = sb.toString();
+                
                 if(pt.substring(0,3).equalsIgnoreCase("\\ \\")){
-                    pt = pt.substring(3,pt.length()-1);
+                    pt = pt.substring(3,pt.length());
                 }
             
             System.out.println("path "+pt);        

@@ -89,6 +89,8 @@ class TCPClient {
         //byte [] bytearray = new byte [filesize];
         InputStream is = socket.getInputStream();
         System.out.println(fname);
+        MainMenu mm = new MainMenu();
+        fname = mm.extractFname(fname);
         FileOutputStream fos = new FileOutputStream("TinyP2P Downloads\\" + fname);
         System.out.println("opening stream");
         BufferedOutputStream bos = new BufferedOutputStream(fos);
