@@ -95,7 +95,7 @@ public class ConnectInternal extends javax.swing.JFrame {
         jLabel15.setText("IP:");
         getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 270, 20, 10));
 
-        jLabel3.setText("With this address you can still connect with peers on your local (LAN) network, ");
+        jLabel3.setText("With this address you can still connect with peers on your local network, ");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 180, -1, -1));
 
         jLabel5.setText("Internal Mnemonic: ");
@@ -116,14 +116,17 @@ public class ConnectInternal extends javax.swing.JFrame {
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 310, 70, 30));
 
         tinyButt.setBackground(new java.awt.Color(204, 255, 204));
-        tinyButt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tiny7.png"))); // NOI18N
+        tinyButt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tinyhelp.png"))); // NOI18N
         tinyButt.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        tinyButt.setMaximumSize(new java.awt.Dimension(33, 53));
+        tinyButt.setMinimumSize(new java.awt.Dimension(33, 53));
+        tinyButt.setPreferredSize(new java.awt.Dimension(33, 53));
         tinyButt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tinyButtActionPerformed(evt);
             }
         });
-        getContentPane().add(tinyButt, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 10, 40, 40));
+        getContentPane().add(tinyButt, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 10, 40, 60));
 
         jLabel6.setText("them with your internal Mnemonic.");
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 130, -1, -1));
@@ -135,7 +138,7 @@ public class ConnectInternal extends javax.swing.JFrame {
         help.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 102, 51)));
         getContentPane().add(help, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 130, -1, -1));
 
-        jLabel8.setText("If you are behind the same NAT router as your peer, you need to provide");
+        jLabel8.setText("If you are on the same home or office network as your peer, you may need to provide");
         getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 110, -1, -1));
 
         jLabel2.setText("even if your internet connection is down. ");

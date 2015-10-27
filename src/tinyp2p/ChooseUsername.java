@@ -41,6 +41,7 @@ public class ChooseUsername extends javax.swing.JFrame {
     private String password;
     private IH2HNode node;
     private String[] ips;
+   // private PeerMapChangeListener pmc;
     
     public ChooseUsername() {
         initComponents();
@@ -55,6 +56,8 @@ public class ChooseUsername extends javax.swing.JFrame {
         tinyButt.setOpaque(false);
         tinyButt.setContentAreaFilled(false); //to make the content area transparent
         tinyButt.setBorderPainted(false);
+        //pmc = new PMListener();
+        
     }
 
     /**
@@ -110,14 +113,15 @@ public class ChooseUsername extends javax.swing.JFrame {
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 225, -1, -1));
 
         tinyButt.setBackground(new java.awt.Color(204, 255, 204));
-        tinyButt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tiny7.png"))); // NOI18N
+        tinyButt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tinyhelp.png"))); // NOI18N
         tinyButt.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        tinyButt.setPreferredSize(new java.awt.Dimension(33, 53));
         tinyButt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tinyButtActionPerformed(evt);
             }
         });
-        getContentPane().add(tinyButt, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 0, 40, 40));
+        getContentPane().add(tinyButt, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 0, 40, 60));
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bg1.png"))); // NOI18N
         jLabel4.setText("jLabel4");
@@ -130,14 +134,13 @@ public class ChooseUsername extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String user=jTextField1.getText();
         String pwd = "123456"; 
-        
+    
         try {
             new MainMenu(user,pwd,node,this.getBounds(),ips).setVisible(true);
-        } catch (IOException ex) {
-           // Logger.getLogger(ChooseUsername.class.getName()).log(Level.SEVERE, null, ex);
+            this.dispose();
+        } catch (IOException  ex) {
+            Logger.getLogger(ChooseUsername.class.getName()).log(Level.SEVERE, null, ex);
         }
-        this.dispose();
-
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void tinyButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tinyButtActionPerformed
@@ -195,4 +198,53 @@ public class ChooseUsername extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JButton tinyButt;
     // End of variables declaration//GEN-END:variables
+
+//class PMListener implements PeerMapChangeListener{
+//
+//    @Override
+//    public void peerInserted(PeerAddress pa, boolean bln) {
+//        System.out.println("user joined");
+//      displayUsersWorker.execute();
+//    }
+//
+//    @Override
+//    public void peerRemoved(PeerAddress pa, PeerStatistic ps) {
+//        System.out.println("user left");
+//        displayUsersWorker.execute();
+//    }
+//
+//    @Override
+//    public void peerUpdated(PeerAddress pa, PeerStatistic ps) {
+//        displayUsersWorker.execute();
+//    }
+//        SwingWorker displayUsersWorker = new SwingWorker<String, Void>() {
+//        @Override
+//        public String doInBackground() throws Exception {
+//           lm = new DefaultListModel();    
+//            online.setModel(lm);
+//            try{  
+//                peerMap = node.getPeer().peerBean().peerMap().all();
+//             for (PeerAddress pa : peerMap){   
+//                    FutureGet futureGet = node.getPeer().get(pa.peerId()).start();
+//                    futureGet.awaitUninterruptibly();                   
+//                    if (!futureGet.isEmpty()){
+//                        try {          
+//                            Object n = futureGet.data().object();
+//                            lm.addElement(n);
+//                            userIPs.putIfAbsent(n.toString(),pa.inetAddress().toString());
+//
+//                        } catch (ClassNotFoundException | IOException ex) {
+//                        }
+//                    }        
+//             }
+//            online.setModel(lm);
+//            }catch(NullPointerException e){            
+//            }  
+//            
+//            return null;
+//        }
+//     };
+//}
+//    };
+
 }

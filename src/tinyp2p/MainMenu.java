@@ -1,6 +1,8 @@
 package tinyp2p;
 
 import java.awt.Component;
+import java.awt.Container;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -11,7 +13,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,11 +44,12 @@ import javax.swing.tree.TreePath;
 import net.tomp2p.dht.FutureGet;
 import net.tomp2p.dht.FuturePut;
 import net.tomp2p.dht.PutBuilder;
-import net.tomp2p.futures.BaseFuture;
 import net.tomp2p.futures.BaseFutureListener;
 import net.tomp2p.peers.Number160;
 import net.tomp2p.peers.Number640;
 import net.tomp2p.peers.PeerAddress;
+import net.tomp2p.peers.PeerMapChangeListener;
+import net.tomp2p.peers.PeerStatistic;
 import net.tomp2p.storage.Data;
 import org.apache.commons.io.IOUtils;
 import org.hive2hive.core.api.interfaces.IH2HNode;
@@ -76,12 +78,17 @@ public class MainMenu extends javax.swing.JFrame {
     private ConcurrentHashMap<String, String> userIPs;
     public TCPServer server;
     private boolean filefound;
+    private String foundFileName;
     private String searchTerm;
     ArrayList<String> badExts = new ArrayList();
     private boolean viewingMine;
+    private List<PeerAddress> peerMap ;
+//    private PMListener pml ;
+    private boolean firstShare;
     
     public MainMenu() {
         initComponents();
+        firstShare = true;
     }
     
     public MainMenu(String User, String pw, IH2HNode node, Rectangle bounds, String[] ips) throws IOException {
@@ -90,7 +97,18 @@ public class MainMenu extends javax.swing.JFrame {
         this.node = node;
         this.ips = ips;
         
+//        pml = new PMListener();
+//         node.getPeer().peerBean().peerMap().addPeerMapChangeListener(pml);
+         
         initComponents();
+        firstShare = true;
+//        peerMap = node.getPeer().peerBean().peerMap().all();
+//        pml = new PMListener();
+//        node.getPeer().peerBean().peerMap().addPeerMapChangeListener(pml);
+//        System.out.println("MY PA IS : " + node.getPeer().peerAddress().toString());
+      //  pml.peerInserted(node.getPeer().peerAddress(), false);
+       // pml.peerUpdated(node.getPeer().peerAddress(), null);
+        
         
         this.setBounds(bounds);
         tinyButt.setOpaque(false);
@@ -104,7 +122,7 @@ public class MainMenu extends javax.swing.JFrame {
 //            List<String> lines =IOUtils.readLines(new FileInputStream("TinyP2PSettings.txt"));
 //            chosenDir =  lines.get(0);
 //        }catch(IndexOutOfBoundsException | FileNotFoundException  e){}
-        
+      
     }
     
     @SuppressWarnings("unchecked")
@@ -115,6 +133,7 @@ public class MainMenu extends javax.swing.JFrame {
         fileChooser = new javax.swing.JFileChooser();
         jPopupMenu1 = new javax.swing.JPopupMenu();
         jScrollBar1 = new javax.swing.JScrollBar();
+        jLabel13 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextArea2 = new javax.swing.JTextArea();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -138,7 +157,6 @@ public class MainMenu extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
 
         fileChooser.setCurrentDirectory(new java.io.File("C:\\Users\\(._.)\\.ssh"));
 
@@ -169,10 +187,15 @@ public class MainMenu extends javax.swing.JFrame {
         });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/firstshare.png"))); // NOI18N
+        getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 70, 200, 160));
+
         jScrollPane2.setBackground(new java.awt.Color(255, 215, 197));
 
         jTextArea2.setEditable(false);
         jTextArea2.setColumns(20);
+        jTextArea2.setFont(new java.awt.Font("Carlito", 1, 22)); // NOI18N
+        jTextArea2.setForeground(new java.awt.Color(0, 10, 0));
         jTextArea2.setRows(5);
         jTextArea2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -278,14 +301,14 @@ public class MainMenu extends javax.swing.JFrame {
         getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 280, 190, 30));
 
         tinyButt.setBackground(new java.awt.Color(204, 255, 204));
-        tinyButt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tiny7.png"))); // NOI18N
+        tinyButt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tinyhelp.png"))); // NOI18N
         tinyButt.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         tinyButt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tinyButtActionPerformed(evt);
             }
         });
-        getContentPane().add(tinyButt, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 0, 40, 40));
+        getContentPane().add(tinyButt, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 0, 40, 60));
 
         jLabel4.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         jLabel4.setText("Chat");
@@ -302,7 +325,7 @@ public class MainMenu extends javax.swing.JFrame {
 
         jMenu1.setText("Settings");
 
-        jMenuItem1.setText("Change shared directory");
+        jMenuItem1.setText("Change shared folder");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1ActionPerformed(evt);
@@ -310,21 +333,13 @@ public class MainMenu extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem1);
 
-        jMenuItem2.setText("Add shared directory");
+        jMenuItem2.setText("Open Download folder");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem2ActionPerformed(evt);
             }
         });
         jMenu1.add(jMenuItem2);
-
-        jMenuItem3.setText("Remove shared directory");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuItem3);
 
         jMenuBar1.add(jMenu1);
 
@@ -339,6 +354,11 @@ public class MainMenu extends javax.swing.JFrame {
         public void mousePressed ( MouseEvent e )
         {
             try{
+                firstShare = false;
+                Container parent = jLabel13.getParent();
+                parent.remove(jLabel13);
+                parent.validate();
+                parent.repaint();
                 jTextArea2.setText("");
                 jScrollPane2.getViewport().remove(jTextArea2);
                 jScrollPane2.getViewport().add(tree);
@@ -355,6 +375,18 @@ public class MainMenu extends javax.swing.JFrame {
         @Override
         public void mousePressed ( MouseEvent e )
         {
+            if(firstShare){
+                firstShare=false;
+                jTextArea2.setText("");
+                Container parent = jLabel13.getParent();
+                parent.remove(jLabel13);
+                parent.validate();
+                parent.repaint();
+                changeDirectory();
+                viewMyDir();
+                
+               }
+            else
             if ( SwingUtilities.isRightMouseButton ( e ))// || e.getClickCount() == 2
             {
                 path = tree.getPathForLocation ( e.getX (), e.getY () );
@@ -362,7 +394,7 @@ public class MainMenu extends javax.swing.JFrame {
                 if ( pathBounds != null && pathBounds.contains ( e.getX (), e.getY () ) )
                 {
                     JPopupMenu menu = new JPopupMenu ();
-                    p = path.getLastPathComponent().toString();
+                    p = path.getLastPathComponent().toString();    
                     if(viewingMine){//my dir
                         JMenuItem jm = new JMenuItem("Send " + p);
                         MouseListener popupListener = new ULPopupListener();
@@ -477,16 +509,24 @@ public class MainMenu extends javax.swing.JFrame {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         loginWorker.execute();
         jLabel1.setText("Welcome, "+ username+"!");
+       
         listenWorker.execute();
+       // displayUsersWorker.execute();
         
-        displayUsers du = new displayUsers();                      //set up timer
-        Timer tmr = new javax.swing.Timer(10000, du);
+        
+         
+        displayUsers du = new displayUsers();                      
+        Timer tmr = new javax.swing.Timer(10000, du);//set up timer
         
         tmr.setInitialDelay(0);
         tmr.setRepeats(true);
         tmr.start();
         
-        online.addMouseListener(n);   
+        online.addMouseListener(n); 
+        jScrollPane2.addMouseListener(m);
+        jTextArea2.addMouseListener(m);
+      //  tree.addMouseListener ( m );
+        
     }//GEN-LAST:event_formWindowOpened
     
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
@@ -500,8 +540,9 @@ public class MainMenu extends javax.swing.JFrame {
         h.setVisible(true);       
     }//GEN-LAST:event_tinyButtActionPerformed
     
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-       viewingMine = true;
+    private void viewMyDir(){
+       
+           viewingMine = true;
         try {
             List<String> lines =IOUtils.readLines(new FileInputStream("dirList.txt"));
             
@@ -520,22 +561,14 @@ public class MainMenu extends javax.swing.JFrame {
             
         } catch ( NullPointerException | IOException ex) {
             
-        }      
+        }
+        expandAllNodes(tree, 0, tree.getRowCount());
+       }
+    
+    
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        if(!firstShare){viewMyDir();}
     }//GEN-LAST:event_jButton3ActionPerformed
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-       String chDirTemp = "";
-        try {
-            chDirTemp = getDir();
-            
-        } catch (IOException ex) {
-      
-        }
-        if(chDirTemp != null){
-            chosenDir = chDirTemp;
-          //  chosenDirs.add(chosenDir);
-        createDirListSwingWorker();
-        }
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
                 
 
@@ -569,6 +602,7 @@ public class MainMenu extends javax.swing.JFrame {
                     
                 }
                 tree.setCellRenderer(new FileTreeCellRenderer());
+                 expandAllNodes(tree, 0, tree.getRowCount());
             }
               
         }catch(NullPointerException e){
@@ -628,7 +662,7 @@ public class MainMenu extends javax.swing.JFrame {
                 Enumeration<DefaultMutableTreeNode> e = root.depthFirstEnumeration();
         while (e.hasMoreElements()) {
             DefaultMutableTreeNode node = e.nextElement();
-            if (extractExtension(node.toString())[0].equalsIgnoreCase(s)) {
+            if (node.toString().equalsIgnoreCase(s)) {
                 System.out.println(node.toString());
                 return new TreePath(node.getPath());
             }
@@ -636,23 +670,47 @@ public class MainMenu extends javax.swing.JFrame {
         return null;
 }
     
-    private void jTextArea2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextArea2MouseClicked
+   public void displayFoundFile(String fname){
         if(filefound){
             showFiles();
+            System.out.println(fname);
             DefaultMutableTreeNode nnode = (DefaultMutableTreeNode)tree.getModel().getRoot();
-            TreePath path = find(nnode, searchTerm);
+            TreePath path = find(nnode, fname);
+            System.out.println(path);
             tree.setSelectionPath(path);
             tree.scrollPathToVisible(path);
         }
+    }
+    
+    private void jTextArea2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextArea2MouseClicked
+        displayFoundFile(foundFileName);
     }//GEN-LAST:event_jTextArea2MouseClicked
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    private void changeDirectory(){
+         String chDirTemp = "";
+        try {
+            chDirTemp = getDir();
 
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+        } catch (IOException ex) {
+
+        }
+        if(chDirTemp != null){
+            chosenDir = chDirTemp;
+            //  chosenDirs.add(chosenDir);
+            createDirListSwingWorker();
+        }
+    }
+    
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+       changeDirectory();
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        try {
+            new File("TinyP2P Downloads").mkdir();
+            Desktop.getDesktop().open(new File("TinyP2P Downloads"));
+        }catch(IOException e){}
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
           
    public void fileSearch(String srch) throws ClassNotFoundException, IOException{
      searchTerm = srch;
@@ -661,25 +719,30 @@ public class MainMenu extends javax.swing.JFrame {
         jTextArea2.setText("");
         FutureGet futureGet = node.getPeer().get(myHash).all().start();
         futureGet.awaitUninterruptibly();
-        futureGet.addListener(new BaseFutureListener<FutureGet>() {
-         @Override
-         public void operationComplete(FutureGet f) throws Exception {
+      
+        //futureGet.addListener(new BaseFutureListener<FutureGet>() {
+       //  @Override
+        // public void operationComplete(FutureGet f) throws Exception {
             filefound = true;
-            for (Map.Entry<Number640, Data> entry : f.dataMap().entrySet()) {
-                Object nn = entry.getValue().object();
-                selectedUser = nn.toString();
-                jTextArea2.append(nn.toString() + " has " + pooky + "\n");
+            for (Map.Entry<Number640, Data> entry : futureGet.dataMap().entrySet()) {
+                Data nn = entry.getValue();
+                //nn.toString();
+                System.out.println( nn.toString());
+//             !   String[] fNameuName = (String[]) nn;
+//             !   selectedUser = fNameuName[1];
+             //   foundFileName = extractFname(fNameuName[0]);
+             //   jTextArea2.append(selectedUser + " has " + foundFileName + "\n");
        //     jScrollPane2.getViewport().remove(tree);
-                jScrollPane2.getViewport().add(jTextArea2);
+           //     jScrollPane2.getViewport().add(jTextArea2);
             }
-         }
+        // }
 
-         @Override
-         public void exceptionCaught(Throwable thrwbl) throws Exception {
-             throw new UnsupportedOperationException("YOLO");
-         }
+        // @Override
+        // public void exceptionCaught(Throwable thrwbl) throws Exception {
+        //     throw new UnsupportedOperationException("YOLO");
+        // }
             
-        });
+       // });
 /*        
         if (!futureGet.isEmpty()){
             filefound = true;
@@ -728,7 +791,12 @@ public class MainMenu extends javax.swing.JFrame {
             lm = new DefaultListModel();    
             online.setModel(lm);
             try{
-             List<PeerAddress> peerMap = node.getPeer().peerBean().peerMap().all();
+                
+               //  PeerMapChangeListener pmc = null ;
+                // List<PeerAddress> peerMap = node.getPeer().peerBean().peerMap().all(); 
+               // node.getPeer().peerBean().peerMap().addPeerMapChangeListener(pmc);
+               
+             List<PeerAddress> peerMap = node.getPeer().peerBean().peerMap().all();     
              for (PeerAddress pa : peerMap){   
                     FutureGet futureGet = node.getPeer().get(pa.peerId()).start();
                     futureGet.awaitUninterruptibly();                   
@@ -777,6 +845,10 @@ public class MainMenu extends javax.swing.JFrame {
         return null;
     }
     
+//    private String[] keywordify(String f){
+//        return f.split("\\W");
+//    }
+//    
     class downloadWorkerClass extends SwingWorker<Void, TreePath>{
       
         private TreePath tp;
@@ -882,7 +954,7 @@ public class MainMenu extends javax.swing.JFrame {
                  for(String a : badExts){
                      list = list+extractFname(a)+"\n";
                  }
-              String msg = "The following files may contain personal information!\n\n" + list +  "\nAre you sure you still want to share?";
+              String msg = "The following files may contain personal information!\n\n" + list +  "\nAll of your other files have successfully been uploaded. \nWould you like to continue sharing these files?";
               JCheckBox checkbox = new JCheckBox("Do not show this warning again.");
               JTextArea textArea = new JTextArea(msg);            
               JScrollPane scrollPane = new JScrollPane(textArea);
@@ -896,9 +968,9 @@ public class MainMenu extends javax.swing.JFrame {
               if(yn == 0){
                   for(String b : badExts){
                      fw.write(b+"\n");
-                  //   String fileName = ;
-                     FuturePut futurePut = node.getPeer().put(Number160.createHash(extractExtension(extractFname(b))[0])).data(new Data(username)).start();
-                     futurePut.awaitUninterruptibly();
+                    new uploadKeywords(b).execute();
+//                     FuturePut futurePut = node.getPeer().put(Number160.createHash(extractExtension(extractFname(b))[0])).data(new Data(username)).start();
+//                     futurePut.awaitUninterruptibly();
                   }
                 badExts.clear();
                // unverified.clear();
@@ -925,8 +997,11 @@ public class MainMenu extends javax.swing.JFrame {
                      
                      else{
                      fw.write(leFile+"\n");
-                     FuturePut futurePut = node.getPeer().put(Number160.createHash(extractExtension(extractFname(leFile))[0])).data(new Data(username)).start();
-                     futurePut.awaitUninterruptibly();
+          
+                     new uploadKeywords(leFile).execute();
+                     
+                    // FuturePut futurePut = node.getPeer().put(Number160.createHash(extractExtension(extractFname(leFile))[0])).data(new Data(username)).start();
+                     
                      }
                  }
                  else if(f.isDirectory() && !f.isHidden()) {
@@ -955,6 +1030,54 @@ public class MainMenu extends javax.swing.JFrame {
          server = new TCPServer(this); //port 6789
     }
     
+     SwingWorker displayUsersWorker = new SwingWorker<String, Void>() {
+        @Override
+        public String doInBackground() throws Exception {
+            System.out.println("updating list");
+           lm = new DefaultListModel();    
+            //online.setModel(lm);
+            try{  
+                peerMap = node.getPeer().peerBean().peerMap().all();
+             for (PeerAddress pa : peerMap){   
+                    FutureGet futureGet = node.getPeer().get(pa.peerId()).start();
+                    futureGet.awaitUninterruptibly();                   
+                    if (!futureGet.isEmpty()){
+                        try {          
+                            Object n = futureGet.data().object();
+                            lm.addElement(n);
+                            userIPs.putIfAbsent(n.toString(),pa.inetAddress().toString());
+
+                        } catch (ClassNotFoundException | IOException ex) {
+                        }
+                    }        
+             }
+            online.setModel(lm);
+            }catch(NullPointerException e){            
+            }  
+            
+            return null;
+        }
+     };
+    
+//    SwingWorker uploadKeywords = new SwingWorker<String, Void>() {
+//         @Override     
+//        public String doInBackground() throws Exception {
+//           createServer();
+//             return null;        
+//        } 
+//        
+//        void keywordify(String f) throws IOException{
+//            
+//            String[] fNameuName = {f,username};
+//            String[] kWords =  f.split("\\W");
+//            for(String kWord : kWords){
+//                FuturePut futurePut = node.getPeer().put(Number160.createHash(extractFname(kWord))).data(new Data(fNameuName)).start();
+//                futurePut.awaitUninterruptibly();
+//            }
+//        }
+//        
+//    };
+    
     SwingWorker listenWorker = new SwingWorker<String, Void>() {
         @Override
         public String doInBackground() throws Exception {
@@ -966,6 +1089,9 @@ public class MainMenu extends javax.swing.JFrame {
     SwingWorker loginWorker = new SwingWorker<String, Void>() {
         @Override
         public String doInBackground() {
+           
+           
+            
             userCredentials = new UserCredentials(username, password, "12345");
             try{
                 File f = new File ("");
@@ -1078,9 +1204,20 @@ public class MainMenu extends javax.swing.JFrame {
         return index;
     }
     
-    
+     private void expandAllNodes(JTree tree, int startingIndex, int rowCount){
+        for(int i=startingIndex;i<rowCount;++i){
+            tree.expandRow(i);
+        }
+        
+        if(tree.getRowCount()!=rowCount){
+            expandAllNodes(tree, rowCount, tree.getRowCount());
+        }
+    }
+     
     public void shutdown()  {
         if (node != null && node.isConnected()) {
+           this.dispose();
+// pml.peerRemoved(node.getPeer().peerAddress(), null);
             node.disconnect();
         }
     }
@@ -1123,6 +1260,7 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JFrame jFileChooser;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1132,7 +1270,6 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollBar jScrollBar1;
@@ -1189,4 +1326,119 @@ public class MainMenu extends javax.swing.JFrame {
         return label;
     }
     }
+    
+    
+    class uploadKeywords extends SwingWorker<String, Void>{
+   
+    String f;
+    
+    public uploadKeywords(String f){
+          this.f=f;
+    }
+    
+    
+    @Override
+    protected String doInBackground() throws Exception {
+        String[] fNameuName = {f,username};
+        String[] kWords =  f.split("\\W");
+        for(String kWord : kWords){
+            FuturePut futurePut = node.getPeer().put(Number160.createHash(extractFname(kWord))).data(new Data(fNameuName)).start();
+            futurePut.awaitUninterruptibly();
+        }
+        return null;
+    }
+}
+    
+
+
+class PMListener implements PeerMapChangeListener{
+
+    @Override
+    public void peerInserted(PeerAddress pa, boolean bln) {
+        System.out.println(pa.toString() + " user joined");
+    // displayUsersWorker.execute();
+        DisplayUsers du = new DisplayUsers();
+        du.run();
+    }
+    @Override
+    public void peerRemoved(PeerAddress pa, PeerStatistic ps) {
+        System.out.println(pa.toString() +  "user left");
+     // displayUsersWorker.execute();
+        DisplayUsers du = new DisplayUsers();
+        du.run();
+    }
+
+    @Override
+    public void peerUpdated(PeerAddress pa, PeerStatistic ps) {
+     // System.out.println(pa.toString() +  "user changed");
+       // displayUsersWorker.execute();
+       // DisplayUsers du = new DisplayUsers();
+       // du.run();
+    }
+       
+    
+    public class DisplayUsers implements Runnable{
+        
+        @Override
+        public void run(){
+            System.out.println("updating list");
+           lm = new DefaultListModel();    
+            //online.setModel(lm);
+            try{  
+                peerMap = node.getPeer().peerBean().peerMap().all();
+             for (PeerAddress pa : peerMap){   
+                    FutureGet futureGet = node.getPeer().get(pa.peerId()).start();
+                    futureGet.awaitUninterruptibly();      
+                    //futureGet.await(10000);
+                    if (!futureGet.isEmpty()){
+                        try {          
+                            Object n = futureGet.data().object();
+                            lm.addElement(n);
+                            userIPs.putIfAbsent(n.toString(),pa.inetAddress().toString());
+
+                        } catch (ClassNotFoundException | IOException ex) {
+                        }
+                    }        
+             }
+            online.setModel(lm);
+            }catch(NullPointerException e){            
+           
+             //  Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+            }  
+        }
+    }
+    
+   
+    
+   
+//     SwingWorker displayUsersWorker = new SwingWorker<String, Void>() {
+//        @Override
+//        public String doInBackground() throws Exception {
+//            System.out.println("updating list");
+//           lm = new DefaultListModel();    
+//            //online.setModel(lm);
+//            try{  
+//                peerMap = node.getPeer().peerBean().peerMap().all();
+//             for (PeerAddress pa : peerMap){   
+//                    FutureGet futureGet = node.getPeer().get(pa.peerId()).start();
+//                    futureGet.awaitUninterruptibly();                   
+//                    if (!futureGet.isEmpty()){
+//                        try {          
+//                            Object n = futureGet.data().object();
+//                            lm.addElement(n);
+//                            userIPs.putIfAbsent(n.toString(),pa.inetAddress().toString());
+//
+//                        } catch (ClassNotFoundException | IOException ex) {
+//                        }
+//                    }        
+//             }
+//            online.setModel(lm);
+//            }catch(NullPointerException e){            
+//            }  
+//            
+//            return null;
+//        }
+//     };
+     
+    };
 }

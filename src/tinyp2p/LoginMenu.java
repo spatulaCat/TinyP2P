@@ -137,7 +137,7 @@ public class LoginMenu extends javax.swing.JFrame {
         String pwd= new String (jPasswordField1.getPassword()); 
         try {
             new MainMenu(user,pwd,node,this.getBounds(),ips).setVisible(true);
-        } catch (IOException ex) {
+        } catch (IOException  ex) {
             Logger.getLogger(LoginMenu.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.dispose();

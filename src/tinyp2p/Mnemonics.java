@@ -1,7 +1,10 @@
 
 package tinyp2p;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Arrays;
+import java.util.StringTokenizer;
 
 /**
  *
@@ -320,7 +323,14 @@ public class Mnemonics {
         return fname.toLowerCase();
     }
     
-    public static void main (String args[]){
+    public static void main (String args[]) throws UnknownHostException{
+//        String s = "this.is a test-test.test:test;test!test";
+//        //StringTokenizer st = new StringTokenizer("this.is a test");
+//       String[]tokens = s.split("\\W");
+//       
+//       System.out.println(Arrays.toString(tokens));
+        
+        
     //  System.out.println(extractFname("01.11 - Catbug.mp4"));
 //        System.out.println(getMnemonics("127.0.0.1"));
 //        System.out.println(getMnemonics("192.168.123.213"));
@@ -352,18 +362,24 @@ public class Mnemonics {
 //            //System.arraycopy( qweqwe, 1, newp, 0, qweqwe.length-2 );
 //            System.out.println(Arrays.toString(newp));
 //        }
-        String pt = "\\ \\Shared\\Documents\\GitHub\\";
-         if(pt.substring(0,3).equalsIgnoreCase("\\ \\")){
-                    pt = pt.substring(3,pt.length()-1);
-                System.out.println(pt);
-         }
+//        String pt = "\\ \\Shared\\Documents\\GitHub\\";
+//         if(pt.substring(0,3).equalsIgnoreCase("\\ \\")){
+//                    pt = pt.substring(3,pt.length()-1);
+//                System.out.println(pt);
+//         }
         
-       
+    //   System.out.println(getInternalIP());
     }
       
         
         
-        
+        public static String getInternalIP() throws UnknownHostException{    
+        InetAddress i =InetAddress.getLocalHost();
+        String thisIp = ""+i;       
+        String parts[] = thisIp.split("/");
+        System.out.println(i);
+        return parts[parts.length-1];
+    }
     
     
 }

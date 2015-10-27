@@ -37,6 +37,9 @@ public class ConnectMenu extends javax.swing.JFrame {
         this.ips = new String[2];
         this.sc = new setupConnection();
         initComponents();   
+         tinyButt.setOpaque(false);
+        tinyButt.setContentAreaFilled(false); //to make the content area transparent
+        tinyButt.setBorderPainted(false);
     }
     
     /**
@@ -48,17 +51,38 @@ public class ConnectMenu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        tinyButt1 = new javax.swing.JButton();
+        tinyButt = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         createNet = new javax.swing.JButton();
         joinNet = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
+        tinyButt1.setBackground(new java.awt.Color(204, 255, 204));
+        tinyButt1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tinyhelp.png"))); // NOI18N
+        tinyButt1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        tinyButt1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tinyButt1ActionPerformed(evt);
+            }
+        });
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(600, 360));
         setMinimumSize(new java.awt.Dimension(600, 360));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        tinyButt.setBackground(new java.awt.Color(204, 255, 204));
+        tinyButt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tinyhelp.png"))); // NOI18N
+        tinyButt.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        tinyButt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tinyButtActionPerformed(evt);
+            }
+        });
+        getContentPane().add(tinyButt, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 0, 40, 60));
 
         jLabel1.setFont(new java.awt.Font("Aharoni", 1, 24)); // NOI18N
         jLabel1.setText("Welcome to TinyP2P!");
@@ -107,6 +131,14 @@ public class ConnectMenu extends javax.swing.JFrame {
         sc.buildNode();
         sc.connectNode(NetworkConfiguration.createInitial(createNodeID()));
           
+        setIPS();
+        
+        ConnectInfo ci = new ConnectInfo(sc.node, ips, this.getBounds(),true);     
+        ci.setVisible(true); 
+        this.dispose();
+    }//GEN-LAST:event_createNetActionPerformed
+    
+    private void setIPS(){
         try {
             String myExIP;
             myExIP = getExternalIP();
@@ -119,14 +151,10 @@ public class ConnectMenu extends javax.swing.JFrame {
            // ips[1] = "10.0.0.1";
             
         } catch (IOException ex) {
-            Logger.getLogger(ConnectMenu.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        ConnectInfo ci = new ConnectInfo(sc.node, ips, this.getBounds(),true);     
-        ci.setVisible(true); 
-        this.dispose();
-    }//GEN-LAST:event_createNetActionPerformed
-    
+           ips[0] = ips[1] =  "Error! :(";
+            
+        } 
+    }
     
     public static String QueryIPServer(String url) throws MalformedURLException, IOException{
         URL data = new URL(url);
@@ -228,6 +256,17 @@ public class ConnectMenu extends javax.swing.JFrame {
         jn.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_joinNetActionPerformed
+
+    private void tinyButt1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tinyButt1ActionPerformed
+        Help h = new Help(this.getBounds(),ips);
+        h.setVisible(true);
+    }//GEN-LAST:event_tinyButt1ActionPerformed
+
+    private void tinyButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tinyButtActionPerformed
+      setIPS();
+        Help h = new Help(this.getBounds(),ips);
+        h.setVisible(true);
+    }//GEN-LAST:event_tinyButtActionPerformed
     
     //creates a random node ID
     private String createNodeID() {
@@ -278,5 +317,7 @@ public class ConnectMenu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JButton joinNet;
+    private javax.swing.JButton tinyButt;
+    private javax.swing.JButton tinyButt1;
     // End of variables declaration//GEN-END:variables
 }

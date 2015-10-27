@@ -26,6 +26,9 @@ public class JoinNet extends javax.swing.JFrame {
         this.sc = new setupConnection();
         this.ips = ips;
         initComponents();  
+         tinyButt.setOpaque(false);
+        tinyButt.setContentAreaFilled(false); //to make the content area transparent
+        tinyButt.setBorderPainted(false);
         this.setBounds(bounds);
     }
     
@@ -43,6 +46,7 @@ public class JoinNet extends javax.swing.JFrame {
     private void initComponents() {
 
         jTextField1 = new javax.swing.JTextField();
+        tinyButt = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
@@ -62,6 +66,16 @@ public class JoinNet extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 200, 159, 30));
+
+        tinyButt.setBackground(new java.awt.Color(204, 255, 204));
+        tinyButt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tinyhelp.png"))); // NOI18N
+        tinyButt.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        tinyButt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tinyButtActionPerformed(evt);
+            }
+        });
+        getContentPane().add(tinyButt, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 10, 40, 60));
 
         jLabel3.setText("Enter the TinyP2P mnemonic of anyone currently");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 140, 300, -1));
@@ -149,6 +163,11 @@ public class JoinNet extends javax.swing.JFrame {
         }       
     }//GEN-LAST:event_jTextField1KeyPressed
 
+    private void tinyButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tinyButtActionPerformed
+        Help h = new Help(this.getBounds(),ips);
+        h.setVisible(true);
+    }//GEN-LAST:event_tinyButtActionPerformed
+
     public boolean validMne(String ip){
        if (ip == null || ip.isEmpty()) {
                 return false;
@@ -212,6 +231,7 @@ public class JoinNet extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JButton tinyButt;
     // End of variables declaration//GEN-END:variables
 
 

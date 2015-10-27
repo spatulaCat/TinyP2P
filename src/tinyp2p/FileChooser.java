@@ -16,6 +16,8 @@ public class FileChooser extends javax.swing.JFrame {
      */
     public FileChooser() {
         initComponents();
+        jFileChooser1.setName("Choose a folder to share");
+        jFileChooser1.setDialogTitle("Choose a folder to share");   
     }
 
     /**
