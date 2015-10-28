@@ -208,9 +208,9 @@ public class TCPServer {
                    // System.out.println("file size: " + fs);
                     
                     String[] sdf = reqFile.split("\\\\");
-                    String[] dsf = new String[sdf.length-3];
+                    String[] dsf = new String[sdf.length];
                     
-                    System.arraycopy(sdf, 3, dsf,0 , sdf.length-3); 
+                    System.arraycopy(sdf, 3, dsf,0 , sdf.length-1); 
                     System.out.println(Arrays.toString(dsf));
                     
                     StringBuilder sb = new StringBuilder();

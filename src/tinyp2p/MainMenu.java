@@ -99,8 +99,8 @@ public class MainMenu extends javax.swing.JFrame {
         this.node = node;
         this.ips = ips;
         
-        pml = new PMListener();
-         node.getPeer().peerBean().peerMap().addPeerMapChangeListener(pml);
+//        pml = new PMListener();
+//         node.getPeer().peerBean().peerMap().addPeerMapChangeListener(pml);
          
         initComponents();
 //        firstShare = true;
@@ -774,18 +774,23 @@ public class MainMenu extends javax.swing.JFrame {
         //futureGet.addListener(new BaseFutureListener<FutureGet>() {
        //  @Override
         // public void operationComplete(FutureGet f) throws Exception {
-            filefound = true;
-            for (Map.Entry<Number640, Data> entry : futureGet.dataMap().entrySet()) {
-                Data nn = entry.getValue();
-                //nn.toString();
-                System.out.println( nn.toString());
+        
+        
+        
+        
+        
+//            filefound = true;
+//            for (Map.Entry<Number640, Data> entry : futureGet.dataMap().entrySet()) {
+//                Data nn = entry.getValue();
+//                //nn.toString();
+//                System.out.println( nn.toString());
 //             !   String[] fNameuName = (String[]) nn;
 //             !   selectedUser = fNameuName[1];
              //   foundFileName = extractFname(fNameuName[0]);
              //   jTextArea2.append(selectedUser + " has " + foundFileName + "\n");
        //     jScrollPane2.getViewport().remove(tree);
            //     jScrollPane2.getViewport().add(jTextArea2);
-            }
+//            }
         // }
 
         // @Override
@@ -794,7 +799,7 @@ public class MainMenu extends javax.swing.JFrame {
         // }
             
        // });
-/*        
+        
         if (!futureGet.isEmpty()){
             filefound = true;
             Map<Number640, Data> results = futureGet.dataMap();
@@ -813,7 +818,7 @@ public class MainMenu extends javax.swing.JFrame {
 //            jScrollPane2.getViewport().remove(tree);
             jScrollPane2.getViewport().add(jTextArea2);
         }    
-*/
+
    } 
    
     
@@ -1408,10 +1413,11 @@ class PMListener implements PeerMapChangeListener{
 
     @Override
     public void peerInserted(PeerAddress pa, boolean bln) {
-        System.out.println(pa.toString() + " user joined");
+        System.out.println(pa.toString() + " user joined " + bln);
     // displayUsersWorker.execute();
         DisplayUsers du = new DisplayUsers();
         du.run();
+        
     }
     @Override
     public void peerRemoved(PeerAddress pa, PeerStatistic ps) {
