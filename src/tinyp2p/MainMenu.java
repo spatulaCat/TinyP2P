@@ -85,12 +85,12 @@ public class MainMenu extends javax.swing.JFrame {
     ArrayList<String> badExts = new ArrayList();
     private boolean viewingMine;
     private List<PeerAddress> peerMap ;
-//    private PMListener pml ;
-    private boolean firstShare;
+    private PMListener pml ;
+//    private boolean firstShare;
     
     public MainMenu() {
         initComponents();
-        firstShare = true;
+//        firstShare = true;
     }
     
     public MainMenu(String User, String pw, IH2HNode node, Rectangle bounds, String[] ips) throws IOException {
@@ -99,11 +99,11 @@ public class MainMenu extends javax.swing.JFrame {
         this.node = node;
         this.ips = ips;
         
-//        pml = new PMListener();
-//         node.getPeer().peerBean().peerMap().addPeerMapChangeListener(pml);
+        pml = new PMListener();
+         node.getPeer().peerBean().peerMap().addPeerMapChangeListener(pml);
          
         initComponents();
-        firstShare = true;
+//        firstShare = true;
 //        peerMap = node.getPeer().peerBean().peerMap().all();
 //        pml = new PMListener();
 //        node.getPeer().peerBean().peerMap().addPeerMapChangeListener(pml);
@@ -190,6 +190,11 @@ public class MainMenu extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/firstshare.png"))); // NOI18N
+        jLabel13.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel13MouseClicked(evt);
+            }
+        });
         getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 70, 200, 160));
 
         jScrollPane2.setBackground(new java.awt.Color(255, 215, 197));
@@ -355,19 +360,22 @@ public class MainMenu extends javax.swing.JFrame {
         @Override
         public void mousePressed ( MouseEvent e )
         {
-            try{
-                firstShare = false;
-                Container parent = jLabel13.getParent();
-                parent.remove(jLabel13);
-                parent.validate();
-                parent.repaint();
+//            try{
+////                if(firstShare){
+////                firstShare = false;
+//                Container parent = jLabel13.getParent();
+//                parent.remove(jLabel13);
+//                parent.validate();
+//                parent.repaint();
+//                }catch(NullPointerException g){}
                 jTextArea2.setText("");
                 jScrollPane2.getViewport().remove(jTextArea2);
                 jScrollPane2.getViewport().add(tree);
                 selectedUser = lm.elementAt(online.getSelectedIndex()).toString();
                 showFiles();
-            }catch(ArrayIndexOutOfBoundsException ex){}
-        }
+                
+            }//catch(ArrayIndexOutOfBoundsException ex){}
+//        }
     };
     
     MouseAdapter m = new MouseAdapter ()
@@ -377,18 +385,18 @@ public class MainMenu extends javax.swing.JFrame {
         @Override
         public void mousePressed ( MouseEvent e )
         {
-            if(firstShare){
-                firstShare=false;
+//            if(firstShare){
+//                firstShare=false;
 //                jTextArea2.setText("");
 //                Container parent = jLabel13.getParent();
 //                parent.remove(jLabel13);
 //                parent.validate();
 //                parent.repaint();
-                changeDirectory();
-                viewMyDir();
-                
-               }
-            else
+//                changeDirectory();
+//                viewMyDir();
+//                
+//               }
+//            else
             if ( SwingUtilities.isRightMouseButton ( e ))// || e.getClickCount() == 2
             {
                 path = tree.getPathForLocation ( e.getX (), e.getY () );
@@ -493,7 +501,7 @@ public class MainMenu extends javax.swing.JFrame {
 //                JOptionPane.showOptionDialog(null, panel,
 //                        "Send to:", JOptionPane.YES_NO_CANCEL_OPTION,
 //                        JOptionPane.QUESTION_MESSAGE, null, null, null);
-                selectedUser = JOptionPane.showInputDialog(panel,"");
+//                selectedUser = JOptionPane.showInputDialog(panel,"");
                // Object[] params = {message1, message2, checkbox};
                
                 Object[] users = lm.toArray();
@@ -566,13 +574,13 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_tinyButtActionPerformed
     
     private void viewMyDir(){
-        firstShare = false;
-        jTextArea2.setText("");
-        Container parent = jLabel13.getParent();
-        parent.remove(jLabel13);
-        parent.validate();
-        parent.repaint();
-        changeDirectory();
+//        firstShare = false;
+//        jTextArea2.setText("");
+//        Container parent = jLabel13.getParent();
+//        parent.remove(jLabel13);
+//        parent.validate();
+//        parent.repaint();
+      //  changeDirectory();
         viewingMine = true;
         try {
             List<String> lines =IOUtils.readLines(new FileInputStream("dirList.txt"));
@@ -718,7 +726,7 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextArea2MouseClicked
 
     private void changeDirectory(){
-        firstShare = false;
+//        firstShare = false;
          String chDirTemp = "";
         try {
             chDirTemp = getDir();
@@ -731,6 +739,7 @@ public class MainMenu extends javax.swing.JFrame {
             //  chosenDirs.add(chosenDir);
             createDirListSwingWorker();
         }
+        
     }
     
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
@@ -743,6 +752,16 @@ public class MainMenu extends javax.swing.JFrame {
             Desktop.getDesktop().open(new File("TinyP2P Downloads"));
         }catch(IOException e){}
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jLabel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MouseClicked
+                jTextArea2.setText("");
+                Container parent = jLabel13.getParent();
+                parent.remove(jLabel13);
+                parent.validate();
+                parent.repaint();
+                changeDirectory();
+                
+    }//GEN-LAST:event_jLabel13MouseClicked
           
    public void fileSearch(String srch) throws ClassNotFoundException, IOException{
      searchTerm = srch;
@@ -955,7 +974,9 @@ public class MainMenu extends javax.swing.JFrame {
                 jLabel3.setText("Directory list saved");
             } catch (IOException ex) {
             }
+            
             uploadDirList();
+            viewMyDir();
             return null;
         }
         
