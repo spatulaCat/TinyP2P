@@ -29,7 +29,9 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTree;
@@ -377,11 +379,11 @@ public class MainMenu extends javax.swing.JFrame {
         {
             if(firstShare){
                 firstShare=false;
-                jTextArea2.setText("");
-                Container parent = jLabel13.getParent();
-                parent.remove(jLabel13);
-                parent.validate();
-                parent.repaint();
+//                jTextArea2.setText("");
+//                Container parent = jLabel13.getParent();
+//                parent.remove(jLabel13);
+//                parent.validate();
+//                parent.repaint();
                 changeDirectory();
                 viewMyDir();
                 
@@ -486,7 +488,30 @@ public class MainMenu extends javax.swing.JFrame {
                 }
                 
                 String[] request = {username,sb.toString()};
-                selectedUser = JOptionPane.showInputDialog(null,"");
+                JPanel panel = new JPanel();
+                panel.add(new JRadioButton("radio"));
+//                JOptionPane.showOptionDialog(null, panel,
+//                        "Send to:", JOptionPane.YES_NO_CANCEL_OPTION,
+//                        JOptionPane.QUESTION_MESSAGE, null, null, null);
+                selectedUser = JOptionPane.showInputDialog(panel,"");
+               // Object[] params = {message1, message2, checkbox};
+               
+                Object[] users = lm.toArray();
+                //String[] values = {"0", "3", "6", "12", "18", "24"};
+                
+                
+                
+                Object selected = JOptionPane.showInputDialog(null, "Send " + fname + " to:", "User", JOptionPane.DEFAULT_OPTION, null, users, "0");
+                if ( selected != null ){//null if the user cancels.
+                    selectedUser = selected.toString();
+                   // String selectedString = selected.toString();
+                    //System.out.println(selectedString);
+                    //do something
+                }else{
+                    System.out.println("User cancelled");
+}
+                
+                
                 System.out.println("I am " + username + " sending a file to " + selectedUser + " at " + userIPs.get(selectedUser));
 
                 TCPClient client = new TCPClient(userIPs.get(selectedUser).substring(1),6789,fname);
@@ -541,8 +566,14 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_tinyButtActionPerformed
     
     private void viewMyDir(){
-       
-           viewingMine = true;
+        firstShare = false;
+        jTextArea2.setText("");
+        Container parent = jLabel13.getParent();
+        parent.remove(jLabel13);
+        parent.validate();
+        parent.repaint();
+        changeDirectory();
+        viewingMine = true;
         try {
             List<String> lines =IOUtils.readLines(new FileInputStream("dirList.txt"));
             
@@ -567,7 +598,7 @@ public class MainMenu extends javax.swing.JFrame {
     
     
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        if(!firstShare){viewMyDir();}
+      viewMyDir();
     }//GEN-LAST:event_jButton3ActionPerformed
 
                 
@@ -687,6 +718,7 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextArea2MouseClicked
 
     private void changeDirectory(){
+        firstShare = false;
          String chDirTemp = "";
         try {
             chDirTemp = getDir();
